@@ -1,0 +1,192 @@
+<html><head>
+<title>Nicolas Buitrago - nb486 - HW6</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Raleway:400,700" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/styles/default.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/index.css" >
+  <link rel="stylesheet" href="css/general.css" >
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="/__/firebase/7.8.2/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="/__/firebase/7.8.2/firebase-analytics.js"></script>
+
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+  <style>
+
+  line.dashed {
+    stroke: #aaa;
+    stroke-width: 1px;
+    stroke-dasharray: 2;
+  }
+  text.axis {
+    text-anchor: end;
+    font-variant: all-small-caps;
+  }
+
+
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid mainbackground">
+    <div class="row wrapper-div drop">
+      <svg class="scorecard" class="centered-basic" height = 500 width = 800 >
+      </svg>
+    </div>
+    <div class="row wrapper-div drop">
+      <svg class ="scorecard centered-basic" height = 500 width = 800 >
+      </svg>
+    </div>
+  </div>
+  <!-- Problem 1 -->
+
+
+  <!-- <p id="problem1">
+    <svg id="color_viz" width="500" height="500" style="background: #FFF4F4">
+    </svg>
+    <input id="slider" type="range" min="0" max="360" value="50">
+  </p>
+
+  <script>
+    let svg = d3.select("svg#color_viz")
+    let slidevar = document.getElementById("slider")
+
+    function showCircles(hue){
+      d3.selectAll("circle").data(colors_arr).style("fill",function(d,i){
+        var lightness = d.lightness//this.cx.baseVal.value
+        var saturation = d.saturation//this.cy.baseVal.value
+        lightness = lightness
+        saturation = 100-saturation
+        return "hsl("+hue+","+saturation+"%,"+lightness+"%)"
+      })
+    }
+
+    slidevar.oninput = function(){
+      showCircles(slidevar.value)
+    }
+
+    var colors_arr = []
+    for(var i = 0; i <= 10; i++){
+      for(var j = 0; j <= 10; j++)
+        colors_arr.push({saturation:i*10,lightness:j*10})
+    }
+    for(var i = 0; i < 121; i++){
+      svg.append("circle")
+        .attr("r",20)
+        .attr("cx",4*colors_arr[i].lightness+20)
+        .attr("cy",4*colors_arr[i].saturation+20)
+        .attr("stroke-width","1px")
+        .style("stroke","grey")
+        .attr("fill",'#FFFFFF');
+    }
+
+    showCircles(50)
+  </script> -->
+
+
+
+  <!-- <p>Problem 2:</p>
+
+  <svg id="container" width="800" height="437">
+   <foreignObject width="800" height="437" y="0" x="0"> -->
+     <!--- Foreign object allows us to nest HTML inside an SVG --->
+     <!--- It can get pretty hacky, so use at your own risk --->
+     <!-- <canvas id="painting" width="800" height="437"></canvas>
+   </foreignObject>
+   <g id="brush"></g>
+  </svg>
+  <br/>
+  <svg width="800" height="100">
+    <rect id="color" x="0" y="0" width="800" height="100" fill="white" />
+    <text id="label" x="20" y="80" />
+  </svg>
+
+  <script>
+
+  // Some helper variables for you to use - do not modify or helper functions will fail
+  var canvas = d3.select("#painting");
+  var gfxContext = canvas.node().getContext("2d");
+  var imgWidth = canvas.node().width;
+  var imgHeight = canvas.node().height;
+
+  var img = new Image;
+  img.src = "nighthawks.png"
+  img.onload = imgLoaded;
+
+  function imgLoaded() {
+    gfxContext.drawImage(this, 0, 0); // Paint image to canvas
+
+    // pixels is a 2-d array containing RGB data for the whole image
+    //  for example:  pixels[155][22] will tell give you a dict for the RGB values at point x=22, y=155
+    //              (note that y position comes first, then x position)
+    //              R, G, and B values start at 0 and run to 255
+    let pixels = getAllPixels();
+
+    // - All of your code for this problem must go between these comments-
+    // Make use of the g#brush group inside of the SVG element for placing your brush
+    // Make use of the #color and #label elements for your average color and text label
+    var brush = d3.brush().on("brush end",brushed);
+
+    function brushed(){
+      //console.log(d3.event.selection)
+      if(d3.event.selection != null){
+        var Lsum = 0;
+        var Asum = 0;
+        var Bsum = 0;
+        select = d3.event.selection
+        var size = (select[1][0]-select[0][0]+1)*(select[1][1]-select[0][1]+1)
+        for(var x = parseInt(select[0][0]); x <= Math.min(select[1][0],imgWidth-1); x++)
+          for(var y = parseInt(select[0][1]); y <= Math.min(select[1][1],imgHeight-1); y++){
+
+            var labobj = d3.lab(d3.rgb(pixels[y][x].r,pixels[y][x].g,pixels[y][x].b))
+            Lsum+=labobj.l
+            Asum+=labobj.a
+            Bsum+=labobj.b
+          }
+        var averageColor = d3.lab(Lsum/size,Asum/size,Bsum/size)
+        d3.select("rect#color").attr("fill",averageColor)
+        d3.select("text#label").text(averageColor.hex()).attr("fill",averageColor.l<50?"white":"black")
+        }
+      }
+    d3.select("g#brush").attr("class","brush")
+                        .call(brush);
+
+
+    // - All of your code for this problem must go between these comments -
+
+  }
+
+  function getAllPixels() {
+
+    let gfxData = gfxContext.getImageData(0,0,imgWidth,imgHeight).data;
+    let processedData = [];
+    for (let i=0; i<gfxData.length; i=i+4) { // contains stripe of RGBARGBARGBA
+      let xCoord = Math.floor(i/4) % imgWidth;
+      let yCoord = Math.floor(i/(imgWidth*4))
+      if (xCoord === 0) { processedData.push( [] ); }
+      processedData[processedData.length-1].push( {
+        x: xCoord,
+        y: yCoord,
+        r: gfxData[i],
+        g: gfxData[i+1],
+        b: gfxData[i+2]
+      } );
+    }
+    return processedData;
+
+  }
+
+
+  </script> -->
+
+</body>
+</html>
