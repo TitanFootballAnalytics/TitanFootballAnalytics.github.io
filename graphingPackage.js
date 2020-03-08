@@ -109,7 +109,7 @@ function removeLoadingBars(canvas){
     canvas.select("line.loading-bar4").remove();
 }
 
-function addBarGraph(data, canvas, x1, y1, x2, y2){
+function addBarGraph(data, uniqueID ,canvas, x1, y1, x2, y2){
     const margin2 = {top:0,bottom:0,left:0,right:0};
     var max = d3.max(data.map(d => d.val));
     var min = d3.min(data.map(d => d.val));
@@ -118,12 +118,6 @@ function addBarGraph(data, canvas, x1, y1, x2, y2){
     x = d3.scaleLinear().rangeRound([0, x2-x1]);
     y.domain(data.map(d => d.category));
     x.domain([min-(max)/10, max]);
-
-    data.forEach(d => {
-        console.log(d.val);
-        console.log(x(d.val))
-    });
-
 
     //add the y axis to the graph
     canvas.append("g")
@@ -135,26 +129,27 @@ function addBarGraph(data, canvas, x1, y1, x2, y2){
     canvas.append("g")
         .attr("class", "x axis")
         .attr("transform","translate("+(margin2.left+x1)+","+(y2+margin2.top+10)+")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).ticks(4));
 
-    canvas.selectAll(".bar")
+    console.log("here")
+    canvas.selectAll(".bar" + uniqueID)
         .data(data)
         .enter().append("rect")
         .attr("transform","translate("+(margin2.left+x1)+","+(margin2.top+y1)+")")
-        .attr("class", "bar")
+        .attr("class", "bar" + uniqueID)
         .attr("fill", function (d, i) {
-    return 'rgb(200, ' + Math.round(i / 2) + ', ' + i*30 + ')'
-  })
+            return 'rgb(200, ' + Math.round(i / 2) + ', ' + i*30 + ')'
+        })
         .attr("x", 0)
         .attr("y", d => y(d.category))
         .attr("height", y.bandwidth())
         .transition()
         .duration(1000)
-  .delay(function (d, i) {
-    return i * 500;
-  })
+        .delay(function (d, i) {
+            return i * 500;
+        })
         .attr("width", d => x(d.val));
-}
+};
 
 
 function addSankey(data, canvas, x1, y1, x2, y2){

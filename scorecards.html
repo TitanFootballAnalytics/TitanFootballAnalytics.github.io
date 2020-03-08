@@ -66,52 +66,31 @@
 
       d3.json("wines.json")
           .then( (data) => {
-              //console.log(data);
+            //sample data for a pie chart
+            var x = Number((data[0]).points_scored);
+            var y = Number((data[0]).points_against);
+            var total = x+y;
+            var xFraction = x/total;
+            var yFraction = y/total;
+            var radius = 100
+            var dasharrayString = (Math.PI * 2 * radius)*xFraction + " " + (Math.PI * 2 * radius)*yFraction
 
-
-              var x = Number((data[0]).points_scored);
-              var y = Number((data[0]).points_against);
-              var total = x+y;
-              var xFraction = x/total;
-              var yFraction = y/total;
-              var radius = 100
-              var dasharrayString = (Math.PI * 2 * radius)*xFraction + " " + (Math.PI * 2 * radius)*yFraction
-              //console.log(dasharrayString);
-              //addPieChart(svg, xFraction, yFraction, width/2, height/2, radius, 20);
-
-              var x2 = Number((data[1]).points_scored);
-              var y2 = Number((data[1]).points_against);
-              var total2 = x2+y2;
-              var xFraction2 = x2/total2;
-              var yFraction2 = y2/total2;
-              var dasharrayString2 = (Math.PI * 200)*xFraction2 + " " + (Math.PI * 200)*yFraction2
-              //addPieChart(svg2, xFraction2, yFraction2, width/2, height/2, radius, 20);
-
+            //how to call the loading bar functions
             //addLoadingBars(svg);
-            //removeLoadingBars(svg);
+            //removeLoadingBars(svg);z
 
+            //create some sample data for bar graphs and call the functions
+            sample_data1 = [{"category":"stat1","val":230},{"category":"stat2","val":50},{"category":"stat3","val":120},{"category":"stat4","val":20},{"category":"stat5","val":200},{"category":"stat6","val":130}];
+            sample_data2 = [{"category":"stat1","val":1000},{"category":"stat2","val":500},{"category":"stat3","val":10},{"category":"stat4","val":460},{"category":"stat5","val":895},{"category":"stat6","val":389}];
+            sample_data3 = [{"category":"stat1","val":5},{"category":"stat2","val":9},{"category":"stat3","val":0},{"category":"stat4","val":6},{"category":"stat5","val":10},{"category":"stat6","val":12}];
+            addBarGraph(sample_data1, 0, svg, svg.attr("width")*0.1, svg.attr("height")*0.60, svg.attr("width")*0.35, svg.attr("height")*0.90);
+            addBarGraph(sample_data2, 1, svg, svg.attr("width")*0.4, svg.attr("height")*0.60, svg.attr("width")*0.65, svg.attr("height")*0.90);
+            addBarGraph(sample_data3, 2, svg, svg.attr("width")*0.7, svg.attr("height")*0.60, svg.attr("width")*0.95, svg.attr("height")*0.90);
 
-
-
-
-            //create some sample data
-            sample_data = [{"category":"yards","val":230},{"category":"points","val":50},{"category":"penalty yards","val":120},{"category":"first downs","val":20},{"category":"stat1","val":200},{"category":"stat2","val":130}];
-
-
-
-
-
-
-
-
-            //addBarGraph2(sample_data, svg, 0, 10,width,height);
-            addBarGraph(sample_data, svg, 100, 100, 400, 300);
-
+            //sankey examples
             sample_data2 = [2,0,1];
+            addSankey(sample_data2, svg2, 100, 100, 200, 200);
 
-
-
-      addSankey(sample_data2, svg2, 100, 100, 200, 200);
     }, (error) => {
           console.log(error);
       });
