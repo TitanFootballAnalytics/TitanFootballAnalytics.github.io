@@ -216,3 +216,131 @@ function addSankey(data, canvas, x1, y1, x2, y2){
 
 
 }
+
+
+
+function addHeader(svg) {
+  let label = svg.append("text")
+    .attr("class", "rectLabel")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("fill", "black")
+    .text("")
+  function stats(canvas, w, h) {
+    var coordinates = [[width - w, 0], [width - w * 2, 0], [width - w, h], [width - w * 2, h], [width - w, h * 2], [width - w * 2, h * 2], [width - w, h * 3], [width - w * 2, h * 3]]
+    coordinates.forEach(function (coordinate) {
+      let rec = canvas.append("rect")
+        .attr("x", coordinate[0])
+        .attr("y", coordinate[1])
+        .attr("width", w)
+        .attr("height", h)
+        .attr("fill", "white")
+        .attr("stroke", "black")
+        .attr("stroke-width", 2)
+    })
+  }
+  function addTeam(canvas, radius) {
+    let im = canvas.append("image")
+      .attr("x", radius / 2 - 15)
+      .attr("y", radius / 2 - 15)
+      .attr("href", "TitanLogoB.png")
+      .attr("height", radius * 2)
+      .attr("width", radius * 2)
+    let txt = canvas.select("text.rectLabel")
+    txt.text("Titan Analytics")
+      .attr("x", 10)
+      .attr("y", 130)
+      .attr("text-anchor", "left")
+      .style("font", "bold 20px sans-serif")
+  }
+  function mouseon(shape, index) {
+    shape.on("mouseover", function () {
+      shape.transition().duration(200)
+        .attr("fill-opacity", 1)
+        .attr("stroke", "maroon")
+        .attr("stroke-width", 3)
+    });
+  }
+  function mouseoff(shape, index) {
+    shape.on("mouseout", function () {
+      shape.transition().duration(200)
+        .attr("fill-opacity", 0.5)
+        .attr("stroke", "maroon")
+        .attr("stroke-width", 1)
+    });
+  }
+  function spline(canvas, top, h, w, separation, radius) {
+    bottom = top + radius * 2;
+    let shape00 = canvas.append("path")
+      .attr("d", "M 82 10 A 50 50 0 0 1 120 57 L 180 57 L 160 10 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+    let shape10 = canvas.append("path")
+      .attr("d", "M 82 110 A 50 50 0 0 0 120 63 L 180 63 L 160 110 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+    let shape01 = canvas.append("path")
+      .attr("d", "M 166 10 L 186 57 L 246 57 L 226 10 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+    let shape11 = canvas.append("path")
+      .attr("d", "M 166 110 L 186 63 L 246 63 L 226 110 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+
+    let shape02 = canvas.append("path")
+      .attr("d", "M 232 10 L 252 57 L 312 57 L 292 10 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+
+    let shape12 = canvas.append("path")
+      .attr("d", "M 232 110 L 252 63 L 312 63 L 292 110 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+
+    let shape03 = canvas.append("path")
+      .attr("d", "M 298 10 L 318 57 L 378 57 L 358 10 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+
+    let shape04 = canvas.append("path")
+      .attr("d", "M 364 10 L 424 10 L 444 57 L 384 57 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+
+    let shape05 = canvas.append("path")
+      .attr("d", "M 430 10 L 490 10 L 510 57 L 450 57 z")
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+
+    var shapes = [shape00, shape01, shape02, shape03, shape04, shape05, shape10, shape11, shape12];
+    shapes.forEach(mouseon);
+    shapes.forEach(mouseoff);
+  }
+  stats(svg, 105, 35);
+  addTeam(svg, 50);
+  var h = 47;
+  var w = 60;
+  var separation = 6;
+  var radius = 50;
+  var top = 10;
+  spline(svg, top, h, w, separation, radius)
+}
