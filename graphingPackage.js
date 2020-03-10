@@ -131,7 +131,6 @@ function addBarGraph(data, uniqueID ,canvas, x1, y1, x2, y2){
         .attr("transform","translate("+(margin2.left+x1)+","+(y2+margin2.top+10)+")")
         .call(d3.axisBottom(x).ticks(4));
 
-    console.log("here")
     canvas.selectAll(".bar" + uniqueID)
         .data(data)
         .enter().append("rect")
@@ -149,6 +148,30 @@ function addBarGraph(data, uniqueID ,canvas, x1, y1, x2, y2){
             return i * 500;
         })
         .attr("width", d => x(d.val));
+
+    canvas.selectAll(".circle" + uniqueID)
+        .data(data)
+        .enter().append("circle")
+        .attr("transform","translate("+(margin2.left+x1)+","+(margin2.top+y1)+")")
+        .attr("class", function (d, i) {
+            return "circle" + uniqueID + "exit" + i
+        })
+        .attr("fill", "blue")
+        .attr("cx", d => x(d.val)+10)
+        .attr("cy", d => y(d.category)+y.bandwidth()/2)
+        .attr("r", 5)
+
+    canvas.selectAll(".circle" + uniqueID)
+        .data(data)
+        .enter().append("circle")
+        .attr("transform","translate("+(margin2.left+x1)+","+(margin2.top+y1)+")")
+        .attr("class", function (d, i) {
+            return "circle" + uniqueID + "enter" + i
+        })
+        .attr("fill", "green")
+        .attr("cx", d => -10)
+        .attr("cy", d => y(d.category)+y.bandwidth()/2)
+        .attr("r", 5)
 };
 
 
