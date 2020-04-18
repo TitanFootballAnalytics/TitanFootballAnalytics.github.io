@@ -33,11 +33,15 @@
 <body>
   <div class="container-fluid mainbackground">
     <div class="row wrapper-div drop" style = "padding-top:100px">
-                <svg class="scorecard" class="centered-basic" height = 500 width = 800 id = "scoreCard1">
-                </svg>
+      <svg class="scorecard" class="centered-basic" height = 500 width = 800 id = "scoreCard1">
+      </svg>
     </div>
     <div class="row wrapper-div drop" style = "padding-top:600px">
       <svg class ="scorecard centered-basic" height = 500 width = 800 id="scoreCard2">
+      </svg>
+    </div>
+    <div class="row wrapper-div drop" style = "padding-top:600px">
+      <svg class ="scorecard centered-basic" height = 500 width = 800 id="scoreCard3">
       </svg>
     </div>
   </div>
@@ -55,8 +59,9 @@
 
   <script>
       //set width height and margin variables
-      const svg = d3.select("svg#scoreCard1")
-      const svg2 = d3.select("svg#scoreCard2")
+      const svg = d3.select("svg#scoreCard1");
+      const svg2 = d3.select("svg#scoreCard2");
+      const svg3 = d3.select("svg#scoreCard3");
       const margin = {top:20,bottom:40,left:100,right:20};
       const height = svg.attr("height") - margin.top - margin.bottom;
       const width = svg.attr("width") - margin.left - margin.right;
@@ -88,9 +93,24 @@
             addBarGraph(sample_data3, 2, svg, svg.attr("width")*0.7, svg.attr("height")*0.60, svg.attr("width")*0.95, svg.attr("height")*0.90);
 
             //sankey examples
-            sample_data2 = [2,0,1];
+            sample_data2 = [{in:"A",out:"1",count:10},
+                            {in:"A",out:"3",count:10},
+                            {in:"B",out:"1",count:5},
+                            {in:"B",out:"2",count:5},
+                            {in:"C",out:"1",count:5},
+                            {in:"C",out:"2",count:15}];
             addSankey(sample_data2, svg2, 100, 100, 200, 200);
+            //todo: corner case the above
             addHeader(svg);
+
+            sample_data3 = [{start:10,end:15,type:"pass"},
+                            {start:15,end:14,type:"run"},
+                            {start:14,end:22,type:"run"},
+                            {start:22,end:34,type:"pass"},
+                            {start:34,end:40,type:"pass"}]
+            addFieldChart(sample_data3,svg3,100,300,400,300);
+
+
 
     }, (error) => {
           console.log(error);
