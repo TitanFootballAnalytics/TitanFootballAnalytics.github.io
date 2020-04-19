@@ -156,7 +156,7 @@ function addBarGraph(data, uniqueID ,canvas, x1, y1, x2, y2){
         .attr("class", function (d, i) {
             return "circle" + uniqueID + "exit" + i
         })
-        .attr("fill", "blue")
+        .attr("fill", "None")
         .attr("cx", d => x(d.val)+10)
         .attr("cy", d => y(d.category)+y.bandwidth()/2)
         .attr("r", 5)
@@ -168,7 +168,7 @@ function addBarGraph(data, uniqueID ,canvas, x1, y1, x2, y2){
         .attr("class", function (d, i) {
             return "circle" + uniqueID + "enter" + i
         })
-        .attr("fill", "green")
+        .attr("fill", "None")
         .attr("cx", d => -10)
         .attr("cy", d => y(d.category)+y.bandwidth()/2)
         .attr("r", 5)
@@ -180,33 +180,6 @@ function addSankey(data, canvas, x1, y1, x2, y2){
     y1 = 100;
     x2 = 400;
     y2 = 400;
-    // const margin2 = {top:0,bottom:0,left:0,right:0};
-    // var max = d3.max(data.map(d => d.val));
-    // var min = d3.min(data.map(d => d.val));
-    //
-    // y = d3.scaleBand().rangeRound([y1, y2]);
-    // x = d3.scaleLinear().rangeRound([x1, x2]);
-    // y.domain(data);
-    // x.domain([0,1,2]);
-
-    //x.domain([0, x2-x1]);
-
-    // data.forEach(d => {
-    //     console.log(d.val);
-    //     console.log(x(d.val))
-    // });
-
-
-    // canvas.append("g")
-    //     .attr("class", "y axis")
-    //     .attr("transform","translate("+(margin2.left+x1)+","+(margin2.top+y1)+")")
-    //     .call(d3.axisLeft(y).ticks(6))
-
-    //add the x axisto the graph
-    // canvas.append("g")
-    //     .attr("class", "x axis")
-    //     .attr("transform","translate("+(margin2.left+x1)+","+(y2+margin2.top+10)+")")
-    //     .call(d3.axisBottom(x));
     function toString(x,y){
       return "" + x + " " + y + "";
     }
@@ -233,13 +206,10 @@ function addSankey(data, canvas, x1, y1, x2, y2){
       total += data[i].count;
     }
 
-
-
     //sort in order to be able to easily set end locations
     //sort will be on the out collumn first, since the in collumn is already ordered
     //it is exepcted that the it will remain ordered after a bubble sort, within
     //each bin
-
     for(var i = 0; i < data.length - 1; i++){
       for(var j = 0; j < data.length-1; j++){
         if(data[j].out > data[j+1].out){
@@ -251,22 +221,12 @@ function addSankey(data, canvas, x1, y1, x2, y2){
       }
     }
 
-
-
-
-
-
     //end order calculation
     var sum = 0;
     for(var i = 0; i < data.length;i++){
       data[i].end = sum;
       sum += data[i].count;
     }
-
-
-
-
-
     var vert_scale = (y2-y1)/total;
 
     x2 += 40;
@@ -285,15 +245,12 @@ function addSankey(data, canvas, x1, y1, x2, y2){
     var color = colors[color_start];
     data[0].end_color = color;
     for(var i = 1; i < data.length;i++){
-
-
         console.log(i)
         console.log(first);
         console.log(data[i].out);
         console.log("----------");
       if(data[i].out != first){
           console.log("gottem")
-
           canvas.append("path")
           .attr("d"," M " + toString(x2+gap,y1+start*vert_scale)+
                     " H " + (x2+gap+30) +
@@ -302,15 +259,12 @@ function addSankey(data, canvas, x1, y1, x2, y2){
 
           .attr("fill","rgb("+color.r+"," + color.g+"," + color.b+")");
           color_start = (color_start+1)%colors.length;
-
-
           first = data[i].out;
           start = data[i].end;
           end = data[i].count +start;
           color = colors[color_start];
           data[i].end_color = color;
       }
-
       else{
         data[i].end_color = color;
         end = data[i].end+data[i].count;
@@ -337,22 +291,6 @@ function addSankey(data, canvas, x1, y1, x2, y2){
         }
       }
     }
-
-    console.log(data);
-
-
-    console.log(data)
-    // canvas.append("path")
-    // .attr("stroke","black")
-    // .attr("stroke-width","1")
-    // .attr("d"," M "+toString(x1,y1)+
-    //           " L "+toString(x2,y1)+
-    //           " L "+toString(x2,y2)+
-    //           " L "+toString(x1,y2)+
-    //           " L "+toString(x1,y1))
-    // .attr("fill","white");
-
-
     var first = data[0].in;
     var start = data[0].start;
     var end = data[0].count+start;
@@ -360,9 +298,6 @@ function addSankey(data, canvas, x1, y1, x2, y2){
     console.log(data)
     console.log(color)
     for(var i = 1; i < data.length;i++){
-        // console.log(first);
-        // console.log(data[i].in);
-        // console.log("----------");
       if(data[i].in != first){
           console.log(color)
           canvas.append("path")
@@ -370,7 +305,7 @@ function addSankey(data, canvas, x1, y1, x2, y2){
                     " H " + (x1+30) +
                     " V " + (y1+end*vert_scale)+
                     " H " + x1)
-          .attr("fill","rgb("+color.r+"," + color.g+"," + color.b+")");
+           .attr("fill","rgb("+color.r+"," + color.g+"," + color.b+")");
           first = data[i].in;
           start = data[i].start;
           end = data[i].count +start;
@@ -383,7 +318,7 @@ function addSankey(data, canvas, x1, y1, x2, y2){
                   " H " + (x1+30) +
                   " V " + (y1+end*vert_scale)+
                   " H " + x1)
-        .attr("fill","rgb("+color.r+"," + color.g+"," + color.b+")");
+         .attr("fill","rgb("+color.r+"," + color.g+"," + color.b+")");
       }
       else{
         end = data[i].start+data[i].count;
@@ -395,18 +330,7 @@ function addSankey(data, canvas, x1, y1, x2, y2){
         .data(data)
         .enter().append("path")
         .attr("class", "line")
-        // .attr("stroke","black")
-        // .attr("stroke-width","1")
         .attr("d",function(d,i){
-          // console.log(" M "+toString(x1,y1+d.start*vert_scale)+
-          //            " L "+toString(x2,y1+d.end*vert_scale) );
-          //
-          //parallelogram version:
-        // return    (" M "+toString(x1,y1+d.start*vert_scale)+
-        //            " L "+toString(x2,y1+d.end*vert_scale)+
-        //            " L "+toString(x2,y1+d.end*vert_scale + d.count*vert_scale)+
-        //            " L "+toString(x1,y1+d.start*vert_scale + d.count*vert_scale)+
-        //            " Z ");
         var mid = (x2-x1)/2;
        return    (" M "+toString(x1,y1+d.start*vert_scale+pad)+
                   " C "+toString(x1+mid,y1+d.start*vert_scale+pad)+" "+toString(x1+mid,y1+d.end*vert_scale+pad)+" "+toString(x2,y1+d.end*vert_scale+pad)+
@@ -418,40 +342,34 @@ function addSankey(data, canvas, x1, y1, x2, y2){
         .attr("fill",function (d, i) {
             var col = d.color;
             var ecol = d.end_color;
-            // <defs>
-              // <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-              //   <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
-              //   <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
-              // </linearGradient>
-            // </defs>
             canvas.insert("defs").html("<linearGradient id='grad"+i+"' x1='0%' y1='0%' x2='100%' y2='0%'>"+
                                           "<stop offset='0%' style='stop-color:rgb("+col.r+"," + col.g + "," + col.b  + ");stop-opacity:.5' />"+
                                           "<stop offset='100%' style='stop-color:rgb("+col.r+"," + col.g + "," + col.b  + ");stop-opacity:.5' />"+
                                         "</linearGradient>");
             return "url(#grad"+i+")"//'rgba('+col.r+', ' + col.g + ', ' + col.b  + ',.5)'
         	})
-        // .attr("fill",function (d, i) {
-        //     var col = d.color;
-        // 		return 'rgba('+col.r+', ' + col.g + ', ' + col.b  + ',.5)'
-        // 	})
-//         .attr("transform","translate("+(margin2.left+x1)+","+(margin2.top+y1)+")")
-//         .attr("class", "bar")
-//         .attr("fill", function (d, i) {
-// 		return 'rgb(200, ' + Math.round(i / 2) + ', ' + i*30 + ')'
-// 	})
-//         .attr("x", 0)
-//         .attr("y", d => y(d.category))
-//         .attr("height", y.bandwidth())
-//         .transition()
-//         .duration(1000)
-// 	.delay(function (d, i) {
-// 		return i * 500;
-// 	})
-//         .attr("width", d => x(d.val));
-// };
+        .attr("opacity",0.5) //KEVIN ADDED THIS HERE FOR MOUSEOVER EFFECT
+        .attr("count",function(d,i){return d.count}) //KEVIN ADDED THIS ATTRIBUTE TO BE ABLE TO PRINT ON MOUSE HOVER
 
-
-
+    let label = canvas.append("text")
+        .attr("x",0)
+        .attr("y",0)
+        .attr("fill", "black")
+        .text("")
+    canvas.selectAll(".line")
+        .on("mouseover",function(){
+            d3.select(this)
+                .attr("opacity",1)
+            label.text("Count: " + d3.select(this).attr("count")).attr("x",d3.mouse(this)[0]+5).attr("y",d3.mouse(this)[1]-5)
+        })
+        .on("mouseout",function(){
+            d3.select(this)
+                .attr("opacity",0.5)
+            label.text("")
+        })
+        .on("mousemove",function(){
+            label.attr("x",d3.mouse(this)[0]+5).attr("y",d3.mouse(this)[1]-5)
+        })
 }
 
 
