@@ -31,90 +31,61 @@
 </head>
 
 <body>
-  <div class="container-fluid mainbackground">
-    <div class="row wrapper-div drop" style = "padding-top:100px">
-      <svg class="scorecard" class="centered-basic" height = 500 width = 800 id = "scoreCard1">
-      </svg>
+    <div class = "container-fluid mainbackground", id = "mainDiv">
     </div>
-    <div class="row wrapper-div drop" style = "padding-top:600px">
-      <svg class ="scorecard centered-basic" height = 500 width = 800 id="scoreCard2">
-      </svg>
-    </div>
-    <div class="row wrapper-div drop" style = "padding-top:600px">
-      <svg class ="scorecard centered-basic" height = 500 width = 800 id="scoreCard3">
-      </svg>
-    </div>
-  </div>
   <script>
-  //add animation delay to scorecards
-  let svgList = d3.selectAll(".scorecard")._groups[0];
-  console.log(svgList)
-  svgList.forEach(function(element,i){
-    element.style.animationDelay = '.'+2*i+'s';
-
-  });
-
-  </script>
+        const fixedHeight = 500
+        const fixedWidth = 800
+        const margin = {top:20,bottom:40,left:100,right:20};
+        const height = fixedHeight - margin.top - margin.bottom;
+        const width = fixedWidth - margin.left - margin.right;
 
 
-  <script>
-      //set width height and margin variables
-      const svg = d3.select("svg#scoreCard1");
-      const svg2 = d3.select("svg#scoreCard2");
-      const svg3 = d3.select("svg#scoreCard3");
-      const margin = {top:20,bottom:40,left:100,right:20};
-      const height = svg.attr("height") - margin.top - margin.bottom;
-      const width = svg.attr("width") - margin.left - margin.right;
-
-
-
-
-      d3.json("wines.json")
+      d3.json("scoreCardAutomation.json")
           .then( (data) => {
-            //sample data for a pie chart
-            var x = Number((data[0]).points_scored);
-            var y = Number((data[0]).points_against);
-            var total = x+y;
-            var xFraction = x/total;
-            var yFraction = y/total;
-            var radius = 100
-            var dasharrayString = (Math.PI * 2 * radius)*xFraction + " " + (Math.PI * 2 * radius)*yFraction
+            console.log(data);
+            for(let i = 0; i < data.scorecards.length; i++){
+                d3.select("#mainDiv").append("div")
+                    .attr("class","row wrapper-div drop")
+                    .style("padding-top",function(){
+                        if(i==0){
+                            return "100px"
+                        }
+                        else{
+                            return "600px"
+                        }})
+                    .attr("id","div" + i)
+                d3.select("#div"+i)
+                    .append("svg")
+                        .attr("width",fixedWidth)
+                        .attr("height",fixedHeight)
+                        .attr("class","scorecard centered-basic")
+                        .attr("id","scoreCard"+i)
+            }
+            var svg0 = d3.select("#scoreCard0");
+            var svg1 = d3.select("#scoreCard1");
+            var svg2 = d3.select("#scoreCard2");
 
             //how to call the loading bar functions
             //addLoadingBars(svg);
             //removeLoadingBars(svg);z
 
-            //create some sample data for bar graphs and call the functions
-            sample_data1 = [{"category":"stat1","val":230},{"category":"stat2","val":50},{"category":"stat3","val":120},{"category":"stat4","val":20},{"category":"stat5","val":200},{"category":"stat6","val":130}];
-            sample_data2 = [{"category":"stat1","val":1000},{"category":"stat2","val":500},{"category":"stat3","val":10},{"category":"stat4","val":460},{"category":"stat5","val":895},{"category":"stat6","val":389}];
-            sample_data3 = [{"category":"stat1","val":5},{"category":"stat2","val":9},{"category":"stat3","val":0},{"category":"stat4","val":6},{"category":"stat5","val":10},{"category":"stat6","val":12}];
-            addBarGraph(sample_data1, 0, svg, svg.attr("width")*0.1, svg.attr("height")*0.60, svg.attr("width")*0.35, svg.attr("height")*0.90);
-            addBarGraph(sample_data2, 1, svg, svg.attr("width")*0.4, svg.attr("height")*0.60, svg.attr("width")*0.65, svg.attr("height")*0.90);
-            addBarGraph(sample_data3, 2, svg, svg.attr("width")*0.7, svg.attr("height")*0.60, svg.attr("width")*0.95, svg.attr("height")*0.90);
+            addBarGraph(data.scorecards[0].datasets[0], 0, svg0, svg0.attr("width")*0.1, svg0.attr("height")*0.60, svg0.attr("width")*0.35, svg0.attr("height")*0.90);
+            addBarGraph(data.scorecards[0].datasets[1], 1, svg0, svg0.attr("width")*0.4, svg0.attr("height")*0.60, svg0.attr("width")*0.65, svg0.attr("height")*0.90);
+            addBarGraph(data.scorecards[0].datasets[2], 2, svg0, svg0.attr("width")*0.7, svg0.attr("height")*0.60, svg0.attr("width")*0.95, svg0.attr("height")*0.90);
 
             //sankey examples
-            sample_data2 = [{in:"A",out:"1",count:10},
-                            {in:"A",out:"3",count:10},
-                            {in:"B",out:"1",count:5},
-                            {in:"B",out:"2",count:5},
-                            {in:"C",out:"1",count:5},
-                            {in:"C",out:"2",count:15}];
-            addSankey(sample_data2, svg2, 100, 100, 200, 200);
+            addSankey(data.scorecards[1].datasets[0], svg1, 100, 100, 200, 200);
             //todo: corner case the above
-            addHeader(svg);
+            addHeader(svg0);
 
-            sample_data3 = [{start:10,end:15,type:"pass"},
-                            {start:15,end:14,type:"run"},
-                            {start:14,end:22,type:"run"},
-                            {start:22,end:34,type:"pass"},
-                            {start:34,end:40,type:"pass"}]
-            addFieldChart(sample_data3,svg3,100,300,400,300);
+            addFieldChart(data.scorecards[2].datasets[0],svg2,100,300,400,300);
 
 
 
     }, (error) => {
           console.log(error);
-      });
+    });
   </script>
 
 </body>
