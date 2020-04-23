@@ -176,10 +176,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
 
 
 function addSankey(data, canvas, x1, y1, x2, y2) {
-  x1 = 100;
-  y1 = 100;
-  x2 = 400;
-  y2 = 400;
+
   function toString(x, y) {
     return "" + x + " " + y + "";
   }
@@ -253,7 +250,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       console.log("gottem")
       canvas.append("path")
         .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
-          " H " + (x2 + gap + 30) +
+          " H " + (x2 + gap + 5*vert_scale) +
           " V " + (y1 + end * vert_scale) +
           " H " + (x2 + gap))
 
@@ -274,7 +271,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
   data[data.length - 1].end_color = color;
   canvas.append("path")
     .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
-      " H " + (x2 + gap + 30) +
+      " H " + (x2 + gap + 5*vert_scale) +
       " V " + (y1 + end * vert_scale) +
       " H " + (x2 + gap))
     .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
@@ -302,7 +299,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       console.log(color)
       canvas.append("path")
         .attr("d", " M " + toString(x1, y1 + start * vert_scale) +
-          " H " + (x1 + 30) +
+          " H " + (x1 + 5*vert_scale) +
           " V " + (y1 + end * vert_scale) +
           " H " + x1)
         .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
@@ -315,7 +312,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       end = data[i].start + data[i].count;
       canvas.append("path")
         .attr("d", " M " + toString(x1, y1 + start * vert_scale) +
-          " H " + (x1 + 30) +
+          " H " + (x1 + 5*vert_scale) +
           " V " + (y1 + end * vert_scale) +
           " H " + x1)
         .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
@@ -324,7 +321,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       end = data[i].start + data[i].count;
     }
   }
-  x1 += 40;
+  x1 += 7*vert_scale;
   var pad = 2;
   canvas.selectAll(".line")
     .data(data)
