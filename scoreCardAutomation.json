@@ -1,0 +1,45 @@
+{"scorecards": [
+      {
+          "datasets" : [
+                [
+                    {"category":"stat1","val":230},{"category":"stat2","val":50},
+                    {"category":"stat3","val":120},{"category":"stat4","val":20},
+                    {"category":"stat5","val":200},{"category":"stat6","val":130}
+                ],
+                [
+                    {"category":"stat1","val":1000},{"category":"stat2","val":500},
+                    {"category":"stat3","val":10},{"category":"stat4","val":460},
+                    {"category":"stat5","val":895},{"category":"stat6","val":389}
+                ],
+                [
+                    {"category":"stat1","val":5},{"category":"stat2","val":9},
+                    {"category":"stat3","val":0},{"category":"stat4","val":6},
+                    {"category":"stat5","val":10},{"category":"stat6","val":12}
+                ]
+            ]
+      },
+      {
+          "datasets" : [
+                [
+                    {"in":"A","out":"1","count":10},
+                    {"in":"A","out":"3","count":10},
+                    {"in":"B","out":"1","count":5},
+                    {"in":"B","out":"2","count":5},
+                    {"in":"C","out":"1","count":5},
+                    {"in":"C","out":"2","count":15}
+                ]
+          ]
+      },
+      {
+          "datasets" : [
+                [
+                    {"start":10,"end":15,"type":"pass"},
+                    {"start":15,"end":14,"type":"run"},
+                    {"start":14,"end":22,"type":"run"},
+                    {"start":22,"end":34,"type":"pass"},
+                    {"start":34,"end":40,"type":"pass"}
+                ]
+          ]
+      }
+   ]
+}
