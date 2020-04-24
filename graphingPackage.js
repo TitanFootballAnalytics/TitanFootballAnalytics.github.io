@@ -250,7 +250,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       console.log("gottem")
       canvas.append("path")
         .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
-          " H " + (x2 + gap + 5*vert_scale) +
+          " H " + (x2 + gap + 5 * vert_scale) +
           " V " + (y1 + end * vert_scale) +
           " H " + (x2 + gap))
 
@@ -271,7 +271,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
   data[data.length - 1].end_color = color;
   canvas.append("path")
     .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
-      " H " + (x2 + gap + 5*vert_scale) +
+      " H " + (x2 + gap + 5 * vert_scale) +
       " V " + (y1 + end * vert_scale) +
       " H " + (x2 + gap))
     .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
@@ -299,7 +299,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       console.log(color)
       canvas.append("path")
         .attr("d", " M " + toString(x1, y1 + start * vert_scale) +
-          " H " + (x1 + 5*vert_scale) +
+          " H " + (x1 + 5 * vert_scale) +
           " V " + (y1 + end * vert_scale) +
           " H " + x1)
         .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
@@ -312,7 +312,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       end = data[i].start + data[i].count;
       canvas.append("path")
         .attr("d", " M " + toString(x1, y1 + start * vert_scale) +
-          " H " + (x1 + 5*vert_scale) +
+          " H " + (x1 + 5 * vert_scale) +
           " V " + (y1 + end * vert_scale) +
           " H " + x1)
         .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
@@ -321,7 +321,7 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       end = data[i].start + data[i].count;
     }
   }
-  x1 += 7*vert_scale;
+  x1 += 7 * vert_scale;
   var pad = 2;
   canvas.selectAll(".line")
     .data(data)
@@ -463,6 +463,63 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
 }
 
 
+function mouseon(shape, index) {
+  shape.on("mouseover", function () {
+    var s = d3.select("#parallel" + index);
+    var new_op, new_st;
+    if (s.attr("fill-opacity") == 1) {
+      new_op = 1;
+      new_st = 4;
+    }
+    else {
+      new_op = 0.8;
+      new_st = 2;
+    }
+    shape.transition().duration(200)
+      .attr("fill-opacity", new_op)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", new_st)
+  });
+}
+
+function mouseoff(shape, index) {
+  shape.on("mouseout", function () {
+    var s = d3.select("#parallel" + index);
+    var new_op, new_st;
+    if (s.attr("fill-opacity") == 1) {
+      new_op = 1;
+      new_st = 4;
+    }
+    else {
+      new_op = 0.5;
+      new_st = 1;
+    }
+    shape.transition().duration(200)
+      .attr("fill-opacity", new_op)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", 1)
+  });
+}
+
+function mouseclick(shape, index) {
+  shape.on("mousedown", function () {
+    var s = d3.select("#parallel" + index);
+    var new_op, new_st;
+    if (s.attr("fill-opacity") == 0.8) {
+      new_op = 1;
+      new_st = 4;
+    }
+    else {
+      new_op = 0.9;
+      new_st = 2;
+    }
+    shape.transition().duration(200)
+      .attr("fill-opacity", new_op)
+      .attr("stroke", "maroon")
+      .attr("stroke-width", new_st)
+  });
+}
+
 function addHeader(svg) {
   let label = svg.append("text")
     .attr("class", "rectLabel")
@@ -521,30 +578,6 @@ function addHeader(svg) {
       .attr("text-anchor", "left")
       .style("font", "bold 20px sans-serif")
   }
-  function mouseon(shape, index) {
-    shape.on("mouseover", function () {
-      shape.transition().duration(200)
-        .attr("fill-opacity", 1)
-        .attr("stroke", "maroon")
-        .attr("stroke-width", 3)
-    });
-  }
-  function mouseoff(shape, index) {
-    shape.on("mouseout", function () {
-      shape.transition().duration(200)
-        .attr("fill-opacity", 0.5)
-        .attr("stroke", "maroon")
-        .attr("stroke-width", 1)
-    });
-    function mouseclick(shape, index) {
-      shape.on("mousedown", function () {
-        shape.transition().duration(200)
-          .attr("fill-opacity", 1)
-          .attr("stroke", "maroon")
-          .attr("stroke-width", 10)
-      });
-    }
-  }
 
   function addParallelograms(canvas, t, h, w, separation, rad) {
     var shapes_top = [];
@@ -559,7 +592,8 @@ function addHeader(svg) {
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
-          .attr("stroke-width", 1))
+          .attr("stroke-width", 1)
+          .attr("id", "parallel" + i))
         canvas.append("text")
           .attr("x", xcur + separation)
           .attr("y", (h + t + t) / 2)
@@ -574,7 +608,8 @@ function addHeader(svg) {
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
-          .attr("stroke-width", 1))
+          .attr("stroke-width", 1)
+          .attr("id", "parallel" + i))
         canvas.append("text")
           .attr("x", xcur + separation)
           .attr("y", (h + t + t) / 2)
@@ -587,14 +622,15 @@ function addHeader(svg) {
 
     }
     xcur = w * 2;
-    for (var j = 0; j < 3; j++) {
-      if (j == 0) {
+    for (i; i < 9; i++) {
+      if (i == 6) {
         shapes_bottom.push(canvas.append("path")
           .attr("d", "M " + (w + 22) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + 40) + " " + bottom + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
-          .attr("stroke-width", 1))
+          .attr("stroke-width", 1)
+          .attr("id", "parallel" + i))
         canvas.append("text")
           .attr("x", xcur + separation)
           .attr("y", (bottom + (t + h + separation)) / 2)
@@ -609,7 +645,8 @@ function addHeader(svg) {
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
-          .attr("stroke-width", 1))
+          .attr("stroke-width", 1)
+          .attr("id", "parallel" + i))
         canvas.append("text")
           .attr("x", xcur + separation)
           .attr("y", (bottom + (t + h + separation)) / 2)
@@ -620,11 +657,14 @@ function addHeader(svg) {
       }
       xcur = xcur + w + separation;
     }
+
     var shapes = shapes_top.concat(shapes_bottom);
+    console.log(shapes);
     shapes.forEach(mouseon);
     shapes.forEach(mouseoff);
     shapes.forEach(mouseclick);
   }
+
   addTableInfo(svg, 105, 35, 16);
   addLogo(svg, 50);
   var ht = 47;
