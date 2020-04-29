@@ -147,7 +147,28 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
     .delay(function (d, i) {
       return i * 500;
     })
-    .attr("width", d => x(d.val));
+    .attr("count",d => d.val)
+    .attr("width", d => x(d.val))
+
+    let label = canvas.append("text")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("fill", "black")
+      .text("")
+    canvas.selectAll(".bar" + uniqueID)
+        .on("mouseover", function () {
+          d3.select(this)
+            .attr("stroke", "black")
+          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
+        })
+        .on("mouseout", function () {
+          d3.select(this)
+            .attr("stroke", "none")
+          label.text("")
+        })
+        .on("mousemove", function () {
+          label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
+        });
 
   canvas.selectAll(".circle" + uniqueID)
     .data(data)
