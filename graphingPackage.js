@@ -560,7 +560,7 @@ function mouseclick(shape, index) {
   });
 }
 
-function addHeader(svg) {
+function addHeader(svg, data) {
   let label = svg.append("text")
     .attr("class", "rectLabel")
     .attr("x", 0)
@@ -568,10 +568,14 @@ function addHeader(svg) {
     .attr("fill", "black")
     .text("")
 
+  data.forEach(function (stat) {
+      console.log(stat.Category);
+  })
+
   function addTableInfo(canvas, w, h, text_size) {
     var wd = svg.attr("width")
     var coordinates = [[wd - w, 0], [wd - w * 2, 0], [wd - w, h], [wd - w * 2, h], [wd - w, h * 2], [wd - w * 2, h * 2], [wd - w, h * 3], [wd - w * 2, h * 3]]
-    coordinates.forEach(function (coordinate) {
+    coordinates.forEach(function (coordinate, index) {
       let rec = canvas.append("rect")
         .attr("x", coordinate[0])
         .attr("y", coordinate[1])
@@ -587,7 +591,7 @@ function addHeader(svg) {
           .attr("y", coordinate[1] + h / 2)
           .attr("fill", "red")
           .attr("stroke", "green")
-          .text(13)
+          .text(data[Math.floor(index/2)].Value)
           .attr("text-anchor", "left")
           .attr("font-size", text_size + "px")
       }
@@ -597,7 +601,7 @@ function addHeader(svg) {
           .attr("y", coordinate[1] + h / 2)
           .attr("fill", "red")
           .attr("stroke", "green")
-          .text("First Down")
+          .text(data[Math.floor(index/2)].Category)
           .attr("text-anchor", "left")
           .attr("font-size", text_size + "px")
       }
@@ -705,7 +709,7 @@ function addHeader(svg) {
     shapes.forEach(mouseclick);
   }
 
-  addTableInfo(svg, 105, 35, 16);
+  addTableInfo(svg, 140, 35, 16);
   addLogo(svg, 50);
   var ht = 47;
   var wid = 60;
