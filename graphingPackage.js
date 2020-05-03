@@ -117,7 +117,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
   y = d3.scaleBand().rangeRound([y2 - y1, 0]).padding(0.2);
   x = d3.scaleLinear().rangeRound([0, x2 - x1]);
   y.domain(data.map(d => d.category));
-  x.domain([min - (max) / 10, max]);
+  x.domain([0, max]);
 
   //add the y axis to the graph
   // canvas.append("g")
@@ -129,7 +129,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
   canvas.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (y2 + margin2.top + 10) + ")")
-    .call(d3.axisBottom(x).ticks(2));
+    .call(d3.axisBottom(x).ticks(max).tickFormat(d3.format("d")));
 
   canvas.selectAll(".bar" + uniqueID)
     .data(data)
@@ -149,6 +149,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
     })
     .attr("count",d => d.val)
     .attr("width", d => x(d.val))
+
 
     let label = canvas.append("text")
       .attr("x", 0)
@@ -197,11 +198,20 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
     for(let i = 0; i < data.length; i++){
         canvas.append("text")
           .text(data[i].category)
+          .attr("class","bar-graph-text")
           .attr("fill","black")
           .attr("stroke","black")
           .attr("stroke-width",1)
-          .attr("transform","translate("+x1+","+(y1+y(data[i].category)+(y.bandwidth() / 2))+") rotate(10)")
+          .attr("transform","translate("+x2+","+(y1+y(data[i].category)+(y.bandwidth() / 1.5))+")")
     }
+    canvas.append("text")
+      .text("Count")
+      .attr("class","bar-graph-text2")
+      .attr("stroke","black")
+      .attr("stroke-width",0.2)
+      .attr("transform","translate("+((x1+x2)/2)+","+(y2+40)+")")
+
+
 };
 
 
