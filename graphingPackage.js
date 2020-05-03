@@ -205,20 +205,40 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
 };
 
 
-function addSankey(data, canvas, x1, y1, x2, y2) {
+function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
 
   function toString(x, y) {
     return "" + x + " " + y + "";
   }
+
+  function convToRGB(hex){
+    obj = d3.hsl(hex);
+    rgb = obj.rgb();
+    // console.log(rgb);
+    return {r:rgb.r,g:rgb.g,b:rgb.b};
+  }
   //create start locations for bezier rect
-  var colors = [{ r: 238, g: 32, b: 77 },
-  { r: 252, g: 232, b: 131 },
-  { r: 31, g: 117, b: 254 },
-  { r: 255, g: 117, b: 56 },
-  { r: 28, g: 172, b: 120 },
-  { r: 146, g: 110, b: 174 }];
-  var color_start = Math.round(Math.random() * 5);
-  console.log(color_start)
+  // old colors
+  // var colors = [{ r: 238, g: 32, b: 77 },
+  // { r: 252, g: 232, b: 131 },
+  // { r: 31, g: 117, b: 254 },
+  // { r: 255, g: 117, b: 56 },
+  // { r: 28, g: 172, b: 120 },
+  // { r: 146, g: 110, b: 174 }];
+  var colors=[convToRGB("#00203FFF"),
+              //convToRGB("#ADEFD1FF"),
+              convToRGB("#FC766AFF"),
+              convToRGB("#5B84B1FF"),
+              convToRGB("#00A4CCFF"),
+              convToRGB("#ED2B33FF"),
+              convToRGB("#2C5F2D"),
+              convToRGB("#97BC62FF"),
+              convToRGB("#00539CFF"),
+              convToRGB("#EEA47FFF")
+            ];
+
+  var color_start = Math.round(Math.random() * colors.length);
+  // console.log(color_start)
   var total = 0;
   var val = data[0].in;
   for (var i = 0; i < data.length; i++) {
@@ -258,101 +278,99 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
 
   x2 += 40;
   var gap = 10;
-  var colors = [{ r: 238, g: 32, b: 77 },
-  { r: 252, g: 232, b: 131 },
-  { r: 31, g: 117, b: 254 },
-  { r: 255, g: 117, b: 56 },
-  { r: 28, g: 172, b: 120 },
-  { r: 146, g: 110, b: 174 }];
-  var color_start = Math.round(Math.random() * 5);
-  //=========================================================================
+  // var colors = [{ r: 238, g: 32, b: 77 },
+  // { r: 252, g: 232, b: 131 },
+  // { r: 31, g: 117, b: 254 },
+  // { r: 255, g: 117, b: 56 },
+  // { r: 28, g: 172, b: 120 },
+  // { r: 146, g: 110, b: 174 }];
+  var color_start = Math.round(Math.random() * colors.length);
+
+
+
+  //==second set of bars=================================================================
   var first = data[0].out;
   var start = data[0].end;
   var end = data[0].count + start;
   var color = colors[color_start];
   data[0].end_color = color;
-  for (var i = 1; i < data.length; i++) {
-    console.log(i)
-    console.log(first);
-    console.log(data[i].out);
-    console.log("----------");
-    if (data[i].out != first) {
-      console.log("gottem")
-      canvas.append("path")
-        .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
-          " H " + (x2 + gap + 5 * vert_scale) +
-          " V " + (y1 + end * vert_scale) +
-          " H " + (x2 + gap))
+  if(barflag){
+    for (var i = 1; i < data.length; i++) {
+      // console.log(i)
+      // console.log(first);
+      // console.log(data[i].out);
+      // console.log("----------");
+      if (data[i].out != first) {
+        // console.log("gottem")
+        canvas.append("path")
+          .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
+            " H " + (x2 + gap + 20) +
+            " V " + (y1 + end * vert_scale) +
+            " H " + (x2 + gap))
 
-        .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
-      color_start = (color_start + 1) % colors.length;
-      first = data[i].out;
-      start = data[i].end;
-      end = data[i].count + start;
-      color = colors[color_start];
-      data[i].end_color = color;
+          .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
+        color_start = (color_start + 1) % colors.length;
+        first = data[i].out;
+        start = data[i].end;
+        end = data[i].count + start;
+        color = colors[color_start];
+        data[i].end_color = color;
+      }
+      else {
+        data[i].end_color = color;
+        end = data[i].end + data[i].count;
+      }
     }
-    else {
-      data[i].end_color = color;
-      end = data[i].end + data[i].count;
-    }
+    end = data[data.length - 1].end + data[data.length - 1].count;
+    data[data.length - 1].end_color = color;
+    canvas.append("path")
+      .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
+        " H " + (x2 + gap + 20) +
+        " V " + (y1 + end * vert_scale) +
+        " H " + (x2 + gap))
+      .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
   }
-  end = data[data.length - 1].end + data[data.length - 1].count;
-  data[data.length - 1].end_color = color;
-  canvas.append("path")
-    .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
-      " H " + (x2 + gap + 5 * vert_scale) +
-      " V " + (y1 + end * vert_scale) +
-      " H " + (x2 + gap))
-    .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
   //=========================================================================
 
   //reorder for aesthetic
-  for (var i = 0; i < data.length - 1; i++) {
-    for (var j = 0; j < data.length - 1; j++) {
-      if (data[j].id > data[j + 1].id) {
-        //swap!
-        var temp = data[j];
-        data[j] = data[j + 1];
-        data[j + 1] = temp;
-      }
-    }
-  }
+  // for (var i = 0; i < data.length - 1; i++) {
+  //   for (var j = 0; j < data.length - 1; j++) {
+  //     if (data[j].id > data[j + 1].id) {
+  //       //swap!
+  //       var temp = data[j];
+  //       data[j] = data[j + 1];
+  //       data[j + 1] = temp;
+  //     }
+  //   }
+  // }
+
+  //=====First set of bars=====================================================================
   var first = data[0].in;
   var start = data[0].start;
   var end = data[0].count + start;
   var color = data[0].color;
-  console.log(data)
-  console.log(color)
-  for (var i = 1; i < data.length; i++) {
-    if (data[i].in != first) {
-      console.log(color)
+  // console.log(data)
+  // console.log(color)
+  if(barflag){
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].in != first) {
+        first = data[i].in;
+        color = data[i].color;
+      }
+      console.log(data[i])
       canvas.append("path")
-        .attr("d", " M " + toString(x1, y1 + start * vert_scale) +
-          " H " + (x1 + 5 * vert_scale) +
-          " V " + (y1 + end * vert_scale) +
+        .attr("d", " M " + toString(x1, y1 + data[i].start * vert_scale) +
+          " H " + (x1 + 20) +
+          " V " + (y1 + 1 + data[i].start*vert_scale + data[i].count * vert_scale) +
           " H " + x1)
         .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
-      first = data[i].in;
-      start = data[i].start;
-      end = data[i].count + start;
-      color = data[i].color;
-    }
-    else if (i == data.length - 1) {
-      end = data[i].start + data[i].count;
-      canvas.append("path")
-        .attr("d", " M " + toString(x1, y1 + start * vert_scale) +
-          " H " + (x1 + 5 * vert_scale) +
-          " V " + (y1 + end * vert_scale) +
-          " H " + x1)
-        .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
-    }
-    else {
-      end = data[i].start + data[i].count;
+
     }
   }
-  x1 += 7 * vert_scale;
-  var pad = 2;
+  //============================================================================
+
+
+  x1 += 30;
   canvas.selectAll(".line")
     .data(data)
     .enter().append("path")
@@ -370,8 +388,8 @@ function addSankey(data, canvas, x1, y1, x2, y2) {
       var col = d.color;
       var ecol = d.end_color;
       canvas.insert("defs").html("<linearGradient id='grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
-        "<stop offset='0%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.5' />" +
-        "<stop offset='100%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.5' />" +
+        "<stop offset='0%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
+        "<stop offset='100%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
         "</linearGradient>");
       return "url(#grad" + i + ")"//'rgba('+col.r+', ' + col.g + ', ' + col.b  + ',.5)'
     })
@@ -423,11 +441,11 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
     return { x: x, y: y };
   }
 
-  console.log("d", " M " + toString(p1.x, p1.y) +
-    " L " + toString(newPoint(p1, pm, p).x, newPoint(p1, pm, p).y) +
-    " L " + toString(newPoint(p2, pm, p).x, newPoint(p2, pm, p).y) +
-    " L " + toString(p2.x, p2.y) +
-    " Z ")
+  // console.log("d", " M " + toString(p1.x, p1.y) +
+    // " L " + toString(newPoint(p1, pm, p).x, newPoint(p1, pm, p).y) +
+    // " L " + toString(newPoint(p2, pm, p).x, newPoint(p2, pm, p).y) +
+    // " L " + toString(p2.x, p2.y) +
+    // " Z ")
   canvas.append("path")
     .attr("d", " M " + toString(p1.x, p1.y) +
       " L " + toString(newPoint(p1, pm, p).x, newPoint(p1, pm, p).y) +
@@ -689,7 +707,7 @@ function addHeader(svg) {
     }
 
     var shapes = shapes_top.concat(shapes_bottom);
-    console.log(shapes);
+    // console.log(shapes);
     shapes.forEach(mouseon);
     shapes.forEach(mouseoff);
     shapes.forEach(mouseclick);

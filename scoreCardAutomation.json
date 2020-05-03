@@ -21,11 +21,11 @@
       {
           "datasets" : [
             [
-                {"in":"11","out":"TREY","count":30},
-                {"in":"11","out":"TREY ON","count":10},
-                {"in":"12","out":"DICE","count":10},
-                {"in":"12","out":"DING","count":10},
-                {"in":"21","out":"OPEN","count":10}
+                {"in":"11","out":"TREY","count":3},
+                {"in":"11","out":"TREY ON","count":1},
+                {"in":"12","out":"DICE","count":1},
+                {"in":"12","out":"DING","count":1},
+                {"in":"21","out":"OPEN","count":1}
             ],
             [
                 {"in":"DICE","out":"INSIDE ZONE","count":1},
