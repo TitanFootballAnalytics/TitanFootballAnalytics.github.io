@@ -20,28 +20,27 @@
       },
       {
           "datasets" : [
-            [
-                {"in":"11","out":"TREY","count":30},
-                {"in":"11","out":"TREY ON","count":10},
-                {"in":"12","out":"DICE","count":10},
-                {"in":"12","out":"DING","count":10},
-                {"in":"21","out":"OPEN","count":10}
-            ],
-            [
-                {"in":"DICE","out":"INSIDE ZONE","count":1},
-                {"in":"DING","out":"BUCK","count":1},
-                {"in":"OPEN","out":"DECIDE","count":1},
-                {"in":"TREY","out":"OUTSIDE ZONE","count":1},
-                {"in":"TREY","out":"RPO","count":2},
-                {"in":"TREY","out":"INSIDE ZONE","count":5}
-            ],
-            [
-              {"Category":"Play Count","Value":7},
-              {"Category":"Average Yards","Value":22},
-              {"Category":"Pass yard avg","Value":25},
-              {"Category":"Run yard average","Value":21}
-            ]
-
+                [
+                    {"in":"11","out":"TREY","count":3},
+                    {"in":"11","out":"TREY ON","count":1},
+                    {"in":"12","out":"DICE","count":1},
+                    {"in":"12","out":"DING","count":1},
+                    {"in":"21","out":"OPEN","count":1}
+                ],
+                [
+                    {"in":"DICE","out":"INSIDE ZONE","count":1},
+                    {"in":"DING","out":"BUCK","count":1},
+                    {"in":"OPEN","out":"DECIDE","count":1},
+                    {"in":"TREY","out":"OUTSIDE ZONE","count":1},
+                    {"in":"TREY","out":"RPO","count":2},
+                    {"in":"TREY","out":"INSIDE ZONE","count":5}
+                ],
+                [
+                  {"Category":"Play Count","Value":7},
+                  {"Category":"Average Yards","Value":22},
+                  {"Category":"Pass yard avg","Value":25},
+                  {"Category":"Run yard average","Value":21}
+                ]
           ]
       },
       {

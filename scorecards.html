@@ -35,7 +35,7 @@
     </div>
   <script>
         const fixedHeight = 500
-        const fixedWidth = 800
+        const fixedWidth = 1200
         const margin = {top:20,bottom:40,left:100,right:20};
         const height = fixedHeight - margin.top - margin.bottom;
         const width = fixedWidth - margin.left - margin.right;
@@ -75,7 +75,7 @@
             addBarGraph(data.scorecards[0].datasets[2], 2, svg0, svg0.attr("width")*0.7, svg0.attr("height")*0.60, svg0.attr("width")*0.95, svg0.attr("height")*0.90);
 
             //sankey examples
-            addSankey(data.scorecards[1].datasets[0], svg1, 100, 100, 200, 200);
+            addSankey(data.scorecards[1].datasets[0], svg1, 100, 100, 400, 400);
             //todo: corner case the above
             addHeader(svg0);
 
