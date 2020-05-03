@@ -41,8 +41,8 @@
         const width = fixedWidth - margin.left - margin.right;
 
 
-      d3.json("scoreCardAutomation.json")
-          .then( (data) => {
+     const requestData = async function(){
+            const data = await d3.json("scoreCardAutomation.json");
             console.log(data);
             for(let i = 0; i < data.scorecards.length; i++){
                 d3.select("#mainDiv").append("div")
@@ -83,9 +83,8 @@
 
 
 
-    }, (error) => {
-          console.log(error);
-    });
+    }
+    requestData();
   </script>
 
 </body>

@@ -120,16 +120,16 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
   x.domain([min - (max) / 10, max]);
 
   //add the y axis to the graph
-  canvas.append("g")
-    .attr("class", "y axis")
-    .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
-    .call(d3.axisLeft(y).ticks(6))
+  // canvas.append("g")
+  //   .attr("class", "y axis")
+  //   .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
+  //   .call(d3.axisLeft(y).ticks(data.length))
 
   //add the x axisto the graph
   canvas.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (y2 + margin2.top + 10) + ")")
-    .call(d3.axisBottom(x).ticks(4));
+    .call(d3.axisBottom(x).ticks(2));
 
   canvas.selectAll(".bar" + uniqueID)
     .data(data)
@@ -147,7 +147,28 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
     .delay(function (d, i) {
       return i * 500;
     })
-    .attr("width", d => x(d.val));
+    .attr("count",d => d.val)
+    .attr("width", d => x(d.val))
+
+    let label = canvas.append("text")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("fill", "black")
+      .text("")
+    canvas.selectAll(".bar" + uniqueID)
+        .on("mouseover", function () {
+          d3.select(this)
+            .attr("stroke", "black")
+          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
+        })
+        .on("mouseout", function () {
+          d3.select(this)
+            .attr("stroke", "none")
+          label.text("")
+        })
+        .on("mousemove", function () {
+          label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
+        });
 
   canvas.selectAll(".circle" + uniqueID)
     .data(data)
@@ -172,6 +193,15 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
     .attr("cx", d => -10)
     .attr("cy", d => y(d.category) + y.bandwidth() / 2)
     .attr("r", 5)
+
+    for(let i = 0; i < data.length; i++){
+        canvas.append("text")
+          .text(data[i].category)
+          .attr("fill","black")
+          .attr("stroke","black")
+          .attr("stroke-width",1)
+          .attr("transform","translate("+x1+","+(y1+y(data[i].category)+(y.bandwidth() / 2))+") rotate(10)")
+    }
 };
 
 
