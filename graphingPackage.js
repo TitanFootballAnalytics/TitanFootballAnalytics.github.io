@@ -627,12 +627,14 @@ function addHeader(svg, data) {
     var shapes_top = [];
     var shapes_bottom = [];
     let bottom = t + rad * 2;
-    let xcur = w * 2;
+    let xcur = rad * 2 + 20;
+
+    var titles = ["Down", "Distance", "Field Zone", "Personnel", "Formation", "Play Type"];
 
     for (var i = 0; i < 6; i++) {
       if (i == 0) {
         shapes_top.push(canvas.append("path")
-          .attr("d", "M " + (w + 22) + " " + t + " A " + rad + " " + rad + " 0 0 1 " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + 40) + " " + t + " z")
+          .attr("d", "M " + (rad + 42) + " " + t + " A " + rad + " " + rad + " 0 0 1 " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
@@ -643,12 +645,12 @@ function addHeader(svg, data) {
           .attr("y", (h + t + t) / 2)
           .attr("fill", "red")
           .attr("stroke", "green")
-          .text(1)
+          .text(titles[i])
           .attr("text-anchor", "left")
       }
       else {
         shapes_top.push(canvas.append("path")
-          .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + 40) + " " + t + " z")
+          .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
@@ -659,17 +661,17 @@ function addHeader(svg, data) {
           .attr("y", (h + t + t) / 2)
           .attr("fill", "red")
           .attr("stroke", "green")
-          .text(1)
+          .text(titles[i])
           .attr("text-anchor", "left")
       }
       xcur = xcur + w + separation;
 
     }
-    xcur = w * 2;
+    xcur = rad * 2 + 20;
     for (i; i < 9; i++) {
       if (i == 6) {
         shapes_bottom.push(canvas.append("path")
-          .attr("d", "M " + (w + 22) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + 40) + " " + bottom + " z")
+          .attr("d", "M " + (rad + 42) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
@@ -685,7 +687,7 @@ function addHeader(svg, data) {
       }
       else {
         shapes_bottom.push(canvas.append("path")
-          .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + 40) + " " + bottom + " z")
+          .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
@@ -712,7 +714,7 @@ function addHeader(svg, data) {
   addTableInfo(svg, 140, 35, 16);
   addLogo(svg, 50);
   var ht = 47;
-  var wid = 60;
+  var wid = 100;
   var separation = 6;
   var tp = 10;
   var radius = 50;
