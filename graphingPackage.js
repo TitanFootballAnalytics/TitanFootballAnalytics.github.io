@@ -117,7 +117,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
   y = d3.scaleBand().rangeRound([y2 - y1, 0]).padding(0.2);
   x = d3.scaleLinear().rangeRound([0, x2 - x1]);
   y.domain(data.map(d => d.category));
-  x.domain([min - (max) / 10, max]);
+  x.domain([0, max]);
 
   //add the y axis to the graph
   // canvas.append("g")
@@ -129,7 +129,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
   canvas.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (y2 + margin2.top + 10) + ")")
-    .call(d3.axisBottom(x).ticks(2));
+    .call(d3.axisBottom(x).ticks(max).tickFormat(d3.format("d")));
 
   canvas.selectAll(".bar" + uniqueID)
     .data(data)
@@ -149,6 +149,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
     })
     .attr("count",d => d.val)
     .attr("width", d => x(d.val))
+
 
     let label = canvas.append("text")
       .attr("x", 0)
@@ -197,11 +198,20 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
     for(let i = 0; i < data.length; i++){
         canvas.append("text")
           .text(data[i].category)
+          .attr("class","bar-graph-text")
           .attr("fill","black")
           .attr("stroke","black")
           .attr("stroke-width",1)
-          .attr("transform","translate("+x1+","+(y1+y(data[i].category)+(y.bandwidth() / 2))+") rotate(10)")
+          .attr("transform","translate("+x2+","+(y1+y(data[i].category)+(y.bandwidth() / 1.5))+")")
     }
+    canvas.append("text")
+      .text("Count")
+      .attr("class","bar-graph-text2")
+      .attr("stroke","black")
+      .attr("stroke-width",0.2)
+      .attr("transform","translate("+((x1+x2)/2)+","+(y2+40)+")")
+
+
 };
 
 
@@ -568,7 +578,7 @@ function mouseclick(shape, index) {
   });
 }
 
-function addHeader(svg) {
+function addHeader(svg, data) {
   let label = svg.append("text")
     .attr("class", "rectLabel")
     .attr("x", 0)
@@ -576,10 +586,14 @@ function addHeader(svg) {
     .attr("fill", "black")
     .text("")
 
+  data.forEach(function (stat) {
+      console.log(stat.Category);
+  })
+
   function addTableInfo(canvas, w, h, text_size) {
     var wd = svg.attr("width")
     var coordinates = [[wd - w, 0], [wd - w * 2, 0], [wd - w, h], [wd - w * 2, h], [wd - w, h * 2], [wd - w * 2, h * 2], [wd - w, h * 3], [wd - w * 2, h * 3]]
-    coordinates.forEach(function (coordinate) {
+    coordinates.forEach(function (coordinate, index) {
       let rec = canvas.append("rect")
         .attr("x", coordinate[0])
         .attr("y", coordinate[1])
@@ -595,7 +609,7 @@ function addHeader(svg) {
           .attr("y", coordinate[1] + h / 2)
           .attr("fill", "red")
           .attr("stroke", "green")
-          .text(13)
+          .text(data[Math.floor(index/2)].Value)
           .attr("text-anchor", "left")
           .attr("font-size", text_size + "px")
       }
@@ -605,7 +619,7 @@ function addHeader(svg) {
           .attr("y", coordinate[1] + h / 2)
           .attr("fill", "red")
           .attr("stroke", "green")
-          .text("First Down")
+          .text(data[Math.floor(index/2)].Category)
           .attr("text-anchor", "left")
           .attr("font-size", text_size + "px")
       }
@@ -631,12 +645,14 @@ function addHeader(svg) {
     var shapes_top = [];
     var shapes_bottom = [];
     let bottom = t + rad * 2;
-    let xcur = w * 2;
+    let xcur = rad * 2 + 20;
+
+    var titles = ["Down", "Distance", "Field Zone", "Personnel", "Formation", "Play Type"];
 
     for (var i = 0; i < 6; i++) {
       if (i == 0) {
         shapes_top.push(canvas.append("path")
-          .attr("d", "M " + (w + 22) + " " + t + " A " + rad + " " + rad + " 0 0 1 " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + 40) + " " + t + " z")
+          .attr("d", "M " + (rad + 42) + " " + t + " A " + rad + " " + rad + " 0 0 1 " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
@@ -647,12 +663,12 @@ function addHeader(svg) {
           .attr("y", (h + t + t) / 2)
           .attr("fill", "red")
           .attr("stroke", "green")
-          .text(1)
+          .text(titles[i])
           .attr("text-anchor", "left")
       }
       else {
         shapes_top.push(canvas.append("path")
-          .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + 40) + " " + t + " z")
+          .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
@@ -663,17 +679,17 @@ function addHeader(svg) {
           .attr("y", (h + t + t) / 2)
           .attr("fill", "red")
           .attr("stroke", "green")
-          .text(1)
+          .text(titles[i])
           .attr("text-anchor", "left")
       }
       xcur = xcur + w + separation;
 
     }
-    xcur = w * 2;
+    xcur = rad * 2 + 20;
     for (i; i < 9; i++) {
       if (i == 6) {
         shapes_bottom.push(canvas.append("path")
-          .attr("d", "M " + (w + 22) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + 40) + " " + bottom + " z")
+          .attr("d", "M " + (rad + 42) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
@@ -689,7 +705,7 @@ function addHeader(svg) {
       }
       else {
         shapes_bottom.push(canvas.append("path")
-          .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + 40) + " " + bottom + " z")
+          .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
           .attr("fill", "red")
           .attr("fill-opacity", 0.5)
           .attr("stroke", "maroon")
@@ -713,10 +729,10 @@ function addHeader(svg) {
     shapes.forEach(mouseclick);
   }
 
-  addTableInfo(svg, 105, 35, 16);
+  addTableInfo(svg, 140, 35, 16);
   addLogo(svg, 50);
   var ht = 47;
-  var wid = 60;
+  var wid = 100;
   var separation = 6;
   var tp = 10;
   var radius = 50;
