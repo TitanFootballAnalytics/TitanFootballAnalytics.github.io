@@ -1,10 +1,12 @@
+function convToRGB(i,hex){
+  obj = d3.hsl(hex);
+  rgb = obj.rgb();
+  // console.log(rgb);
+  return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
+}
+
 function colorPallete(canvas){
-  function convToRGB(i,hex){
-    obj = d3.hsl(hex);
-    rgb = obj.rgb();
-    // console.log(rgb);
-    return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
-  }
+
   //create start locations for bezier rect
   // old colors
   // var colors = [{ r: 238, g: 32, b: 77 },
@@ -13,6 +15,8 @@ function colorPallete(canvas){
   // { r: 255, g: 117, b: 56 },
   // { r: 28, g: 172, b: 120 },
   // { r: 146, g: 110, b: 174 }];
+
+
   //online color scheme
   // convToRGB("#00203FFF"),
   // convToRGB("#FC766AFF")
