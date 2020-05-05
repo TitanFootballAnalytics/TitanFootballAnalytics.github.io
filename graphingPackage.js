@@ -659,10 +659,10 @@ function mouseoff(shape, index) {
     var new_op, new_st;
     if (s.attr("fill-opacity") == 1) {
       new_op = 1;
-      new_st = 4;
+      new_st = 3;
     }
     else {
-      new_op = 0.5;
+      new_op = 0.6;
       new_st = 1;
     }
     shape.transition().duration(200)
@@ -681,7 +681,7 @@ function mouseclick(shape, index) {
       new_st = 4;
     }
     else {
-      new_op = 0.9;
+      new_op = 0.6;
       new_st = 2;
     }
     shape.transition().duration(200)
@@ -721,7 +721,7 @@ function addHeader(svg, data) {
           .attr("x", coordinate[0] + text_size / 2)
           .attr("y", coordinate[1] + h / 2)
           .attr("fill", "red")
-          .attr("stroke", "green")
+          .attr("stroke", "#00203FFF")
           .text(data[Math.floor(index/2)].Value)
           .attr("text-anchor", "left")
           .attr("font-size", text_size + "px")
@@ -731,7 +731,7 @@ function addHeader(svg, data) {
           .attr("x", coordinate[0] + text_size / 2)
           .attr("y", coordinate[1] + h / 2)
           .attr("fill", "red")
-          .attr("stroke", "green")
+          .attr("stroke", "#00203FFF")
           .text(data[Math.floor(index/2)].Category)
           .attr("text-anchor", "left")
           .attr("font-size", text_size + "px")
@@ -750,6 +750,7 @@ function addHeader(svg, data) {
     txt.text("Titan Analytics")
       .attr("x", 10)
       .attr("y", 130)
+      .attr("stroke", "#00203FFF")
       .attr("text-anchor", "left")
       .style("font", "bold 20px sans-serif")
   }
@@ -766,8 +767,8 @@ function addHeader(svg, data) {
       if (i == 0) {
         shapes_top.push(canvas.append("path")
           .attr("d", "M " + (rad + 42) + " " + t + " A " + rad + " " + rad + " 0 0 1 " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
-          .attr("fill", "red")
-          .attr("fill-opacity", 0.5)
+          .attr("fill", "#FC766AFF")
+          .attr("fill-opacity", 0.6)
           .attr("stroke", "maroon")
           .attr("stroke-width", 1)
           .attr("id", "parallel" + i))
@@ -775,15 +776,15 @@ function addHeader(svg, data) {
           .attr("x", xcur + separation)
           .attr("y", (h + t + t) / 2)
           .attr("fill", "red")
-          .attr("stroke", "green")
+          .attr("stroke", "#00203FFF")
           .text(titles[i])
           .attr("text-anchor", "left")
       }
       else {
         shapes_top.push(canvas.append("path")
           .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
-          .attr("fill", "red")
-          .attr("fill-opacity", 0.5)
+          .attr("fill", "#FC766AFF")
+          .attr("fill-opacity", 0.6)
           .attr("stroke", "maroon")
           .attr("stroke-width", 1)
           .attr("id", "parallel" + i))
@@ -791,7 +792,7 @@ function addHeader(svg, data) {
           .attr("x", xcur + separation)
           .attr("y", (h + t + t) / 2)
           .attr("fill", "red")
-          .attr("stroke", "green")
+          .attr("stroke", "#00203FFF")
           .text(titles[i])
           .attr("text-anchor", "left")
       }
@@ -803,8 +804,8 @@ function addHeader(svg, data) {
       if (i == 6) {
         shapes_bottom.push(canvas.append("path")
           .attr("d", "M " + (rad + 42) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
-          .attr("fill", "red")
-          .attr("fill-opacity", 0.5)
+          .attr("fill", "#FC766AFF")
+          .attr("fill-opacity", 0.6)
           .attr("stroke", "maroon")
           .attr("stroke-width", 1)
           .attr("id", "parallel" + i))
@@ -812,15 +813,15 @@ function addHeader(svg, data) {
           .attr("x", xcur + separation)
           .attr("y", (bottom + (t + h + separation)) / 2)
           .attr("fill", "red")
-          .attr("stroke", "green")
+          .attr("stroke", "#00203FFF")
           .text(1)
           .attr("text-anchor", "left")
       }
       else {
         shapes_bottom.push(canvas.append("path")
           .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
-          .attr("fill", "red")
-          .attr("fill-opacity", 0.5)
+          .attr("fill", "#FC766AFF")
+          .attr("fill-opacity", 0.6)
           .attr("stroke", "maroon")
           .attr("stroke-width", 1)
           .attr("id", "parallel" + i))
@@ -828,7 +829,7 @@ function addHeader(svg, data) {
           .attr("x", xcur + separation)
           .attr("y", (bottom + (t + h + separation)) / 2)
           .attr("fill", "red")
-          .attr("stroke", "green")
+          .attr("stroke", "#00203FFF")
           .text(1)
           .attr("text-anchor", "left")
       }
