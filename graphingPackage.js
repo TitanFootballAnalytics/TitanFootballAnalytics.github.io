@@ -1,3 +1,93 @@
+function colorPallete(canvas){
+  function convToRGB(i,hex){
+    obj = d3.hsl(hex);
+    rgb = obj.rgb();
+    // console.log(rgb);
+    return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
+  }
+  //create start locations for bezier rect
+  // old colors
+  // var colors = [{ r: 238, g: 32, b: 77 },
+  // { r: 252, g: 232, b: 131 },
+  // { r: 31, g: 117, b: 254 },
+  // { r: 255, g: 117, b: 56 },
+  // { r: 28, g: 172, b: 120 },
+  // { r: 146, g: 110, b: 174 }];
+  //online color scheme
+  // convToRGB("#00203FFF"),
+  // convToRGB("#FC766AFF")
+  var colors=[
+              //Red below
+              convToRGB(0,"#FC766AFF"),
+              convToRGB(1,"#EEA47FFF"),
+              convToRGB(2,"#D01C1FFF"),
+              convToRGB(3,"#F93822FF"),
+              convToRGB(4,"#DD4132FF"),
+              convToRGB(5,"#990011FF"),
+              convToRGB(6,"#000000FF"),
+              //Blues below
+              convToRGB(7,"#00203FFF"),
+              convToRGB(8,"#5B84B1FF"),
+              convToRGB(9,"#00A4CCFF"),
+              convToRGB(10,"#0E7A0DFF"),
+              convToRGB(11,"#97BC62FF"),
+              convToRGB(12,"#9CC3D5FF"),
+              convToRGB(13,"#333D79FF"),
+              convToRGB(14,"#00539CFF"),
+              convToRGB(15,"#4B878BFF"),
+              convToRGB(16,"#000000FF"),
+              //Trash below
+              convToRGB(17,"#9E1030FF"),
+              convToRGB(18,"#E94B3CFF"),
+              convToRGB(19,"#D64161FF"),
+              convToRGB(20,"#00539CFF"),
+              convToRGB(21,"#0063B2FF"),
+              convToRGB(22,"#00B1D2FF")
+  ];
+
+  canvas.selectAll(".line")
+    .data(colors)
+    .enter().append("path")
+    .attr("d", function (d, i) {
+        var level = Math.floor(i/10);
+        i = i%10;
+        var x = 300 + i*60;
+        var y = 100 + level*60;
+        //x = x%1000;
+        return  " M " + x + " " + y +
+                " H " + (x+50) +
+                " V " + (y+50) +
+                " H " + x
+
+    })
+    .attr("fill", function (d, i) {
+
+      return 'rgba('+d.r+', ' + d.g + ', ' + d.b  + ',1)'
+    })
+
+
+
+}
+
+function pickRed(lst){
+  function convToRGB(i,hex){
+    obj = d3.hsl(hex);
+    rgb = obj.rgb();
+    // console.log(rgb);
+    return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
+  }
+  var colors=[
+              //Red below
+              convToRGB(0,"#FC766AFF"),
+              convToRGB(1,"#EEA47FFF"),
+              convToRGB(2,"#D01C1FFF"),
+              convToRGB(3,"#F93822FF"),
+              convToRGB(4,"#DD4132FF"),
+              convToRGB(5,"#990011FF")
+            ]
+
+}
+
 function addPieChart(canvas, percent1, percent2, cx, cy, radius, thickness) {
   let dashArrayString = (Math.PI * 2 * radius) * percent1 + " " + (Math.PI * 2 * radius) * percent2
   let circle1 = canvas.append("circle")
@@ -110,6 +200,18 @@ function removeLoadingBars(canvas) {
 }
 
 function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
+
+  for (var i = 0; i < data.length - 1; i++) {
+    for (var j = 0; j < data.length - 1; j++) {
+      if (data[j].category < data[j + 1].category) {
+        //swap!
+        var temp = data[j];
+        data[j] = data[j + 1];
+        data[j + 1] = temp;
+      }
+    }
+  }
+
   const margin2 = { top: 0, bottom: 0, left: 0, right: 0 };
   var max = d3.max(data.map(d => d.val));
   var min = d3.min(data.map(d => d.val));
@@ -215,7 +317,13 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2) {
 };
 
 
-function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
+function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag) {
+
+  //bounding box
+  // canvas.append("path").attr("d", " M " + toString(x1, y1) +
+  //                           " H " + x2 +
+  //                           " V " + y2 +
+  //                           " H " + x1)
 
   function toString(x, y) {
     return "" + x + " " + y + "";
@@ -241,14 +349,15 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
               convToRGB("#5B84B1FF"),
               convToRGB("#00A4CCFF"),
               convToRGB("#ED2B33FF"),
-              convToRGB("#2C5F2D"),
+              convToRGB("#0E7A0D"),
               convToRGB("#97BC62FF"),
               convToRGB("#00539CFF"),
               convToRGB("#EEA47FFF")
             ];
+  var color_start = Math.floor(Math.random() * (colors.length));
 
-  var color_start = Math.round(Math.random() * colors.length);
-  // console.log(color_start)
+
+  // console.log(colors);
   var total = 0;
   var val = data[0].in;
   for (var i = 0; i < data.length; i++) {
@@ -258,6 +367,9 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
       color_start = color_start % 6;
     }
     data[i].color = colors[color_start];
+    // console.log(color_start)
+    // console.log(data[i].color)
+
     data[i].start = total;
     data[i].id = i;
     total += data[i].count;
@@ -286,7 +398,7 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
   }
   var vert_scale = (y2 - y1) / total;
 
-  x2 += 40;
+
   var gap = 10;
   // var colors = [{ r: 238, g: 32, b: 77 },
   // { r: 252, g: 232, b: 131 },
@@ -294,7 +406,7 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
   // { r: 255, g: 117, b: 56 },
   // { r: 28, g: 172, b: 120 },
   // { r: 146, g: 110, b: 174 }];
-  var color_start = Math.round(Math.random() * colors.length);
+  var color_start = Math.floor(Math.random() * colors.length);
 
 
 
@@ -313,10 +425,10 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
       if (data[i].out != first) {
         // console.log("gottem")
         canvas.append("path")
-          .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
-            " H " + (x2 + gap + 20) +
-            " V " + (y1 + end * vert_scale) +
-            " H " + (x2 + gap))
+          .attr("d", " M " + toString(x2 , y1 + start * vert_scale) +
+                     " H " + (x2 - 20) +
+                     " V " + (y1 + end * vert_scale) +
+                     " H " + x2)
 
           .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
         color_start = (color_start + 1) % colors.length;
@@ -334,10 +446,10 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
     end = data[data.length - 1].end + data[data.length - 1].count;
     data[data.length - 1].end_color = color;
     canvas.append("path")
-      .attr("d", " M " + toString(x2 + gap, y1 + start * vert_scale) +
-        " H " + (x2 + gap + 20) +
+      .attr("d", " M " + toString(x2, y1 + start * vert_scale) +
+        " H " + (x2 - 20) +
         " V " + (y1 + end * vert_scale) +
-        " H " + (x2 + gap))
+        " H " + (x2))
       .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
   }
   //=========================================================================
@@ -367,7 +479,7 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
         first = data[i].in;
         color = data[i].color;
       }
-      console.log(data[i])
+      //console.log(data[i])
       canvas.append("path")
         .attr("d", " M " + toString(x1, y1 + data[i].start * vert_scale) +
           " H " + (x1 + 20) +
@@ -380,28 +492,29 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
   //============================================================================
 
 
-  x1 += 30;
-  canvas.selectAll(".line")
+  x1 += (20 + gap);
+  canvas.selectAll(".sankeyline"+uniqueID)
     .data(data)
     .enter().append("path")
-    .attr("class", "line")
+    .attr("class", "sankeyline"+uniqueID)
     .attr("d", function (d, i) {
-      var mid = (x2 - x1) / 2;
+      var mid = ((x2-(20+gap)) - x1) / 2;
       return (" M " + toString(x1, y1 + d.start * vert_scale + pad) +
-        " C " + toString(x1 + mid, y1 + d.start * vert_scale + pad) + " " + toString(x1 + mid, y1 + d.end * vert_scale + pad) + " " + toString(x2, y1 + d.end * vert_scale + pad) +
-        " L " + toString(x2, y1 + d.end * vert_scale + d.count * vert_scale - pad) +
+        " C " + toString(x1 + mid, y1 + d.start * vert_scale + pad) + " " + toString(x1 + mid, y1 + d.end * vert_scale + pad) + " " + toString(x2-(gap+20), y1 + d.end * vert_scale + pad) +
+        " L " + toString(x2-(gap+20), y1 + d.end * vert_scale + d.count * vert_scale - pad) +
         " C " + toString(x1 + mid, y1 + d.end * vert_scale + d.count * vert_scale - pad) + " " + toString(x1 + mid, y1 + d.start * vert_scale + d.count * vert_scale - pad) + " " + toString(x1, y1 + d.start * vert_scale + d.count * vert_scale - pad) +
         " Z ");
 
     })
     .attr("fill", function (d, i) {
+      console.log(d)
       var col = d.color;
       var ecol = d.end_color;
-      canvas.insert("defs").html("<linearGradient id='grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
+      canvas.insert("defs").html("<linearGradient id='"+uniqueID+"grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
         "<stop offset='0%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
         "<stop offset='100%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
         "</linearGradient>");
-      return "url(#grad" + i + ")"//'rgba('+col.r+', ' + col.g + ', ' + col.b  + ',.5)'
+      return "url(#"+uniqueID+"grad" + i + ")"//'rgba('+col.r+', ' + col.g + ', ' + col.b  + ',.5)'
     })
     .attr("opacity", 0.5) //KEVIN ADDED THIS HERE FOR MOUSEOVER EFFECT
     .attr("count", function (d, i) { return d.count }) //KEVIN ADDED THIS ATTRIBUTE TO BE ABLE TO PRINT ON MOUSE HOVER
@@ -411,7 +524,7 @@ function addSankey(data, canvas, pad,x1, y1, x2, y2,barflag) {
     .attr("y", 0)
     .attr("fill", "black")
     .text("")
-  canvas.selectAll(".line")
+  canvas.selectAll(".sankeyline"+uniqueID)
     .on("mouseover", function () {
       d3.select(this)
         .attr("opacity", 1)
