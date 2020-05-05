@@ -78,13 +78,13 @@
 
             var sep = (svg0.attr("width")-30)/5
 
-            addBarGraph(data.scorecards[0].datasets[0], 0, svg0, 10, svg0.attr("height")*0.40, (10+sep), svg0.attr("height")*0.90);
-            addBarGraph(data.scorecards[0].datasets[1], 1, svg0, 10+sep*2, svg0.attr("height")*0.40, 10+sep*3, svg0.attr("height")*0.90);
-            addBarGraph(data.scorecards[0].datasets[2], 2, svg0, 10+sep*4, svg0.attr("height")*0.40, 10+sep*5, svg0.attr("height")*0.90);
+            var startDex1 = addBarGraph(data.scorecards[0].datasets[0], 0, svg0, 10, svg0.attr("height")*0.40, (10+sep), svg0.attr("height")*0.90,0);
+            var startDex2 = addBarGraph(data.scorecards[0].datasets[1], 1, svg0, 10+sep*2, svg0.attr("height")*0.40, 10+sep*3, svg0.attr("height")*0.90,startDex1);
+            addBarGraph(data.scorecards[0].datasets[2], 2, svg0, 10+sep*4, svg0.attr("height")*0.40, 10+sep*5, svg0.attr("height")*0.90,startDex2);
 
             //sankey examples
-            addSankey(1, data.scorecards[1].datasets[0], svg0, 2, 10 + sep , svg0.attr("height")*0.40, 10+sep*2, svg0.attr("height")*0.90,true);
-            addSankey(2, data.scorecards[1].datasets[1], svg0, 2, 10 + sep*3 , svg0.attr("height")*0.40, 10+sep*4, svg0.attr("height")*0.90,true);
+            addSankey(1, data.scorecards[1].datasets[0], svg0, 2, 10 + sep , svg0.attr("height")*0.40, 10+sep*2, svg0.attr("height")*0.90,true,0,startDex1);
+            addSankey(2, data.scorecards[1].datasets[1], svg0, 2, 10 + sep*3 , svg0.attr("height")*0.40, 10+sep*4, svg0.attr("height")*0.90,true,startDex1,startDex2);
             //todo: corner case the above
             addHeader(svg0, data.scorecards[1].datasets[2]);
 
