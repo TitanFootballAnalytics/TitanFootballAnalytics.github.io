@@ -50,6 +50,10 @@
      const requestData = async function(){
             const data = await d3.json("scoreCardAutomation.json");
             console.log(data);
+            var svg;
+            var sep;
+            var startDex1;
+            var startDex2;
             for(let i = 0; i < data.scorecards.length; i++){
                 d3.select("#mainDiv").append("div")
                     .attr("class","row wrapper-div drop")
@@ -67,30 +71,20 @@
                         .attr("height",fixedHeight)
                         .attr("class","scorecard centered-basic")
                         .attr("id","scoreCard"+i)
+                svg = d3.select(("#scoreCard"+i));
+                sep = (svg.attr("width")-30)/5;
+                startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, 10, svg.attr("height")*0.40, (10+sep), svg.attr("height")*0.90,0);
+                startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, 10+sep*2, svg.attr("height")*0.40, 10+sep*3, svg.attr("height")*0.90,startDex1);
+                addBarGraph(data.scorecards[i].datasets[2], 2, svg, 10+sep*4, svg.attr("height")*0.40, 10+sep*5, svg.attr("height")*0.90,startDex2);
+
+                //sankey examples
+                addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
+                addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
+                addHeader(svg, data.scorecards[i].datasets[5]);
+
+
             }
-            var svg0 = d3.select("#scoreCard0");
-            var svg1 = d3.select("#scoreCard1");
-            var svg2 = d3.select("#scoreCard2");
 
-            //how to call the loading bar functions
-            //addLoadingBars(svg);
-            //removeLoadingBars(svg);z
-
-            var sep = (svg0.attr("width")-30)/5
-
-            var startDex1 = addBarGraph(data.scorecards[0].datasets[0], 0, svg0, 10, svg0.attr("height")*0.40, (10+sep), svg0.attr("height")*0.90,0);
-            var startDex2 = addBarGraph(data.scorecards[0].datasets[1], 1, svg0, 10+sep*2, svg0.attr("height")*0.40, 10+sep*3, svg0.attr("height")*0.90,startDex1);
-            addBarGraph(data.scorecards[0].datasets[2], 2, svg0, 10+sep*4, svg0.attr("height")*0.40, 10+sep*5, svg0.attr("height")*0.90,startDex2);
-
-            //sankey examples
-            addSankey(1, data.scorecards[1].datasets[0], svg0, 2, 10 + sep , svg0.attr("height")*0.40, 10+sep*2, svg0.attr("height")*0.90,true,0,startDex1);
-            addSankey(2, data.scorecards[1].datasets[1], svg0, 2, 10 + sep*3 , svg0.attr("height")*0.40, 10+sep*4, svg0.attr("height")*0.90,true,startDex1,startDex2);
-            //todo: corner case the above
-            addHeader(svg0, data.scorecards[1].datasets[2]);
-
-            addFieldChart(data.scorecards[2].datasets[0],svg2,100,300,400,300);
-
-            colorPallete(svg1);
 
     }
     requestData();
