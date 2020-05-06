@@ -286,29 +286,29 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
           label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
         });
 
-  canvas.selectAll(".circle" + uniqueID)
-    .data(data)
-    .enter().append("circle")
-    .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
-    .attr("class", function (d, i) {
-      return "circle" + uniqueID + "exit" + i
-    })
-    .attr("fill", "None")
-    .attr("cx", d => x(d.val) + 10)
-    .attr("cy", d => y(d.category) + y.bandwidth() / 2)
-    .attr("r", 5)
-
-  canvas.selectAll(".circle" + uniqueID)
-    .data(data)
-    .enter().append("circle")
-    .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
-    .attr("class", function (d, i) {
-      return "circle" + uniqueID + "enter" + i
-    })
-    .attr("fill", "None")
-    .attr("cx", d => -10)
-    .attr("cy", d => y(d.category) + y.bandwidth() / 2)
-    .attr("r", 5)
+  // canvas.selectAll(".circle" + uniqueID)
+  //   .data(data)
+  //   .enter().append("circle")
+  //   .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
+  //   .attr("class", function (d, i) {
+  //     return "circle" + uniqueID + "exit" + i
+  //   })
+  //   .attr("fill", "None")
+  //   .attr("cx", d => x(d.val) + 10)
+  //   .attr("cy", d => y(d.category) + y.bandwidth() / 2)
+  //   .attr("r", 5)
+  //
+  // canvas.selectAll(".circle" + uniqueID)
+  //   .data(data)
+  //   .enter().append("circle")
+  //   .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
+  //   .attr("class", function (d, i) {
+  //     return "circle" + uniqueID + "enter" + i
+  //   })
+  //   .attr("fill", "None")
+  //   .attr("cx", d => -10)
+  //   .attr("cy", d => y(d.category) + y.bandwidth() / 2)
+  //   .attr("r", 5)
 
     for(let i = 0; i < data.length; i++){
         canvas.append("text")
