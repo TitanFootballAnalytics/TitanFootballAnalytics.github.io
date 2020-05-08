@@ -41,11 +41,9 @@
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
                 ],
-                [
-                  {"Down":"1st",
-                   "DistSit":"Long",
-                   "FeildZone":"10-20"}
-                ]
+                {"Down":"1st",
+                 "DistSit":"Long",
+                 "FieldZone":"10-20"}
             ]
       },
       {
@@ -100,11 +98,10 @@
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
                 ],
-                [
-                  {"Down":"1st",
-                   "DistSit":"Long",
-                   "FeildZone":"20-30"}
-                ]
+                {"Down":"1st",
+                 "DistSit":"Long",
+                 "FieldZone":"20-30"}
+
             ]
       },
       {
@@ -142,11 +139,10 @@
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
                 ],
-                [
                   {"Down":"3rd",
                    "DistSit":"Short",
-                   "FeildZone":"60-70"}
-                ]
+                   "FieldZone":"60-70"}
+
             ]
 
       }
