@@ -1,0 +1,22 @@
+<html><head>
+<title>Titan Football analytics</title>
+
+</head>
+<body>
+    <div class = "container-fluid mainbackground", id = "mainDiv">
+    </div>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="column_chooser.js"></script>
+<script>
+    var svg;
+    d3.select("#mainDiv").append("svg")
+        .attr("width", 2000)
+        .attr("height", 2000)
+        .attr("id", "graph")
+    svg = d3.select("#graph");
+    var names = ["Yards", "Down", "Personnel", "Distance", "Field Position"]
+    drawColumns(svg, names);
+
+</script>
+</body>
