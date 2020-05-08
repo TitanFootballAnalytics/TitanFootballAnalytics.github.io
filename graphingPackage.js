@@ -208,7 +208,9 @@ function removeLoadingBars(canvas) {
 
 function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
   var outDex = (colorDex+data.length)%11;
-
+  var minCount = data[0].val;
+  var totalCount = 0;
+  var accumHeight = y2-y1;
   for (var i = 0; i < data.length - 1; i++) {
     for (var j = 0; j < data.length - 1; j++) {
       if (data[j].category < data[j + 1].category) {
@@ -219,12 +221,24 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       }
     }
   }
+  for (i = 0; i < data.length; i++) {
+      if(data[i].val < minCount){
+          minCount = data[i].val;
+      }
+      totalCount+=data[i].val;
+  }
+  console.log("mincount here")
+  console.log(minCount);
+  console.log("totalCount here")
+  console.log(totalCount);
+  var barHeight = ((y2-y1)*(minCount/totalCount));
+  var vert_scale = (y2 - y1) / totalCount;
 
   const margin2 = { top: 0, bottom: 0, left: 0, right: 0 };
   var max = d3.max(data.map(d => d.val));
   var min = d3.min(data.map(d => d.val));
 
-  y = d3.scaleBand().rangeRound([y2 - y1, 0]).padding(0.2);
+  y = d3.scaleBand().rangeRound([y2 - y1, 0]).padding(0);
   x = d3.scaleLinear().rangeRound([0, x2 - x1]);
   y.domain(data.map(d => d.category));
   x.domain([0, max]);
@@ -254,9 +268,15 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       colorDex--;
       return 'rgb('+ color.r +', ' + color.g + ', ' + color.b + ')'
     })
-    .attr("x", 0)
-    .attr("y", d => y(d.category))
-    .attr("height", y.bandwidth())
+    .attr("x", 1)
+    .attr("y", function(d,i){
+        var temp = accumHeight - ((barHeight*d.val)/2)-barHeight/2
+        accumHeight = accumHeight - (barHeight*d.val)
+        return temp;
+    })
+    .attr("height", function(d,i){
+        return barHeight;
+    })
     .transition()
     .duration(1000)
     .delay(function (d, i) {
@@ -310,14 +330,22 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("cy", d => y(d.category) + y.bandwidth() / 2)
     .attr("r", 5)
 
+    var accumHeight = y2-y1;;
+    var temp = 0;
     for(let i = 0; i < data.length; i++){
         canvas.append("text")
           .text(data[i].category)
           .attr("class","bar-graph-text")
           .attr("fill","black")
-          .attr("stroke","black")
-          .attr("stroke-width",1)
-          .attr("transform","translate("+x2+","+(y1+y(data[i].category)+(y.bandwidth() / 1.5))+")")
+          .attr("stroke","#FFFFFF")
+          .style("font-size",15)
+          .style("font-weight","bold")
+          .attr("stroke-width",0.4)
+          .attr("transform",function(){
+              temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
+              accumHeight = accumHeight - (barHeight*data[i].val)
+              return "translate("+x2+","+((y1+temp)+barHeight/2+5)+")"
+          })
     }
     canvas.append("text")
       .text("Count")
@@ -442,7 +470,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                      " V " + (y1 + end * vert_scale) +
                      " H " + x2)
 
-          .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
+          .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")")
         colorDex2 = (colorDex2 + 1) % 11;
         first = data[i].out;
         start = data[i].end;
@@ -495,7 +523,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       canvas.append("path")
         .attr("d", " M " + toString(x1, y1 + data[i].start * vert_scale) +
           " H " + (x1 + 20) +
-          " V " + (y1 + 1 + data[i].start*vert_scale + data[i].count * vert_scale) +
+          " V " + (y1 + data[i].start*vert_scale + data[i].count * vert_scale) +
           " H " + x1)
         .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
 

@@ -13,7 +13,7 @@
                 ],
                 [
                     {"category":"BUCK","val":1},{"category":"DECIDE","val":1},
-                    {"category":"INSIDE ZONE","val":2},{"category":"OUTSIDE ZONE","val":1},
+                    {"category":"INSIDE ZONE","val":6},{"category":"OUTSIDE ZONE","val":1},
                     {"category":"RPO","val":2}
                 ],
                 [
