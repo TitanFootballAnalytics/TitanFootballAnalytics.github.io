@@ -264,7 +264,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .transition()
     .duration(1000)
     .delay(function (d, i) {
-      return i * 500;
+      return data.length*500 - i * 500;
     })
     .attr("count",d => d.val)
     .attr("width", d => x(d.val))
