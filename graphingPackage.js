@@ -532,35 +532,36 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
         "</linearGradient>");
       return "url(#"+uniqueID+"grad" + i + ")"//'rgba('+col.r+', ' + col.g + ', ' + col.b  + ',.5)'
     })
-    .attr("opacity", 0.5) //KEVIN ADDED THIS HERE FOR MOUSEOVER EFFECT
+    .attr("opacity", 0.0) //KEVIN ADDED THIS HERE FOR MOUSEOVER EFFECT
     .attr("count", function (d, i) { return d.count }) //KEVIN ADDED THIS ATTRIBUTE TO BE ABLE TO PRINT ON MOUSE HOVER
-    // .transition()
-    // .duration(1000)
-    // .delay(function (d, i) {
-    //   //console.log(d)
-    //   return i * 300;
-    // })
-    // .attr("opacity",0.5)
+    .transition()
+    .duration(1000)
+    .delay(function (d, i) {
+      //console.log(d)
+      return i * 300;
+    })
+    .attr("opacity",0.5)
     //fade in sankey bars^^^^^
+    //TODO: show jean animation and ask for decision
     //wipe in sankey barsvvvv
-    x1-=(20+gap)
-    var panel = convToRGB("#FFFFFF")
-    // obj = d3.hsl(hex);
-    // rgb = obj.rgb();
-    console.log(panel)
-    canvas.append("path")
-      .attr("d", " M " + toString(x1+20, y1) +
-        " H " + (x2-20) +
-        " V " + (y2+2) +
-        " H " + (x1+20))
-      .attr("fill", d3.hsl("#DDDDDD"))
-      .transition()
-      .duration(1500)
-      .delay(500)
-      .attr("d", " M " + toString(x2-20, y1) +
-        " H " + (x2-20) +
-        " V " + (y2+2) +
-        " H " + (x2-20))
+    // x1-=(20+gap)
+    // var panel = convToRGB("#FFFFFF")
+    // // obj = d3.hsl(hex);
+    // // rgb = obj.rgb();
+    // console.log(panel)
+    // canvas.append("path")
+    //   .attr("d", " M " + toString(x1+20, y1) +
+    //     " H " + (x2-20) +
+    //     " V " + (y2+2) +
+    //     " H " + (x1+20))
+    //   .attr("fill", d3.hsl("#DDDDDD"))
+    //   .transition()
+    //   .duration(1500)
+    //   .delay(500)
+    //   .attr("d", " M " + toString(x2-20, y1) +
+    //     " H " + (x2-20) +
+    //     " V " + (y2+2) +
+    //     " H " + (x2-20))
 
 
 
