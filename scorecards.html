@@ -49,7 +49,7 @@
 
      const requestData = async function(){
             const data = await d3.json("scoreCardAutomation.json");
-            console.log(data);
+            // /console.log(data);
             var svg;
             var sep;
             var startDex1;
@@ -73,15 +73,21 @@
                         .attr("id","scoreCard"+i)
                 svg = d3.select(("#scoreCard"+i));
                 sep = (svg.attr("width")-30)/5;
-                startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, 10, svg.attr("height")*0.40, (10+sep), svg.attr("height")*0.90,0);
-                startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, 10+sep*2, svg.attr("height")*0.40, 10+sep*3, svg.attr("height")*0.90,startDex1);
-                addBarGraph(data.scorecards[i].datasets[2], 2, svg, 10+sep*4, svg.attr("height")*0.40, 10+sep*5, svg.attr("height")*0.90,startDex2);
-
-                //sankey examples
-                addSankey(""+i+""+1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
-                addSankey(""+i+""+2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
-                addHeader(svg, data.scorecards[i].datasets[5],data.scorecards[i].datasets[6]);
-
+                // startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, 10, svg.attr("height")*0.40, (10+sep), svg.attr("height")*0.90,0);
+                // startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, 10+sep*2, svg.attr("height")*0.40, 10+sep*3, svg.attr("height")*0.90,startDex1);
+                // addBarGraph(data.scorecards[i].datasets[2], 2, svg, 10+sep*4, svg.attr("height")*0.40, 10+sep*5, svg.attr("height")*0.90,startDex2);
+                //
+                // //sankey examples
+                // addSankey(""+i+""+1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
+                // addSankey(""+i+""+2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
+                // addHeader(svg, data.scorecards[i].datasets[5],data.scorecards[i].datasets[6]);
+                var sample_data = [{type:"run",start:10,end:15},
+                            {type:"run",start:15,end:14},
+                            {type:"pass",start:14,end:20},
+                            {type:"pass",start:20,end:40},
+                            {type:"run",start:40,end:43}
+                          ]
+                addFieldChart(sample_data, svg, 100, 100, 100, 100)
 
             }
 

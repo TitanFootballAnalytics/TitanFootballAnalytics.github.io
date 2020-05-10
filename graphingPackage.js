@@ -589,9 +589,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
 
 function addFieldChart(data, canvas, x1, y1, x2, y2) {
-  let p1 = { x: 100.0, y: 400.0 };
-  let p2 = { x: 580.0, y: 400.0 };
-  let pm = { x: 340.0, y: -80.0 };
+  let p1 = { x: 400.0, y: 400.0 };
+  let p2 = { x: 880.0, y: 400.0 };
+  let pm = { x: 640.0, y: -80.0 };
   let p = .25;
   function toString(x, y) {
     return "" + x + " " + y + "";
@@ -624,25 +624,87 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
       " Z ")
     .attr("fill", "white");
 
-  var pad = 2;
+  var gapProp = .05;
   var step = (p2.x - p1.x) / 12;
+
+  //=======add outer edges======
+  var tp1 = { x: p1.x + (1 - 1) * step , y: p1.y };
+  var tp2 = { x: p1.x + (1) * step, y: p1.y };
+  var width = newPoint(tp1,tp2,gapProp).x-tp1.x;
+  var tp12 = {x:tp1.x-width,y:tp1.y}
+  var tp13 = newPoint(tp12,pm,p);
+  var tp14 = newPoint(tp1,pm,p)
+
+
+
+
+  canvas.append("path")
+    .attr("d"," M " +toString(tp1.x,tp1.y) +
+              " L " +toString(tp12.x,tp12.y) +
+              " L " +toString(tp13.x,tp13.y) +
+              " L " +toString(tp14.x,tp14.y) +
+              " Z ")
+    .attr("fill","White")
+
+  var tp3 = { x: p1.x + (12 - 1) * step , y: p1.y };
+  var tp4 = { x: p1.x + (12) * step, y: p1.y };
+  var width = newPoint(tp3,tp4,gapProp).x-tp3.x;
+  var tp42 = {x:tp4.x+width,y:tp4.y}
+  var tp43 = newPoint(tp42,pm,p);
+  var tp44 = newPoint(tp4,pm,p);
+  canvas.append("path")
+    .attr("d"," M " +toString(tp4.x,tp4.y) +
+              " L " +toString(tp42.x,tp42.y) +
+              " L " +toString(tp43.x,tp43.y) +
+              " L " +toString(tp44.x,tp44.y) +
+              " Z ")
+    .attr("fill","white")
+
+  //============================
+
 
   for (var i = 1; i <= 12; i++) {
     var color = "green"
     if (i == 1 || i == 12) {
       color = "grey";
     }
-    var tp1 = { x: p1.x + (i - 1) * step, y: p1.y };
-    var tp2 = { x: p1.x + (i) * step, y: p1.y };
+
+    // canvas.append("path")
+    //   .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //TODO: add padding within function calls, not to output
+    //     " L " + toString(newPoint(tp1, pm, p).x + pad, newPoint(tp1, pm, p).y + 2 * pad) +
+    //     " L " + toString(newPoint(tp2, pm, p).x - pad, newPoint(tp2, pm, p).y + 2 * pad) +
+    //     " L " + toString(tp2.x - pad, tp2.y - 2 * pad) +
+    //     " Z ")
+    //   .attr("fill", color);
+
+
+    var cp1 = { x: p1.x + (i - 1) * step, y: p1.y };
+    var cp4 = { x: p1.x + (i) * step, y: p1.y };
+    var cp2 = newPoint(cp1, pm, p);
+    var cp3 = newPoint(cp4, pm, p);
+    var tp1 = newPoint(cp1,cp4,gapProp);
+    cp4 = newPoint(cp1,cp4,1-gapProp);
+    cp1 = tp1;
+    tp1 = newPoint(cp2,cp3,gapProp);
+    cp3 = newPoint(cp2,cp3,1-gapProp);
+    cp2 = tp1;
+
+    tp1 = newPoint(cp1,cp2,gapProp/2);
+    cp2 = newPoint(cp1,cp2,1-gapProp/2);
+    cp1 = tp1;
+    tp1 = newPoint(cp4,cp3,gapProp/2);
+    cp3 = newPoint(cp4,cp3,1-gapProp/2);
+    cp4 = tp1;
     canvas.append("path")
-      .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //TODO: add padding within function calls, not to output
-        " L " + toString(newPoint(tp1, pm, p).x + pad, newPoint(tp1, pm, p).y + 2 * pad) +
-        " L " + toString(newPoint(tp2, pm, p).x - pad, newPoint(tp2, pm, p).y + 2 * pad) +
-        " L " + toString(tp2.x - pad, tp2.y - 2 * pad) +
-        " Z ")
-      .attr("fill", color);
+      .attr("d"," M " +toString(cp1.x,cp1.y) +
+                " L " +toString(cp2.x,cp2.y) +
+                " L " +toString(cp3.x,cp3.y) +
+                " L " +toString(cp4.x,cp4.y) +
+                " Z ")
+      .attr("fill",color)
   }
   var count = 6;
+  var pad = 2
   var base = newPoint(p1, pm, p).y + 2 * pad;
   var bottom = p1.y - 2 * pad;
   var stepsize = (bottom - base) / count;
@@ -747,7 +809,7 @@ function addHeader(svg, data,metadata) {
     .text("")
 
   data.forEach(function (stat) {
-      console.log(stat.Category);
+      // console.log(stat.Category);
   })
 
   function addTableInfo(canvas, w, h, text_size) {
