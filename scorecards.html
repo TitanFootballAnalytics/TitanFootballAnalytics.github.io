@@ -78,9 +78,9 @@
                 addBarGraph(data.scorecards[i].datasets[2], 2, svg, 10+sep*4, svg.attr("height")*0.40, 10+sep*5, svg.attr("height")*0.90,startDex2);
 
                 //sankey examples
-                addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
-                addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
-                addHeader(svg, data.scorecards[i].datasets[5]);
+                addSankey(""+i+""+1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
+                addSankey(""+i+""+2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
+                addHeader(svg, data.scorecards[i].datasets[5],data.scorecards[i].datasets[6]);
 
 
             }

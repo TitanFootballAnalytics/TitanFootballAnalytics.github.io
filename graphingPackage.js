@@ -70,29 +70,33 @@ function colorPallete(canvas){
     })
 
 }
+var colors=[
+            //Red below
+            convToRGB(0,"#FC766AFF"),
+            convToRGB(7,"#00203FFF"),
+            convToRGB(1,"#EEA47FFF"),
+            convToRGB(8,"#5B84B1FF"),
+            convToRGB(2,"#D01C1FFF"),
+            convToRGB(9,"#00A4CCFF"),
+            convToRGB(10,"#0E7A0DFF"),
+            convToRGB(4,"#DD4132FF"),
+            convToRGB(11,"#97BC62FF"),
+            convToRGB(5,"#990011FF"),
+
+
+            // convToRGB(12,"#9CC3D5FF"),
+            // convToRGB(13,"#333D79FF"),
+            // convToRGB(14,"#00539CFF"),
+            // convToRGB(15,"#4B878BFF"),
+  ]
 
 function getColor(index){
-  var colors=[
-              //Red below
-              convToRGB(0,"#FC766AFF"),
-              convToRGB(7,"#00203FFF"),
-              convToRGB(1,"#EEA47FFF"),
-              convToRGB(8,"#5B84B1FF"),
-              convToRGB(2,"#D01C1FFF"),
-              convToRGB(9,"#00A4CCFF"),
-              convToRGB(3,"#F93822FF"),
-              convToRGB(10,"#0E7A0DFF"),
-              convToRGB(4,"#DD4132FF"),
-              convToRGB(11,"#97BC62FF"),
-              convToRGB(5,"#990011FF"),
 
-
-              // convToRGB(12,"#9CC3D5FF"),
-              // convToRGB(13,"#333D79FF"),
-              // convToRGB(14,"#00539CFF"),
-              // convToRGB(15,"#4B878BFF"),
-    ]
     return colors[index];
+}
+
+function getColorSize(){
+  return colors.length;
 }
 
 function addPieChart(canvas, percent1, percent2, cx, cy, radius, thickness) {
@@ -207,7 +211,7 @@ function removeLoadingBars(canvas) {
 }
 
 function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
-  var outDex = (colorDex+data.length)%11;
+  var outDex = (colorDex+data.length)%getColorSize();
 
   for (var i = 0; i < data.length - 1; i++) {
     for (var j = 0; j < data.length - 1; j++) {
@@ -247,10 +251,10 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
     .attr("class", "bar" + uniqueID)
     .attr("fill", function (d, i) {
-      colorDex = colorDex%11;
-      var color = getColor((colorDex+data.length-1)%11);
-      console.log(color);
-      console.log(colorDex+data.length-1);
+      colorDex = colorDex%getColorSize();
+      var color = getColor((colorDex+data.length-1)%getColorSize());
+      // console.log(color);
+      // console.log(colorDex+data.length-1);
       colorDex--;
       return 'rgb('+ color.r +', ' + color.g + ', ' + color.b + ')'
     })
@@ -260,7 +264,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .transition()
     .duration(1000)
     .delay(function (d, i) {
-      return i * 500;
+      return data.length*500 - i * 500;
     })
     .attr("count",d => d.val)
     .attr("width", d => x(d.val))
@@ -286,29 +290,29 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
           label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
         });
 
-  canvas.selectAll(".circle" + uniqueID)
-    .data(data)
-    .enter().append("circle")
-    .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
-    .attr("class", function (d, i) {
-      return "circle" + uniqueID + "exit" + i
-    })
-    .attr("fill", "None")
-    .attr("cx", d => x(d.val) + 10)
-    .attr("cy", d => y(d.category) + y.bandwidth() / 2)
-    .attr("r", 5)
-
-  canvas.selectAll(".circle" + uniqueID)
-    .data(data)
-    .enter().append("circle")
-    .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
-    .attr("class", function (d, i) {
-      return "circle" + uniqueID + "enter" + i
-    })
-    .attr("fill", "None")
-    .attr("cx", d => -10)
-    .attr("cy", d => y(d.category) + y.bandwidth() / 2)
-    .attr("r", 5)
+  // canvas.selectAll(".circle" + uniqueID)
+  //   .data(data)
+  //   .enter().append("circle")
+  //   .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
+  //   .attr("class", function (d, i) {
+  //     return "circle" + uniqueID + "exit" + i
+  //   })
+  //   .attr("fill", "None")
+  //   .attr("cx", d => x(d.val) + 10)
+  //   .attr("cy", d => y(d.category) + y.bandwidth() / 2)
+  //   .attr("r", 5)
+  //
+  // canvas.selectAll(".circle" + uniqueID)
+  //   .data(data)
+  //   .enter().append("circle")
+  //   .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
+  //   .attr("class", function (d, i) {
+  //     return "circle" + uniqueID + "enter" + i
+  //   })
+  //   .attr("fill", "None")
+  //   .attr("cx", d => -10)
+  //   .attr("cy", d => y(d.category) + y.bandwidth() / 2)
+  //   .attr("r", 5)
 
     for(let i = 0; i < data.length; i++){
         canvas.append("text")
@@ -377,7 +381,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     if (data[i].in != val) {
       val = data[i].in;
       colorDex1++;
-      colorDex1 = colorDex1 % 11;
+      colorDex1 = colorDex1 % getColorSize();
     }
     data[i].color = getColor(colorDex1);
     // console.log(color_start)
@@ -443,7 +447,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                      " H " + x2)
 
           .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
-        colorDex2 = (colorDex2 + 1) % 11;
+        colorDex2 = (colorDex2 + 1) % getColorSize();
         first = data[i].out;
         start = data[i].end;
         end = data[i].count + start;
@@ -467,16 +471,16 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   //=========================================================================
 
   //reorder for aesthetic
-  // for (var i = 0; i < data.length - 1; i++) {
-  //   for (var j = 0; j < data.length - 1; j++) {
-  //     if (data[j].id > data[j + 1].id) {
-  //       //swap!
-  //       var temp = data[j];
-  //       data[j] = data[j + 1];
-  //       data[j + 1] = temp;
-  //     }
-  //   }
-  // }
+  for (var i = 0; i < data.length - 1; i++) {
+    for (var j = 0; j < data.length - 1; j++) {
+      if (data[j].id > data[j + 1].id) {
+        //swap!
+        var temp = data[j];
+        data[j] = data[j + 1];
+        data[j + 1] = temp;
+      }
+    }
+  }
 
   //=====First set of bars=====================================================================
   var first = data[0].in;
@@ -519,17 +523,48 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
     })
     .attr("fill", function (d, i) {
-      console.log(d)
+      //console.log(d)
       var col = d.color;
       var ecol = d.end_color;
       canvas.insert("defs").html("<linearGradient id='"+uniqueID+"grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
         "<stop offset='0%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
-        "<stop offset='100%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
+        "<stop offset='100%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:1' />" +
         "</linearGradient>");
       return "url(#"+uniqueID+"grad" + i + ")"//'rgba('+col.r+', ' + col.g + ', ' + col.b  + ',.5)'
     })
-    .attr("opacity", 0.5) //KEVIN ADDED THIS HERE FOR MOUSEOVER EFFECT
+    .attr("opacity", 0.0) //KEVIN ADDED THIS HERE FOR MOUSEOVER EFFECT
     .attr("count", function (d, i) { return d.count }) //KEVIN ADDED THIS ATTRIBUTE TO BE ABLE TO PRINT ON MOUSE HOVER
+    .transition()
+    .duration(1000)
+    .delay(function (d, i) {
+      //console.log(d)
+      return i * 300;
+    })
+    .attr("opacity",0.5)
+    //fade in sankey bars^^^^^
+    //TODO: show jean animation and ask for decision
+    //wipe in sankey barsvvvv
+    // x1-=(20+gap)
+    // var panel = convToRGB("#FFFFFF")
+    // // obj = d3.hsl(hex);
+    // // rgb = obj.rgb();
+    // console.log(panel)
+    // canvas.append("path")
+    //   .attr("d", " M " + toString(x1+20, y1) +
+    //     " H " + (x2-20) +
+    //     " V " + (y2+2) +
+    //     " H " + (x1+20))
+    //   .attr("fill", d3.hsl("#DDDDDD"))
+    //   .transition()
+    //   .duration(1500)
+    //   .delay(500)
+    //   .attr("d", " M " + toString(x2-20, y1) +
+    //     " H " + (x2-20) +
+    //     " V " + (y2+2) +
+    //     " H " + (x2-20))
+
+
+
 
   let label = canvas.append("text")
     .attr("x", 0)
@@ -618,7 +653,7 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
   // {start:22,end:34,type:"pass"},
   // {start:34,end:40,type:"pass"}]
   var zeroYDS = newPoint(p1, p2, 1 / 12);
-  var frankyYDS = newPoint(p1, p2, 11 / 12);
+  var frankyYDS = newPoint(p1, p2, getColorSize() / 12);
   for (var i = 0; i < count-1; i++) {
     var color = "blue";
     if (data[i].type == "run") {
@@ -703,7 +738,7 @@ function mouseclick(shape, index) {
   });
 }
 
-function addHeader(svg, data) {
+function addHeader(svg, data,metadata) {
   let label = svg.append("text")
     .attr("class", "rectLabel")
     .attr("x", 0)
@@ -772,8 +807,7 @@ function addHeader(svg, data) {
     var shapes_bottom = [];
     let bottom = t + rad * 2;
     let xcur = rad * 2 + 20;
-
-    var titles = ["Down", "Distance", "Field Zone", "Personnel", "Formation", "Play Type"];
+    var titles = [metadata.Down, metadata.DistSit, metadata.FieldZone, "Personnel", "Formation", "Play Type"];
 
     for (var i = 0; i < 6; i++) {
       if (i == 0) {
