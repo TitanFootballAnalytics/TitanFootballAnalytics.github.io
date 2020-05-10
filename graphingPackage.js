@@ -733,6 +733,10 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
         " L " + toString(tp3.x, tp3.y + pad) +
         " L " + toString(tp4.x, tp4.y - pad) +
         " Z ")
+      canvas.insert("defs").html("<linearGradient id='"+uniqueID+"grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
+        "<stop offset='0%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
+        "<stop offset='100%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:1' />" +
+        "</linearGradient>");
       .attr("fill", color);
   }
 
