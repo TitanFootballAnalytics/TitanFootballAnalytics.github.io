@@ -1,6 +1,8 @@
 <html><head>
 <title>Titan Football analytics</title>
-
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/index.css" >
+<link rel="stylesheet" href="css/general.css" >
 </head>
 <body>
     <div class = "container-fluid mainbackground", id = "mainDiv">
@@ -15,8 +17,8 @@
         .attr("height", 2000)
         .attr("id", "graph")
     svg = d3.select("#graph");
-    var names = ["Yards", "Down", "Personnel", "Distance", "Field Position"]
-    drawColumns(svg, names);
+    var names = ["Yards", "Down", "Personnel", "Distance", "Field Position", "asdfas"]
+    drawColumns(svg, names, 50, 50, 40, 150, 70);
 
 </script>
 </body>

@@ -648,7 +648,7 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
 
 function mouseon(shape, index) {
   shape.on("mouseover", function () {
-    var s = d3.select("#parallel" + index);
+    var s = d3.select(this);
     var new_op, new_st;
     if (s.attr("fill-opacity") == 1) {
       new_op = 1;
@@ -667,7 +667,7 @@ function mouseon(shape, index) {
 
 function mouseoff(shape, index) {
   shape.on("mouseout", function () {
-    var s = d3.select("#parallel" + index);
+    var s = d3.select(this);
     var new_op, new_st;
     if (s.attr("fill-opacity") == 1) {
       new_op = 1;
@@ -686,7 +686,7 @@ function mouseoff(shape, index) {
 
 function mouseclick(shape, index) {
   shape.on("mousedown", function () {
-    var s = d3.select("#parallel" + index);
+    var s = d3.select(this);
     var new_op, new_st;
     if (s.attr("fill-opacity") == 0.8) {
       new_op = 1;
