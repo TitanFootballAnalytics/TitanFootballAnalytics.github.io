@@ -340,7 +340,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
           .attr("stroke","#FFFFFF")
           .style("font-size",15)
           .style("font-weight","bold")
-          .attr("stroke-width",0.4)
+          .attr("stroke-width",1)
           .attr("transform",function(){
               temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
               accumHeight = accumHeight - (barHeight*data[i].val)

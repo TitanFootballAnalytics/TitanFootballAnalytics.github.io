@@ -7,13 +7,17 @@
                     {"category":"21","val":1}
                 ],
                 [
-                    {"category":"DICE","val":1},{"category":"DING","val":1},
-                    {"category":"OPEN","val":1},{"category":"TREY","val":3},
+                    {"category":"DICE","val":1},
+                    {"category":"DING","val":1},
+                    {"category":"OPEN","val":1},
+                    {"category":"TREY","val":3},
                     {"category":"TREY ON","val":1}
                 ],
                 [
-                    {"category":"BUCK","val":1},{"category":"DECIDE","val":1},
-                    {"category":"INSIDE ZONE","val":6},{"category":"OUTSIDE ZONE","val":1},
+                    {"category":"BUCK","val":1},
+                    {"category":"DECIDE","val":1},
+                    {"category":"INSIDE ZONE","val":2},
+                    {"category":"OUTSIDE ZONE","val":1},
                     {"category":"RPO","val":2}
                 ],
                 [
@@ -29,94 +33,116 @@
                     {"in":"OPEN","out":"DECIDE","count":1},
                     {"in":"TREY","out":"OUTSIDE ZONE","count":1},
                     {"in":"TREY","out":"RPO","count":2},
-                    {"in":"TREY","out":"INSIDE ZONE","count":5}
+                    {"in":"TREY ON","out":"INSIDE ZONE","count":1}
                 ],
                 [
                   {"Category":"Play Count","Value":7},
                   {"Category":"Average Yards","Value":22},
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
-                ]
+                ],
+                {"Down":"1st",
+                 "DistSit":"Long",
+                 "FieldZone":"10-20"}
             ]
       },
       {
           "datasets" : [
                 [
-                    {"category":"11","val":4},
-                    {"category":"12","val":2},
+                    {"category":"11","val":6},
+                    {"category":"12","val":4},
                     {"category":"21","val":1}
                 ],
                 [
-                    {"category":"DICE","val":1},{"category":"DING","val":1},
-                    {"category":"OPEN","val":1},{"category":"TREY","val":3},
-                    {"category":"TREY ON","val":1}
+                    {"category":"DICE","val":2},
+                    {"category":"DING","val":1},
+                    {"category":"DUO ON","val":1},
+                    {"category":"Empty","val":2},
+                    {"category":"OPEN","val":1},
+                    {"category":"TREY","val":3},
+                    {"category":"TRIPS","val":1}
                 ],
                 [
-                    {"category":"BUCK","val":1},{"category":"DECIDE","val":1},
-                    {"category":"INSIDE ZONE","val":2},{"category":"OUTSIDE ZONE","val":1},
-                    {"category":"RPO","val":2}
+                    {"category":"BLING","val":1},
+                    {"category":"DBP","val":1},
+                    {"category":"INSIDE ZONE","val":4},
+                    {"category":"LOCK","val":1},
+                    {"category":"POWER","val":1},
+                    {"category":"QUICK","val":2},
+                    {"category":"SHOVEL","val":1}
                 ],
                 [
-                    {"in":"11","out":"TREY","count":3},
-                    {"in":"11","out":"TREY ON","count":1},
-                    {"in":"12","out":"DICE","count":1},
+                    {"in":"11","out":"DUO ON","count":1},
+                    {"in":"11","out":"EMPTY","count":1},
+                    {"in":"11","out":"TREY ON","count":3},
+                    {"in":"11","out":"TRIPS","count":1},
+                    {"in":"12","out":"DICE","count":2},
                     {"in":"12","out":"DING","count":1},
+                    {"in":"12","out":"EMPTY","count":1},
                     {"in":"21","out":"OPEN","count":1}
                 ],
                 [
                     {"in":"DICE","out":"INSIDE ZONE","count":1},
-                    {"in":"DING","out":"BUCK","count":1},
-                    {"in":"OPEN","out":"DECIDE","count":1},
-                    {"in":"TREY","out":"OUTSIDE ZONE","count":1},
-                    {"in":"TREY","out":"RPO","count":2},
-                    {"in":"TREY","out":"INSIDE ZONE","count":5}
+                    {"in":"DICE","out":"QUICK","count":1},
+                    {"in":"DING","out":"LOCK","count":1},
+                    {"in":"DUO ON","out":"POWER","count":1},
+                    {"in":"EMPTY","out":"QUICK","count":1},
+                    {"in":"EMPTY","out":"SHOVEL","count":1},
+                    {"in":"OPEN","out":"BLING","count":1},
+                    {"in":"TREY ON","out":"INSIDE ZONE","count":3},
+                    {"in":"TRIPS","out":"DBP","count":1}
                 ],
                 [
                   {"Category":"Play Count","Value":7},
                   {"Category":"Average Yards","Value":22},
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
-                ]
+                ],
+                {"Down":"1st",
+                 "DistSit":"Long",
+                 "FieldZone":"20-30"}
+
             ]
       },
       {
           "datasets" : [
                 [
-                    {"category":"11","val":4},
-                    {"category":"12","val":2},
-                    {"category":"21","val":1}
+                    {"category":"11","val":3},
+                    {"category":"12","val":1}
                 ],
                 [
-                    {"category":"DICE","val":1},{"category":"DING","val":1},
-                    {"category":"OPEN","val":1},{"category":"TREY","val":3},
-                    {"category":"TREY ON","val":1}
+                    {"category":"DEUCE","val":1},
+                    {"category":"DUO ON","val":1},
+                    {"category":"TRIO","val":1},
+                    {"category":"TRUNK SQZ","val":1}
                 ],
                 [
-                    {"category":"BUCK","val":1},{"category":"DECIDE","val":1},
-                    {"category":"INSIDE ZONE","val":2},{"category":"OUTSIDE ZONE","val":1},
-                    {"category":"RPO","val":2}
+                    {"category":"DBP","val":1},
+                    {"category":"QUICK","val":2},
+                    {"category":"SHOVEL","val":1}
                 ],
                 [
-                    {"in":"11","out":"TREY","count":3},
-                    {"in":"11","out":"TREY ON","count":1},
-                    {"in":"12","out":"DICE","count":1},
-                    {"in":"12","out":"DING","count":1},
-                    {"in":"21","out":"OPEN","count":1}
+                    {"in":"11","out":"DEUCE","count":1},
+                    {"in":"11","out":"DUO ON","count":1},
+                    {"in":"11","out":"TRIO","count":1},
+                    {"in":"12","out":"TRUNK SQZ","count":1}
                 ],
                 [
-                    {"in":"DICE","out":"INSIDE ZONE","count":1},
-                    {"in":"DING","out":"BUCK","count":1},
-                    {"in":"OPEN","out":"DECIDE","count":1},
-                    {"in":"TREY","out":"OUTSIDE ZONE","count":1},
-                    {"in":"TREY","out":"RPO","count":2},
-                    {"in":"TREY","out":"INSIDE ZONE","count":5}
+                    {"in":"DEUCE","out":"QUICK","count":1},
+                    {"in":"DUO ON","out":"QUICK","count":1},
+                    {"in":"TRIO","out":"SHOVEL","count":1},
+                    {"in":"TRUNK SQZ","out":"DBP","count":1}
                 ],
                 [
                   {"Category":"Play Count","Value":7},
                   {"Category":"Average Yards","Value":22},
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
-                ]
+                ],
+                  {"Down":"3rd",
+                   "DistSit":"Short",
+                   "FieldZone":"60-70"}
+
             ]
 
       }
