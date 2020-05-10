@@ -714,6 +714,7 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
   // {start:14,end:22,type:"run"},
   // {start:22,end:34,type:"pass"},
   // {start:34,end:40,type:"pass"}]
+  
   var zeroYDS = newPoint(p1, p2, 1 / 12);
   var frankyYDS = newPoint(p1, p2, getColorSize() / 12);
   for (var i = 0; i < count-1; i++) {
