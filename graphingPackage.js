@@ -260,6 +260,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .enter().append("rect")
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
     .attr("class", "bar" + uniqueID)
+    .attr("opacity", 0.9)
     .attr("fill", function (d, i) {
       colorDex = colorDex%11;
       var color = getColor((colorDex+data.length-1)%11);
@@ -283,6 +284,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       return i * 500;
     })
     .attr("count",d => d.val)
+    .attr("name", d => d.category)
     .attr("width", d => x(d.val))
 
 
@@ -291,19 +293,29 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       .attr("y", 0)
       .attr("fill", "black")
       .text("")
+    let label2 = canvas.append("text")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("fill", "black")
+      .text("")
     canvas.selectAll(".bar" + uniqueID)
         .on("mouseover", function () {
           d3.select(this)
-            .attr("stroke", "black")
-          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
+            .attr("opacity", 1)
+          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
+          label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
+
         })
         .on("mouseout", function () {
           d3.select(this)
-            .attr("stroke", "none")
+            .attr("opacity", 0.9)
           label.text("")
+          label2.text("")
         })
         .on("mousemove", function () {
-          label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
+          label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 20 + y1))
+          label2.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
+
         });
 
   canvas.selectAll(".circle" + uniqueID)
@@ -353,6 +365,24 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       .attr("stroke","black")
       .attr("stroke-width",0.2)
       .attr("transform","translate("+((x1+x2)/2)+","+(y2+40)+")")
+    var yHeight = "";
+    var xHeight = "";
+    canvas.append("text")
+      .text(function(){
+          if(uniqueID==0){
+              return "Personnel"
+          }
+          else if(uniqueID==1){
+              return "Formation"
+          }
+          else{
+              return "Play Type"
+          }
+      })
+      .attr("class","bar-graph-title")
+      .attr("stroke","black")
+      .attr("stroke-width",0.2)
+      .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
     return outDex;
 
 };
