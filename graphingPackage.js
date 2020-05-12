@@ -227,10 +227,10 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       }
       totalCount+=data[i].val;
   }
-  console.log("mincount here")
-  console.log(minCount);
-  console.log("totalCount here")
-  console.log(totalCount);
+  // console.log("mincount here")
+  // console.log(minCount);
+  // console.log("totalCount here")
+  // console.log(totalCount);
   var barHeight = ((y2-y1)*(minCount/totalCount));
   var vert_scale = (y2 - y1) / totalCount;
 
@@ -264,8 +264,8 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("fill", function (d, i) {
       colorDex = colorDex%11;
       var color = getColor((colorDex+data.length-1)%11);
-      console.log(color);
-      console.log(colorDex+data.length-1);
+      // console.log(color);
+      // console.log(colorDex+data.length-1);
       colorDex--;
       return 'rgb('+ color.r +', ' + color.g + ', ' + color.b + ')'
     })
@@ -577,7 +577,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
     })
     .attr("fill", function (d, i) {
-      console.log(d)
+      // console.log(d)
       var col = d.color;
       var ecol = d.end_color;
       canvas.insert("defs").html("<linearGradient id='"+uniqueID+"grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
@@ -769,9 +769,9 @@ function addHeader(svg, data) {
     .attr("fill", "black")
     .text("")
 
-  data.forEach(function (stat) {
-      console.log(stat.Category);
-  })
+  // data.forEach(function (stat) {
+  //     console.log(stat.Category);
+  // })
 
   function addTableInfo(canvas, w, h, text_size) {
     var wd = svg.attr("width")
@@ -816,6 +816,7 @@ function addHeader(svg, data) {
       .attr("href", "TitanLogoB.png")
       .attr("height", radius * 2)
       .attr("width", radius * 2)
+      .attr("class","logos")
     let txt = canvas.select("text.rectLabel")
     txt.text("Titan Analytics")
       .attr("x", 10)
@@ -921,4 +922,112 @@ function addHeader(svg, data) {
   var tp = 10;
   var radius = 50;
   addParallelograms(svg, tp, ht, wid, separation, radius);
+}
+(function(){
+    if($('.nav>ul>li').hasClass('selected')){
+    $('.selected').addClass('active');
+    var currentleft=$('.selected').position().left+"px";
+    var currentwidth=$('.selected').css('width');
+    $('.lamp').css({"left":currentleft,"width":currentwidth});
+    }
+    else{
+      $('.nav>ul>li').first().addClass('active');
+      var currentleft=$('.active').position().left+"px";
+    var currentwidth=$('.active').css('width');
+    $('.lamp').css({"left":currentleft,"width":currentwidth});
+    }
+    $('.nav>ul>li').hover(function(){
+      $('.nav ul li').removeClass('active');
+      $(this).addClass('active');
+    var currentleft=$('.active').position().left+"px";
+    var currentwidth=$('.active').css('width');
+    $('.lamp').css({"left":currentleft,"width":currentwidth});
+    },function(){
+    if($('.nav>ul>li').hasClass('selected')){
+    $('.selected').addClass('active');
+    var currentleft=$('.selected').position().left+"px";
+    var currentwidth=$('.selected').css('width');
+    $('.lamp').css({"left":currentleft,"width":currentwidth});
+    }
+    else{
+      $('.nav>ul>li').first().addClass('active');
+      var currentleft=$('.active').position().left+"px";
+    var currentwidth=$('.active').css('width');
+    $('.lamp').css({"left":currentleft,"width":currentwidth});
+    }
+    });
+});
+async function generateScorecards(filename){
+       const data = await d3.json(filename);
+       // console.log(data);
+       var svg;
+       var sep;
+       var startDex1;
+       var startDex2;
+       d3.select("#mainDiv").selectAll('*').remove()
+       for(let i = 0; i < data.scorecards.length; i++){
+           d3.select("#mainDiv").append("div")
+               .attr("class","row wrapper-div drop")
+               .style("padding-top",function(){
+                   if(i==0){
+                       return "100px"
+                   }
+                   else{
+                       return "600px"
+                   }})
+               .attr("id","div" + i)
+           d3.select("#div"+i)
+               .append("svg")
+                   .attr("width",fixedWidth)
+                   .attr("height",fixedHeight)
+                   .attr("class","scorecard centered-basic")
+                   .attr("id","scoreCard"+i)
+           svg = d3.select(("#scoreCard"+i));
+           sep = (svg.attr("width")-30)/5;
+           startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, 10, svg.attr("height")*0.40, (10+sep), svg.attr("height")*0.90,0);
+           startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, 10+sep*2, svg.attr("height")*0.40, 10+sep*3, svg.attr("height")*0.90,startDex1);
+           addBarGraph(data.scorecards[i].datasets[2], 2, svg, 10+sep*4, svg.attr("height")*0.40, 10+sep*5, svg.attr("height")*0.90,startDex2);
+
+           //sankey examples
+           if(d3.select("#sankey1").property("checked")){
+               addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
+           }
+           if(d3.select("#sankey2").property("checked")){
+               addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
+           }
+           //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
+           //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
+           addHeader(svg, data.scorecards[i].datasets[5]);
+       }
+}
+function emptyScoreCards(svg){
+    d3.select("#mainDiv").selectAll('*').remove();
+}
+function MakeQuerablePromise(promise) {
+    // Don't modify any promise that has been already modified.
+    if (promise.isResolved) return promise;
+
+    // Set initial state
+    var isPending = true;
+    var isRejected = false;
+    var isFulfilled = false;
+
+    // Observe the promise, saving the fulfillment in a closure scope.
+    var result = promise.then(
+        function(v) {
+            isFulfilled = true;
+            isPending = false;
+            return v;
+        },
+        function(e) {
+            isRejected = true;
+            isPending = false;
+            throw e;
+        }
+    );
+
+    result.isFulfilled = function() { return isFulfilled; };
+    result.isPending = function() { return isPending; };
+    result.isRejected = function() { return isRejected; };
+    return result;
 }
