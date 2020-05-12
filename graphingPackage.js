@@ -664,7 +664,7 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
 
 
   for (var i = 1; i <= 12; i++) {
-    var color = "green"
+    var color = "green" //can use a filter and feImage to create field background
     if (i == 1 || i == 12) {
       color = "grey";
     }
@@ -714,7 +714,7 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
   // {start:14,end:22,type:"run"},
   // {start:22,end:34,type:"pass"},
   // {start:34,end:40,type:"pass"}]
-  
+
   var zeroYDS = newPoint(p1, p2, 1 / 12);
   var frankyYDS = newPoint(p1, p2, getColorSize() / 12);
   for (var i = 0; i < count-1; i++) {
@@ -728,17 +728,22 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
     var tp2 = newPoint(b1, pm, (p - p * ((i) / count)));
     var tp3 = newPoint(b2, pm, (p - p * ((i) / count)));
     var tp4 = newPoint(b2, pm, (p - p * ((i + 1) / count)));
+    canvas.insert("defs").html(
+      "<filter id='f1' x='0' y='0' width='200%' height ='200%'>" +
+        "<feOffset result='offOut' in='SourceAlpha' dx='2' dy='2'/>" +
+        "<feGaussianBlur result='blurOut' in='offOut' stdDeviation='2'/>"+
+        "<feBlend in='SourceGraphic' in2='blurOut' mode='normal'/>" +
+      "</filter>");
     canvas.append("path")
       .attr("d", " M " + toString(tp1.x, tp1.y - pad) +
         " L " + toString(tp2.x, tp2.y + pad) +
         " L " + toString(tp3.x, tp3.y + pad) +
         " L " + toString(tp4.x, tp4.y - pad) +
         " Z ")
-      canvas.insert("defs").html("<linearGradient id='"+uniqueID+"grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
-        "<stop offset='0%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
-        "<stop offset='100%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:1' />" +
-        "</linearGradient>");
-      .attr("fill", color);
+      .attr("fill", color)
+      .attr("filter","url(#f1)");
+
+
   }
 
 
