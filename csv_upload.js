@@ -22,7 +22,7 @@ $(document).ready(function() {
     Stats.prototype.processNames = function(){
         columnNames = data[0];
         var svg;
-        d3.select("#main").append("svg")
+        d3.select("#mainDiv").append("svg")
         .attr("width", 2000)
         .attr("height", 2000)
         .attr("id", "graph")
