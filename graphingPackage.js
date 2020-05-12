@@ -588,10 +588,14 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 }
 
 
-function addFieldChart(data, canvas, x1, y1, x2, y2) {
+function addFieldChart(data, metadata,canvas, x1, y1, x2) {
+
   let p1 = { x: 400.0, y: 400.0 };
   let p2 = { x: 880.0, y: 400.0 };
   let pm = { x: 640.0, y: -80.0 };
+  p1 = { x: x1, y: y1 };
+  p2 = { x: x2, y: y1 };
+  pm = { x: (x1+x2)/2, y: y1-(x2-x1) };
   let p = .25;
   function toString(x, y) {
     return "" + x + " " + y + "";
@@ -636,7 +640,7 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
   var tp14 = newPoint(tp1,pm,p)
 
 
-
+  p3= tp13;
 
   canvas.append("path")
     .attr("d"," M " +toString(tp1.x,tp1.y) +
@@ -652,6 +656,7 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
   var tp42 = {x:tp4.x+width,y:tp4.y}
   var tp43 = newPoint(tp42,pm,p);
   var tp44 = newPoint(tp4,pm,p);
+  p4=tp43;
   canvas.append("path")
     .attr("d"," M " +toString(tp4.x,tp4.y) +
               " L " +toString(tp42.x,tp42.y) +
@@ -659,6 +664,78 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
               " L " +toString(tp44.x,tp44.y) +
               " Z ")
     .attr("fill","white")
+
+    temp = newPoint(p3,p4,.2);
+    p4 = newPoint(p4,p3,.2);
+    p3 = temp;
+    canvas.append("path")
+    .attr("d", " M " + toString(p3.x, p3.y-2) +
+      " L " + toString(p3.x, p3.y-50) +
+      " L " + toString(p4.x, p4.y-50) +
+      " L " + toString(p4.x, p4.y-2) +
+      " Z ")
+    .attr("fill", "White")
+    .attr("stroke","Black");
+
+
+    var lTextAnchor = newPoint(p3,p4,.2);
+    lTextAnchor.y -= 25;
+    canvas.append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", lTextAnchor.x)
+      .attr("y", lTextAnchor.y)
+      .attr("fill", "Black")
+      .attr("stroke", "Black")
+      .attr("stroke-width",.3)
+      .attr("letter-spacing",.2)
+      .text(metadata.team1)
+      .attr("font-size", 18 + "px")
+
+    canvas.append("path")
+    .attr("d", " M " + toString(lTextAnchor.x, lTextAnchor.y-15) +
+               " L " + toString(lTextAnchor.x+5, lTextAnchor.y-19) +
+               " L " + toString(lTextAnchor.x-5, lTextAnchor.y-19) +
+               " Z ")
+    .attr("fill", "Red")
+    .attr("stroke","Black");
+
+    var rTextAnchor = newPoint(p4,p3,.2);
+    rTextAnchor.y -= 25;
+    canvas.append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", rTextAnchor.x)
+      .attr("y", rTextAnchor.y)
+      .attr("fill", "Black")
+      .attr("stroke", "Black")
+      .attr("stroke-width",.3)
+      .attr("letter-spacing",.2)
+      .text(metadata.team2)
+      .attr("font-size", 18 + "px")
+
+      var mTextAnchor = newPoint(p4,p3,.5);
+      mTextAnchor.y -= 25;
+      canvas.append("text")
+        .attr("text-anchor", "middle")
+        .attr("x", mTextAnchor.x)
+        .attr("y", mTextAnchor.y)
+        .attr("fill", "Black")
+        .attr("stroke", "Black")
+        .attr("stroke-width",.3)
+        .attr("letter-spacing",.2)
+        .text(metadata.score)
+        .attr("font-size", 16 + "px")
+      mTextAnchor.y += 12;
+      canvas.append("text")
+        .attr("text-anchor", "middle")
+        .attr("x", mTextAnchor.x)
+        .attr("y", mTextAnchor.y)
+        .attr("fill", "Black")
+        .attr("stroke", "Black")
+        .attr("stroke-width",.3)
+        .attr("letter-spacing",.2)
+        .text(metadata.gameClock)
+        .attr("font-size", 10 + "px")
+
 
   //============================
 
@@ -703,10 +780,10 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
                 " Z ")
       .attr("fill",color)
   }
-  var count = 6;
-  var pad = 2
-  var base = newPoint(p1, pm, p).y + 2 * pad;
-  var bottom = p1.y - 2 * pad;
+  var count = data.length+1;
+  var padProp = .1
+  var base = newPoint(p1, pm, p).y ;
+  var bottom = p1.y ;
   var stepsize = (bottom - base) / count;
 
   // [{start:10,end:15,type:"pass"},
@@ -714,10 +791,12 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
   // {start:14,end:22,type:"run"},
   // {start:22,end:34,type:"pass"},
   // {start:34,end:40,type:"pass"}]
-
+  console.log("============")
   var zeroYDS = newPoint(p1, p2, 1 / 12);
-  var frankyYDS = newPoint(p1, p2, getColorSize() / 12);
+  var frankyYDS = newPoint(p1, p2, 11 / 12);
+  var halfYDS = newPoint(zeroYDS,frankyYDS,.5);
   for (var i = 0; i < count-1; i++) {
+
     var color = "blue";
     if (data[i].type == "run") {
       color = "red";
@@ -728,20 +807,52 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
     var tp2 = newPoint(b1, pm, (p - p * ((i) / count)));
     var tp3 = newPoint(b2, pm, (p - p * ((i) / count)));
     var tp4 = newPoint(b2, pm, (p - p * ((i + 1) / count)));
+    tp2 = newPoint(tp1,tp2,1-padProp);
+    tp3 = newPoint(tp4,tp3,1-padProp);
     canvas.insert("defs").html(
       "<filter id='f1' x='0' y='0' width='200%' height ='200%'>" +
         "<feOffset result='offOut' in='SourceAlpha' dx='2' dy='2'/>" +
         "<feGaussianBlur result='blurOut' in='offOut' stdDeviation='2'/>"+
         "<feBlend in='SourceGraphic' in2='blurOut' mode='normal'/>" +
       "</filter>");
+
+    var dx = (halfYDS.x-((tp3.x+tp2.x)/2))/((halfYDS.x-zeroYDS.x)/4);
+    dx = 2*Math.round(dx);
+    console.log(dx);
+    canvas.insert("defs").html(
+      "<filter id='f2"+i+"' x='-40%' y='-40%' width='300%' height ='300%'>" +
+        "<feDropShadow dx='"+dx+"' dy='2' stdDeviation='1'/>" +
+      "</filter>");
     canvas.append("path")
-      .attr("d", " M " + toString(tp1.x, tp1.y - pad) +
-        " L " + toString(tp2.x, tp2.y + pad) +
-        " L " + toString(tp3.x, tp3.y + pad) +
-        " L " + toString(tp4.x, tp4.y - pad) +
+      .attr("d", " M " + toString(tp1.x, tp1.y) +
+        " L " + toString(tp2.x, tp2.y) +
+        " L " + toString(tp3.x, tp3.y) +
+        " L " + toString(tp4.x, tp4.y) +
         " Z ")
       .attr("fill", color)
-      .attr("filter","url(#f1)");
+      .attr("filter","url(#f2"+i+")");
+    var pix = 1
+    lProp = pix/(Math.abs(tp4.x-tp1.x));
+    temp = newPoint(tp2,tp1,1+padProp);
+    tp2 = newPoint(tp1,tp2,1+padProp);
+    tp1 = temp;
+    temp = newPoint(tp3,tp4,1+padProp);
+    tp3 = newPoint(tp4,tp3,1+padProp);
+    tp4=temp;
+    tp3 = newPoint(tp2,tp3,lProp);
+    tp4 = newPoint(tp1,tp4,lProp);
+
+    // canvas.append("path")
+    //   .attr("d", " M " + toString(tp1.x, tp1.y) +
+    //     " L " + toString(tp2.x, tp2.y) +
+    //     " L " + toString(tp3.x, tp3.y) +
+    //     " L " + toString(tp4.x, tp4.y) +
+    //     " Z ")
+    //   .attr("fill", color)
+
+    // var p3 = newPoint(p1,pm,p);
+    // var p4 = newPoint(p2,pm,p);
+
 
 
   }
