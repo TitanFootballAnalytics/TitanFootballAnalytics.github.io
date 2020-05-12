@@ -817,7 +817,7 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
       "</filter>");
 
     var dx = (halfYDS.x-((tp3.x+tp2.x)/2))/((halfYDS.x-zeroYDS.x)/4);
-    dx = 2*Math.round(dx);
+    dx = 1*Math.round(dx);
     console.log(dx);
     canvas.insert("defs").html(
       "<filter id='f2"+i+"' x='-40%' y='-40%' width='300%' height ='300%'>" +
@@ -842,13 +842,13 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
     tp3 = newPoint(tp2,tp3,lProp);
     tp4 = newPoint(tp1,tp4,lProp);
 
-    // canvas.append("path")
-    //   .attr("d", " M " + toString(tp1.x, tp1.y) +
-    //     " L " + toString(tp2.x, tp2.y) +
-    //     " L " + toString(tp3.x, tp3.y) +
-    //     " L " + toString(tp4.x, tp4.y) +
-    //     " Z ")
-    //   .attr("fill", color)
+    canvas.append("path")
+      .attr("d", " M " + toString(tp1.x, tp1.y) +
+        " L " + toString(tp2.x, tp2.y) +
+        " L " + toString(tp3.x, tp3.y) +
+        " L " + toString(tp4.x, tp4.y) +
+        " Z ")
+      .attr("fill", "white")
 
     // var p3 = newPoint(p1,pm,p);
     // var p4 = newPoint(p2,pm,p);
