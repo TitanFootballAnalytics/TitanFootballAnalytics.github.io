@@ -1,5 +1,13 @@
+var svg;
+d3.select("#mainDiv").append("svg")
+.attr("width", 2000)
+.attr("height", 2000)
+.attr("id", "graph")
+svg = d3.select("#graph");
+
 $(document).ready(function() {
 	function StatsProcessor() {
+        d3.selectAll("svg > *").remove();
 		var newStats = new Stats();
 		//Call Methods
 		// newStats.init();
@@ -21,12 +29,6 @@ $(document).ready(function() {
 
     Stats.prototype.processNames = function(){
         columnNames = data[0];
-        var svg;
-        d3.select("#mainDiv").append("svg")
-        .attr("width", 2000)
-        .attr("height", 2000)
-        .attr("id", "graph")
-        svg = d3.select("#graph");
         console.log(d3.select("#main"))
         drawColumns(svg, columnNames, 50, 50, 40, 150, 70);
 
