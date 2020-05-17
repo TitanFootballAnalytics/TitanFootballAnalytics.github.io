@@ -7,7 +7,6 @@ svg = d3.select("#graph");
 
 $(document).ready(function() {
 	function StatsProcessor() {
-        d3.selectAll("svg > *").remove();
 		var newStats = new Stats();
 		//Call Methods
 		// newStats.init();
@@ -131,6 +130,69 @@ $(document).ready(function() {
     }
     )};
 
+    function swap(s1, s2) {
+        var id1 = s1.attr("id");
+        var y1 = s1.attr("y");
+
+        s1.transition().duration(200)
+            .attr("id", s2.attr("id"))
+            .attr("y", s2.attr("y"));
+        s2.transition().duration(200)
+            .attr("id", id1)
+            .attr("y", y1);
+    }
+
+    function click2(shape, index) {
+        shape.on("mousedown", function () {
+            var s = d3.select(this);
+            var id = s.attr("id");
+
+            if (clicked.length == 0){
+                clicked.push(id);
+            }
+
+            else {
+                if (id.slice(0,id.length-1) == clicked[0].slice(0,clicked[0].length-1)){
+                    var temp = d3.select("#" + clicked[0])
+                    clicked = [id];
+                }
+                else {
+                    var lin;
+                    var ind;
+                    if (id.slice(0,id.length-1) == "column"){
+                        ind = clicked[0].slice(clicked[0].length-1);
+                        lin = d3.select("#line" + ind);
+                        swap(d3.select("#column" + ind), s);
+                        swap(d3.select("#text" + ind), d3.select("#text" + id.slice(id.length-1)));
+
+                    }
+                    else{
+                        ind = id.slice(id.length-1);
+                        lin = d3.select("#line" + ind);
+                        swap(d3.select("#column" + clicked[0].slice(clicked[0].length-1)), d3.select("#column" + ind));
+                        swap(d3.select("#text" + clicked[0].slice(clicked[0].length-1)), d3.select("#text" + ind));
+                    }
+                    var vis = lin.attr("visibility");
+                    if (vis == "hidden"){
+                        no_lines.push(lin.attr("id"));
+                        lin.attr("visibility", "visible")
+                    }
+                    else{
+                        var ind = no_lines.indexOf(lin.attr("id"));
+                        no_lines.splice(ind, 1);
+                        lin.attr("visibility", "hidden")
+                    }
+                    clicked = [];
+                    }
+                }
+
+            if (no_lines.length == 3){
+                alert("You chose: " + no_lines);
+                changeNames(getNames(), no_lines.map(x => x.slice(4)));
+            }
+        }
+    )};
+
     function drawConnections(canvas, lenI, lenR, top, left, height, width, separation, distance){
         var lines = [];
         for (var i = 0; i < lenI ; i++){
@@ -148,10 +210,26 @@ $(document).ready(function() {
         return lines;
     }
 
+    function drawConnections2(canvas, lenResults, top, left, height, width, separation, distance){
+        var lines = [];
+        for (var i = 0 ; i < lenResults ; i++){
+            lines.push(canvas.append("path")
+                .attr("d", "M " + (left + width) + " " + (top + height/2 + separation*i) + " L " + (left + distance) + " " + (top + height/2 + separation*i))
+                .attr("stroke-width", 2)
+                .attr("fill", "black")
+                .attr("fill-opacity", 0.6)
+                .attr("stroke", "red")
+                .attr("visibility", "hidden")
+                .attr("id", "line" + i))
+            }
+        return lines;
+    }
+
     function drawColumns(canvas, columnNames, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY){
+        var lines = drawConnections2(canvas, 3, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY, 500);
         var temp = topMargin;
         var count = columnNames.length;
-        var lines = drawConnections(canvas, count, 3, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY, 500);
+        // var lines = drawConnections(canvas, count, 3, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY, 500);
         var columns = [];
         var column_text = [];
         var results = [];
@@ -205,8 +283,9 @@ $(document).ready(function() {
                 .attr("height", blockHeight/2))
             topMargin += blockSeparationY;
         }
-        columns.forEach(click);
-        results.forEach(click);
+        columns.forEach(click2);
+        results.forEach(click2);
+        console.log(columns.forEach(x => x.attr("y")))
     }
 
     function changeNames(colNames, indices){
