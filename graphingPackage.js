@@ -207,6 +207,8 @@ function removeLoadingBars(canvas) {
 }
 
 function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
+    x1 = x1+5;
+    x2 = x2-5
   var outDex = (colorDex+data.length)%11;
   var minCount = data[0].val;
   var totalCount = 0;
@@ -269,7 +271,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       colorDex--;
       return 'rgb('+ color.r +', ' + color.g + ', ' + color.b + ')'
     })
-    .attr("x", 1)
+    .attr("x", 0)
     .attr("y", function(d,i){
         var temp = accumHeight - ((barHeight*d.val)/2)-barHeight/2
         accumHeight = accumHeight - (barHeight*d.val)
@@ -923,49 +925,35 @@ function addHeader(svg, data) {
   var radius = 50;
   addParallelograms(svg, tp, ht, wid, separation, radius);
 }
-(function(){
-    if($('.nav>ul>li').hasClass('selected')){
-    $('.selected').addClass('active');
-    var currentleft=$('.selected').position().left+"px";
-    var currentwidth=$('.selected').css('width');
-    $('.lamp').css({"left":currentleft,"width":currentwidth});
-    }
-    else{
-      $('.nav>ul>li').first().addClass('active');
-      var currentleft=$('.active').position().left+"px";
-    var currentwidth=$('.active').css('width');
-    $('.lamp').css({"left":currentleft,"width":currentwidth});
-    }
-    $('.nav>ul>li').hover(function(){
-      $('.nav ul li').removeClass('active');
-      $(this).addClass('active');
-    var currentleft=$('.active').position().left+"px";
-    var currentwidth=$('.active').css('width');
-    $('.lamp').css({"left":currentleft,"width":currentwidth});
-    },function(){
-    if($('.nav>ul>li').hasClass('selected')){
-    $('.selected').addClass('active');
-    var currentleft=$('.selected').position().left+"px";
-    var currentwidth=$('.selected').css('width');
-    $('.lamp').css({"left":currentleft,"width":currentwidth});
-    }
-    else{
-      $('.nav>ul>li').first().addClass('active');
-      var currentleft=$('.active').position().left+"px";
-    var currentwidth=$('.active').css('width');
-    $('.lamp').css({"left":currentleft,"width":currentwidth});
-    }
-    });
-});
+
 async function generateScorecards(filename){
        const data = await d3.json(filename);
        // console.log(data);
        var svg;
        var sep;
+       var numCharts = 5;
        var startDex1;
        var startDex2;
+       var currX = 10;
        d3.select("#mainDiv").selectAll('*').remove()
+       if(!(d3.select("#sankey1").property("checked"))){
+           numCharts = numCharts-1
+       }
+       if(!(d3.select("#sankey2").property("checked"))){
+           numCharts = numCharts-1
+       }
+       if((d3.select("#graph1").text()=='None')){
+           numCharts = numCharts-1
+       }
+       if((d3.select("#graph2").text()=='None')){
+           numCharts = numCharts-1
+       }
+       if((d3.select("#graph3").text()=='None')){
+           numCharts = numCharts-1
+       }
+       sep = (fixedWidth-30)/numCharts;
        for(let i = 0; i < data.scorecards.length; i++){
+           currX = 10;
            d3.select("#mainDiv").append("div")
                .attr("class","row wrapper-div drop")
                .style("padding-top",function(){
@@ -982,18 +970,27 @@ async function generateScorecards(filename){
                    .attr("height",fixedHeight)
                    .attr("class","scorecard centered-basic")
                    .attr("id","scoreCard"+i)
-           svg = d3.select(("#scoreCard"+i));
-           sep = (svg.attr("width")-30)/5;
-           startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, 10, svg.attr("height")*0.40, (10+sep), svg.attr("height")*0.90,0);
-           startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, 10+sep*2, svg.attr("height")*0.40, 10+sep*3, svg.attr("height")*0.90,startDex1);
-           addBarGraph(data.scorecards[i].datasets[2], 2, svg, 10+sep*4, svg.attr("height")*0.40, 10+sep*5, svg.attr("height")*0.90,startDex2);
 
-           //sankey examples
+           svg = d3.select(("#scoreCard"+i));
+           if(!(d3.select("#graph1").text()=='None')){
+               startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+               currX = currX+sep;
+           }
            if(d3.select("#sankey1").property("checked")){
-               addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
+               addSankey(1, data.scorecards[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
+               currX = currX+sep
+           }
+           if(!(d3.select("#graph2").text()=='None')){
+               startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
+               currX = currX+sep
            }
            if(d3.select("#sankey2").property("checked")){
-               addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
+               addSankey(2, data.scorecards[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
+               currX = currX+sep
+           }
+           if(!(d3.select("#graph3").text()=='None')){
+               addBarGraph(data.scorecards[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
+
            }
            //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
            //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);

@@ -15,35 +15,39 @@
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/topojson.v2.min.js"></script>
   <script src="graphingPackage.js"></script>
+  <script src="navBar.js"></script>
     <div class='nav'>
       <ul>
-        <li><a href='#'>Graph 1</a>
+        <li><a href='#' id = "graph1">Graph 1</a>
             <ul>
-              <li><a href='#'>Bar Graph</a></li>
-              <li><a href='#'>Pie Chart</a></li>
-              <li><a href='#'>Field Chart</a></li>
+              <li><a href='#' id = "baroption1">Bar Graph</a></li>
+              <li><a href='#' id = "pieoption1">Pie Chart</a></li>
+              <li><a href='#' id = "fieldoption1">Field Chart</a></li>
+              <li><a href='#' id = "noneoption1">None</a></li>
             </ul>
         </li>
         <li>
             <a href='#'><input type="checkbox" name="sankey1" value="sankey1" id="sankey1" checked="true">
             <label for="sankey1">Sankey 1</label></a>
         </li>
-        <li><a href='#'>Graph 2</a>
+        <li><a href='#' id = "graph2">Graph 2</a>
             <ul>
-                <li><a href='#'>Bar Graph</a></li>
-                <li><a href='#'>Pie Chart</a></li>
-                <li><a href='#'>Field Chart</a></li>
+                <li><a href='#' id = "baroption2">Bar Graph</a></li>
+                <li><a href='#' id = "pieoption2">Pie Chart</a></li>
+                <li><a href='#' id = "fieldoption2">Field Chart</a></li>
+                <li><a href='#' id = "noneoption2">None</a></li>
             </ul>
         </li>
         <li>
             <a href='#'><input type="checkbox" name="sankey2" value="sankey2" id="sankey2" checked="true">
             <label for="sankey2">Sankey 2</label></a>
         </li>
-        <li><a href='#'>Graph 3</a>
+        <li><a href='#' id = "graph3">Graph 3</a>
             <ul>
-                <li><a href='#'>Bar Graph</a></li>
-                <li><a href='#'>Pie Chart</a></li>
-                <li><a href='#'>Field Chart</a></li>
+                <li><a href='#' id = "baroption3">Bar Graph</a></li>
+                <li><a href='#' id = "pieoption3">Pie Chart</a></li>
+                <li><a href='#' id = "fieldoption3">Field Chart</a></li>
+                <li><a href='#' id = "noneoption3">None</a></li>
             </ul>
         </li>
         <li><a href='#' id="submit">Submit</a></li>
@@ -85,10 +89,8 @@
         const width = fixedWidth - margin.left - margin.right;
 
         generateScorecards("scoreCardAutomation.json")
-        d3.select("#submit")
-            .on("click",function(){
-                generateScorecards("scoreCardAutomation.json");
-            })
+        setupNavClicks();
+
 
   </script>
 
