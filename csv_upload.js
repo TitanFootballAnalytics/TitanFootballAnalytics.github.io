@@ -164,7 +164,6 @@ $(document).ready(function() {
                         lin = d3.select("#line" + ind);
                         swap(d3.select("#column" + ind), s);
                         swap(d3.select("#text" + ind), d3.select("#text" + id.slice(id.length-1)));
-
                     }
                     else{
                         ind = id.slice(id.length-1);
@@ -172,6 +171,7 @@ $(document).ready(function() {
                         swap(d3.select("#column" + clicked[0].slice(clicked[0].length-1)), d3.select("#column" + ind));
                         swap(d3.select("#text" + clicked[0].slice(clicked[0].length-1)), d3.select("#text" + ind));
                     }
+
                     var vis = lin.attr("visibility");
                     if (vis == "hidden"){
                         no_lines.push(lin.attr("id"));
