@@ -211,8 +211,12 @@ function removeLoadingBars(canvas) {
 }
 
 function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
-  var outDex = (colorDex+data.length)%getColorSize();
-
+    x1 = x1+5;
+    x2 = x2-5
+  var outDex = (colorDex+data.length)%11;
+  var minCount = data[0].val;
+  var totalCount = 0;
+  var accumHeight = y2-y1;
   for (var i = 0; i < data.length - 1; i++) {
     for (var j = 0; j < data.length - 1; j++) {
       if (data[j].category < data[j + 1].category) {
@@ -223,12 +227,24 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       }
     }
   }
+  for (i = 0; i < data.length; i++) {
+      if(data[i].val < minCount){
+          minCount = data[i].val;
+      }
+      totalCount+=data[i].val;
+  }
+  // console.log("mincount here")
+  // console.log(minCount);
+  // console.log("totalCount here")
+  // console.log(totalCount);
+  var barHeight = ((y2-y1)*(minCount/totalCount));
+  var vert_scale = (y2 - y1) / totalCount;
 
   const margin2 = { top: 0, bottom: 0, left: 0, right: 0 };
   var max = d3.max(data.map(d => d.val));
   var min = d3.min(data.map(d => d.val));
 
-  y = d3.scaleBand().rangeRound([y2 - y1, 0]).padding(0.2);
+  y = d3.scaleBand().rangeRound([y2 - y1, 0]).padding(0);
   x = d3.scaleLinear().rangeRound([0, x2 - x1]);
   y.domain(data.map(d => d.category));
   x.domain([0, max]);
@@ -250,23 +266,31 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .enter().append("rect")
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
     .attr("class", "bar" + uniqueID)
+    .attr("opacity", 0.9)
     .attr("fill", function (d, i) {
-      colorDex = colorDex%getColorSize();
-      var color = getColor((colorDex+data.length-1)%getColorSize());
+      colorDex = colorDex%11;
+      var color = getColor((colorDex+data.length-1)%11);
       // console.log(color);
       // console.log(colorDex+data.length-1);
       colorDex--;
       return 'rgb('+ color.r +', ' + color.g + ', ' + color.b + ')'
     })
     .attr("x", 0)
-    .attr("y", d => y(d.category))
-    .attr("height", y.bandwidth())
+    .attr("y", function(d,i){
+        var temp = accumHeight - ((barHeight*d.val)/2)-barHeight/2
+        accumHeight = accumHeight - (barHeight*d.val)
+        return temp;
+    })
+    .attr("height", function(d,i){
+        return barHeight;
+    })
     .transition()
     .duration(1000)
     .delay(function (d, i) {
       return data.length*500 - i * 500;
     })
     .attr("count",d => d.val)
+    .attr("name", d => d.category)
     .attr("width", d => x(d.val))
 
 
@@ -275,19 +299,29 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       .attr("y", 0)
       .attr("fill", "black")
       .text("")
+    let label2 = canvas.append("text")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("fill", "black")
+      .text("")
     canvas.selectAll(".bar" + uniqueID)
         .on("mouseover", function () {
           d3.select(this)
-            .attr("stroke", "black")
-          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
+            .attr("opacity", 1)
+          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
+          label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
+
         })
         .on("mouseout", function () {
           d3.select(this)
-            .attr("stroke", "none")
+            .attr("opacity", 0.9)
           label.text("")
+          label2.text("")
         })
         .on("mousemove", function () {
-          label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
+          label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 20 + y1))
+          label2.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
+
         });
 
   // canvas.selectAll(".circle" + uniqueID)
@@ -314,14 +348,22 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
   //   .attr("cy", d => y(d.category) + y.bandwidth() / 2)
   //   .attr("r", 5)
 
+    var accumHeight = y2-y1;;
+    var temp = 0;
     for(let i = 0; i < data.length; i++){
         canvas.append("text")
           .text(data[i].category)
           .attr("class","bar-graph-text")
           .attr("fill","black")
-          .attr("stroke","black")
+          // .attr("stroke","#FFFFFF")
+          .style("font-size",15)
+          .style("font-weight","bold")
           .attr("stroke-width",1)
-          .attr("transform","translate("+x2+","+(y1+y(data[i].category)+(y.bandwidth() / 1.5))+")")
+          .attr("transform",function(){
+              temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
+              accumHeight = accumHeight - (barHeight*data[i].val)
+              return "translate("+x2+","+((y1+temp)+barHeight/2+5)+")"
+          })
     }
     canvas.append("text")
       .text("Count")
@@ -329,6 +371,24 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       .attr("stroke","black")
       .attr("stroke-width",0.2)
       .attr("transform","translate("+((x1+x2)/2)+","+(y2+40)+")")
+    var yHeight = "";
+    var xHeight = "";
+    canvas.append("text")
+      .text(function(){
+          if(uniqueID==0){
+              return "Personnel"
+          }
+          else if(uniqueID==1){
+              return "Formation"
+          }
+          else{
+              return "Play Type"
+          }
+      })
+      .attr("class","bar-graph-title")
+      .attr("stroke","black")
+      .attr("stroke-width",0.2)
+      .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
     return outDex;
 
 };
@@ -446,8 +506,8 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                      " V " + (y1 + end * vert_scale) +
                      " H " + x2)
 
-          .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
-        colorDex2 = (colorDex2 + 1) % getColorSize();
+          .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")")
+        colorDex2 = (colorDex2 + 1) % 11;
         first = data[i].out;
         start = data[i].end;
         end = data[i].count + start;
@@ -499,7 +559,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       canvas.append("path")
         .attr("d", " M " + toString(x1, y1 + data[i].start * vert_scale) +
           " H " + (x1 + 20) +
-          " V " + (y1 + 1 + data[i].start*vert_scale + data[i].count * vert_scale) +
+          " V " + (y1 + data[i].start*vert_scale + data[i].count * vert_scale) +
           " H " + x1)
         .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
 
@@ -746,9 +806,9 @@ function addHeader(svg, data,metadata) {
     .attr("fill", "black")
     .text("")
 
-  data.forEach(function (stat) {
-      console.log(stat.Category);
-  })
+  // data.forEach(function (stat) {
+  //     console.log(stat.Category);
+  // })
 
   function addTableInfo(canvas, w, h, text_size) {
     var wd = svg.attr("width")
@@ -793,6 +853,7 @@ function addHeader(svg, data,metadata) {
       .attr("href", "TitanLogoB.png")
       .attr("height", radius * 2)
       .attr("width", radius * 2)
+      .attr("class","logos")
     let txt = canvas.select("text.rectLabel")
     txt.text("Titan Analytics")
       .attr("x", 10)
@@ -897,4 +958,107 @@ function addHeader(svg, data,metadata) {
   var tp = 10;
   var radius = 50;
   addParallelograms(svg, tp, ht, wid, separation, radius);
+}
+
+async function generateScorecards(filename){
+       const data = await d3.json(filename);
+       // console.log(data);
+       var svg;
+       var sep;
+       var numCharts = 5;
+       var startDex1;
+       var startDex2;
+       var currX = 10;
+       d3.select("#mainDiv").selectAll('*').remove()
+       if(!(d3.select("#sankey1").property("checked"))){
+           numCharts = numCharts-1
+       }
+       if(!(d3.select("#sankey2").property("checked"))){
+           numCharts = numCharts-1
+       }
+       if((d3.select("#graph1").text()=='None')){
+           numCharts = numCharts-1
+       }
+       if((d3.select("#graph2").text()=='None')){
+           numCharts = numCharts-1
+       }
+       if((d3.select("#graph3").text()=='None')){
+           numCharts = numCharts-1
+       }
+       sep = (fixedWidth-30)/numCharts;
+       for(let i = 0; i < data.scorecards.length; i++){
+           currX = 10;
+           d3.select("#mainDiv").append("div")
+               .attr("class","row wrapper-div drop")
+               .style("padding-top",function(){
+                   if(i==0){
+                       return "100px"
+                   }
+                   else{
+                       return "600px"
+                   }})
+               .attr("id","div" + i)
+           d3.select("#div"+i)
+               .append("svg")
+                   .attr("width",fixedWidth)
+                   .attr("height",fixedHeight)
+                   .attr("class","scorecard centered-basic")
+                   .attr("id","scoreCard"+i)
+
+           svg = d3.select(("#scoreCard"+i));
+           if(!(d3.select("#graph1").text()=='None')){
+               startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+               currX = currX+sep;
+           }
+           if(d3.select("#sankey1").property("checked")){
+               addSankey(1, data.scorecards[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
+               currX = currX+sep
+           }
+           if(!(d3.select("#graph2").text()=='None')){
+               startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
+               currX = currX+sep
+           }
+           if(d3.select("#sankey2").property("checked")){
+               addSankey(2, data.scorecards[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
+               currX = currX+sep
+           }
+           if(!(d3.select("#graph3").text()=='None')){
+               addBarGraph(data.scorecards[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
+
+           }
+           //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
+           //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
+           addHeader(svg, data.scorecards[i].datasets[5]);
+       }
+}
+function emptyScoreCards(svg){
+    d3.select("#mainDiv").selectAll('*').remove();
+}
+function MakeQuerablePromise(promise) {
+    // Don't modify any promise that has been already modified.
+    if (promise.isResolved) return promise;
+
+    // Set initial state
+    var isPending = true;
+    var isRejected = false;
+    var isFulfilled = false;
+
+    // Observe the promise, saving the fulfillment in a closure scope.
+    var result = promise.then(
+        function(v) {
+            isFulfilled = true;
+            isPending = false;
+            return v;
+        },
+        function(e) {
+            isRejected = true;
+            isPending = false;
+            throw e;
+        }
+    );
+
+    result.isFulfilled = function() { return isFulfilled; };
+    result.isPending = function() { return isPending; };
+    result.isRejected = function() { return isRejected; };
+    return result;
 }
