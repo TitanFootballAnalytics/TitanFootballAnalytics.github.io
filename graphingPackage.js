@@ -213,7 +213,7 @@ function removeLoadingBars(canvas) {
 function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     x1 = x1+5;
     x2 = x2-5
-  var outDex = (colorDex+data.length)%11;
+  var outDex = (colorDex+data.length)%getColorSize();
   var minCount = data[0].val;
   var totalCount = 0;
   var accumHeight = y2-y1;
@@ -268,8 +268,8 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("class", "bar" + uniqueID)
     .attr("opacity", 0.9)
     .attr("fill", function (d, i) {
-      colorDex = colorDex%11;
-      var color = getColor((colorDex+data.length-1)%11);
+      colorDex = colorDex%getColorSize();
+      var color = getColor((colorDex+data.length-1)%getColorSize());
       // console.log(color);
       // console.log(colorDex+data.length-1);
       colorDex--;
@@ -507,7 +507,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                      " H " + x2)
 
           .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")")
-        colorDex2 = (colorDex2 + 1) % 11;
+        colorDex2 = (colorDex2 + 1) % getColorSize();
         first = data[i].out;
         start = data[i].end;
         end = data[i].count + start;
@@ -1028,7 +1028,7 @@ async function generateScorecards(filename){
            }
            //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
            //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
-           addHeader(svg, data.scorecards[i].datasets[5]);
+           addHeader(svg, data.scorecards[i].datasets[5],data.scorecards[i].datasets[6]);
        }
 }
 function emptyScoreCards(svg){
