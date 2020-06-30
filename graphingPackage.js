@@ -351,7 +351,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
           .text(data[i].category)
           .attr("class","bar-graph-text")
           .attr("fill","black")
-          .attr("stroke","#FFFFFF")
+          // .attr("stroke","#FFFFFF")
           .style("font-size",15)
           .style("font-weight","bold")
           .attr("stroke-width",1)
