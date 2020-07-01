@@ -8,10 +8,6 @@ svg = d3.select("#graph");
 $(document).ready(function() {
 	function StatsProcessor() {
 		var newStats = new Stats();
-		//Call Methods
-		// newStats.init();
-		// newStats.processLine();
-		// newStats.collectStats();
         newStats.processNames();
 		//Update View
 		updateDom();
@@ -86,49 +82,49 @@ $(document).ready(function() {
         //   .attr("stroke-width", new_st)
     }
 
-    function click(shape, index) {
-      shape.on("mousedown", function () {
-        var s = d3.select(this);
-        deselect(s);
-
-        var id = s.attr("id");
-        if (clicked.length == 0){
-            clicked.push(id);
-        }
-        else{
-            if (id.slice(0,id.length-1) == clicked[0].slice(0,clicked[0].length-1)){
-                var temp = d3.select("#" + clicked[0])
-                deselect(temp);
-                clicked = [id];
-            }
-            else{
-                deselect(s);
-                deselect(d3.select("#" + clicked[0]));
-                var lin;
-                if (id.slice(0,id.length-1) == "column"){
-                    lin = d3.select("#line" + id.slice(id.length-1) + clicked[0].slice(clicked[0].length-1));
-                }
-                else{
-                    lin = d3.select("#line" + clicked[0].slice(clicked[0].length-1) + id.slice(id.length-1));
-                }
-                var vis = lin.attr("visibility");
-                if (vis == "hidden"){
-                    no_lines.push(lin.attr("id"));
-                    lin.attr("visibility", "visible")
-                }else{
-                    var ind = no_lines.indexOf(lin.attr("id"));
-                    no_lines.splice(ind, 1);
-                    lin.attr("visibility", "hidden")
-                }
-                clicked = [];
-                }
-            }
-        if (no_lines.length == 3){
-            alert("You chose: " + no_lines);
-            changeNames(getNames(), no_lines.map(x => x.slice(4)));
-        }
-    }
-    )};
+    // function click(shape, index) {
+    //   shape.on("mousedown", function () {
+    //     var s = d3.select(this);
+    //     // deselect(s);
+    //
+    //     var id = s.attr("id");
+    //     if (clicked.length == 0){
+    //         clicked.push(id);
+    //     }
+    //     else{
+    //         if (id.slice(0,id.length-1) == clicked[0].slice(0,clicked[0].length-1)){
+    //             var temp = d3.select("#" + clicked[0])
+    //             // deselect(temp);
+    //             clicked = [id];
+    //         }
+    //         else{
+    //             // deselect(s);
+    //             // deselect(d3.select("#" + clicked[0]));
+    //             var lin;
+    //             if (id.slice(0,id.length-1) == "column"){
+    //                 lin = d3.select("#line" + id.slice(id.length-1) + clicked[0].slice(clicked[0].length-1));
+    //             }
+    //             else{
+    //                 lin = d3.select("#line" + clicked[0].slice(clicked[0].length-1) + id.slice(id.length-1));
+    //             }
+    //             var vis = lin.attr("visibility");
+    //             if (vis == "hidden"){
+    //                 no_lines.push(lin.attr("id"));
+    //                 lin.attr("visibility", "visible")
+    //             }else{
+    //                 var ind = no_lines.indexOf(lin.attr("id"));
+    //                 no_lines.splice(ind, 1);
+    //                 lin.attr("visibility", "hidden")
+    //             }
+    //             clicked = [];
+    //             }
+    //         }
+    //     if (no_lines.length == 3){
+    //         alert("You chose: " + no_lines);
+    //         changeNames(getNames(), no_lines.map(x => x.slice(4)));
+    //     }
+    // }
+    // )};
 
     function swap(s1, s2) {
         var id1 = s1.attr("id");
@@ -186,10 +182,10 @@ $(document).ready(function() {
                     }
                 }
 
-            if (no_lines.length == 3){
-                alert("You chose: " + no_lines);
-                changeNames(getNames(), no_lines.map(x => x.slice(4)));
-            }
+            // if (no_lines.length == 3){
+            //     alert("You chose: " + no_lines);
+            //     changeNames(getNames(), no_lines.map(x => x.slice(4)));
+            // }
         }
     )};
 
