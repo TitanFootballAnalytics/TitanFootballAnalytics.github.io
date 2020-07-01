@@ -992,13 +992,9 @@ async function generateScorecards(filename){
            currX = 10;
            d3.select("#mainDiv").append("div")
                .attr("class","row wrapper-div drop")
-               .style("padding-top",function(){
-                   if(i==0){
-                       return "100px"
-                   }
-                   else{
-                       return "600px"
-                   }})
+               .style("height",fixedHeight)
+               .style("width",fixedWidth)
+               .style("margin-top","100px")
                .attr("id","div" + i)
            d3.select("#div"+i)
                .append("svg")
