@@ -100,6 +100,7 @@ function getColorSize(){
 }
 
 function addPieChart(canvas, percent1, percent2, cx, cy, radius, thickness) {
+  //method signature: data, uniqueID, canvas, x1, y1, x2, y2,colorDex
   let dashArrayString = (Math.PI * 2 * radius) * percent1 + " " + (Math.PI * 2 * radius) * percent2
   let circle1 = canvas.append("circle")
     .attr("r", radius)
@@ -488,6 +489,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
   //==second set of bars=================================================================
   var first = data[0].out;
+  var vertstroke = 1;//in pixels
   var start = data[0].end;
   var end = data[0].count + start;
   var color = getColor(colorDex2);
@@ -501,9 +503,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       if (data[i].out != first) {
         // console.log("gottem")
         canvas.append("path")
-          .attr("d", " M " + toString(x2 , y1 + start * vert_scale) +
+          .attr("d", " M " + toString(x2 , y1 + (start * vert_scale) -vertstroke) +
                      " H " + (x2 - 20) +
-                     " V " + (y1 + end * vert_scale) +
+                     " V " + (y1 + (end * vert_scale) + vertstroke) +
                      " H " + x2)
 
           .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")")
@@ -522,9 +524,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     end = data[data.length - 1].end + data[data.length - 1].count;
     data[data.length - 1].end_color = color;
     canvas.append("path")
-      .attr("d", " M " + toString(x2, y1 + start * vert_scale) +
+      .attr("d", " M " + toString(x2, y1 + start * vert_scale -vertstroke) +
         " H " + (x2 - 20) +
-        " V " + (y1 + end * vert_scale) +
+        " V " + (y1 + end * vert_scale + vertstroke) +
         " H " + (x2))
       .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
   }
@@ -557,9 +559,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       }
       //console.log(data[i])
       canvas.append("path")
-        .attr("d", " M " + toString(x1, y1 + data[i].start * vert_scale) +
+        .attr("d", " M " + toString(x1, y1 + data[i].start * vert_scale - vertstroke) +
           " H " + (x1 + 20) +
-          " V " + (y1 + data[i].start*vert_scale + data[i].count * vert_scale) +
+          " V " + (y1 + data[i].start*vert_scale + data[i].count * vert_scale + vertstroke) +
           " H " + x1)
         .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
 
