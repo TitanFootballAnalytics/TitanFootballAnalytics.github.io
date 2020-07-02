@@ -107,6 +107,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
     var outDex = (colorDex+data.length)%getColorSize();
     var gap = 10;
     x2-=gap;
+    x1+=gap;
     var datatotal = data.reduce(((accum,data)=>accum+data.val),0);
     var cx = (x1+x2)/2;
     var cy = (y1+y2)/2;
