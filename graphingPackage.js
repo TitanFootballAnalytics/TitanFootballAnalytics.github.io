@@ -590,12 +590,12 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
 function addFieldChart(data, metadata,canvas, x1, y1, x2) {
 
-  let p1 = { x: 400.0, y: 400.0 };
-  let p2 = { x: 880.0, y: 400.0 };
-  let pm = { x: 640.0, y: -80.0 };
-  p1 = { x: x1, y: y1 };
-  p2 = { x: x2, y: y1 };
-  pm = { x: (x1+x2)/2, y: y1-(x2-x1) };
+  // let p1 = { x: 400.0, y: 400.0 };
+  // let p2 = { x: 880.0, y: 400.0 };
+  // let pm = { x: 640.0, y: -800.0 };
+  let p1 = { x: x1, y: y1 };
+  let p2 = { x: x2, y: y1 };
+  let pm = { x: (x1+x2)/2, y: y1-(x2-x1) };
   let p = .25;
   function toString(x, y) {
     return "" + x + " " + y + "";
@@ -631,7 +631,7 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
   var gapProp = .05;
   var step = (p2.x - p1.x) / 12;
 
-  //=======add outer edges======
+//=======add outer edges======
   var tp1 = { x: p1.x + (1 - 1) * step , y: p1.y };
   var tp2 = { x: p1.x + (1) * step, y: p1.y };
   var width = newPoint(tp1,tp2,gapProp).x-tp1.x;
@@ -670,16 +670,16 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
     p3 = temp;
     canvas.append("path")
     .attr("d", " M " + toString(p3.x, p3.y-2) +
-      " L " + toString(p3.x, p3.y-50) +
-      " L " + toString(p4.x, p4.y-50) +
+      " L " + toString(p3.x, p3.y-75) +
+      " L " + toString(p4.x, p4.y-75) +
       " L " + toString(p4.x, p4.y-2) +
       " Z ")
     .attr("fill", "White")
     .attr("stroke","Black");
 
-
+    //Metadata display
     var lTextAnchor = newPoint(p3,p4,.2);
-    lTextAnchor.y -= 25;
+    lTextAnchor.y -= 50;
     canvas.append("text")
       .attr("text-anchor", "middle")
       .attr("x", lTextAnchor.x)
@@ -691,6 +691,9 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
       .text(metadata.team1)
       .attr("font-size", 18 + "px")
 
+
+
+
     canvas.append("path")
     .attr("d", " M " + toString(lTextAnchor.x, lTextAnchor.y-15) +
                " L " + toString(lTextAnchor.x+5, lTextAnchor.y-19) +
@@ -699,8 +702,10 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
     .attr("fill", "Red")
     .attr("stroke","Black");
 
+
+
     var rTextAnchor = newPoint(p4,p3,.2);
-    rTextAnchor.y -= 25;
+    rTextAnchor.y -= 50;
     canvas.append("text")
       .attr("text-anchor", "middle")
       .attr("x", rTextAnchor.x)
@@ -713,7 +718,7 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
       .attr("font-size", 18 + "px")
 
       var mTextAnchor = newPoint(p4,p3,.5);
-      mTextAnchor.y -= 25;
+      mTextAnchor.y -= 50;
       canvas.append("text")
         .attr("text-anchor", "middle")
         .attr("x", mTextAnchor.x)
@@ -724,6 +729,7 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
         .attr("letter-spacing",.2)
         .text(metadata.score)
         .attr("font-size", 16 + "px")
+
       mTextAnchor.y += 12;
       canvas.append("text")
         .attr("text-anchor", "middle")
@@ -736,6 +742,50 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
         .text(metadata.gameClock)
         .attr("font-size", 10 + "px")
 
+        let totalyards = data[data.length-1].end - data[0].start;
+        mTextAnchor.y += 18;
+        canvas.append("text")
+          .attr("text-anchor", "middle")
+          .attr("x", mTextAnchor.x)
+          .attr("y", mTextAnchor.y)
+          .attr("fill", "Black")
+          .attr("stroke", "Black")
+          .attr("stroke-width",.3)
+          .attr("letter-spacing",.2)
+          .text(metadata.outcome + " => " + totalyards)
+          .attr("font-size", 15 + "px")
+
+    //legend
+      canvas.append("rect")
+        .attr("x",p1.x + 96)
+        .attr("y",p1.y + 6)
+        .attr("width",148)
+        .attr("height",24)
+        .attr("fill","white")
+      canvas.append("rect")
+        .attr("x",p1.x + 100)
+        .attr("y",p1.y + 10)
+        .attr("width",15)
+        .attr("height",15)
+        .attr("fill","red")
+      canvas.append("text")
+        .attr("x",p1.x + 120)
+        .attr("y",p1.y + 25)
+        .attr("fill","black")
+        .attr("font-size","20px")
+        .text("Run")
+      canvas.append("rect")
+        .attr("x",p1.x + 175)
+        .attr("y",p1.y + 10)
+        .attr("width",15)
+        .attr("height",15)
+        .attr("fill","blue")
+      canvas.append("text")
+        .attr("x",p1.x + 195)
+        .attr("y",p1.y + 25)
+        .attr("fill","black")
+        .attr("font-size","20px")
+        .text("Pass")
 
   //============================
 
