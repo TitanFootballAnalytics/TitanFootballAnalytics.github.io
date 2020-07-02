@@ -1064,6 +1064,7 @@ async function generateScorecards(filename){
        }
        sep = (fixedWidth-30)/numCharts;
        for(let i = 0; i < data.scorecards.length; i++){
+           var startDex1 = 0;
            currX = 10;
            d3.select("#mainDiv").append("div")
                .attr("class","row wrapper-div drop")
@@ -1079,26 +1080,39 @@ async function generateScorecards(filename){
                    .attr("id","scoreCard"+i)
 
            svg = d3.select(("#scoreCard"+i));
-           if(!(d3.select("#graph1").text()=='None')){
-               startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
-               // startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+
+           //TODO DESIGN CHOICE: should the graphs on first load say graph 1 or bargraph
+           if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
+               //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
+               startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
                currX = currX+sep;
+           }
+           else if(d3.select("#graph1").text()=='Pie Chart'){
+             startDex1 = addPieChart(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+             currX = currX+sep;
            }
            if(d3.select("#sankey1").property("checked")){
                addSankey(1, data.scorecards[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
                currX = currX+sep
            }
-           if(!(d3.select("#graph2").text()=='None')){
+           if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
                startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
                currX = currX+sep
+           }
+           else if(d3.select("#graph2").text()=='Pie Chart'){
+             startDex2 = addPieChart(data.scorecards[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
+             currX = currX+sep;
            }
            if(d3.select("#sankey2").property("checked")){
                addSankey(2, data.scorecards[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
                currX = currX+sep
            }
-           if(!(d3.select("#graph3").text()=='None')){
+           if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
                addBarGraph(data.scorecards[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
 
+           }
+           else if(d3.select("#graph3").text()=='Pie Chart'){
+             addPieChart(data.scorecards[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
            }
            //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
            //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
