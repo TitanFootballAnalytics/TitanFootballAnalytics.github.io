@@ -370,7 +370,13 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("name", d => d.category)
     .attr("width", d => x(d.val))
 
-
+    let rect = canvas.append("rect").attr("x",0)
+                                    .attr("y",0)
+                                    .attr("width",0)
+                                    .attr("height",0)
+                                    .attr("fill","rgba(255,255,255,1)")
+    let rwidth = 100;
+    let rheight = 100;
     let label = canvas.append("text")
       .attr("x", 0)
       .attr("y", 0)
@@ -387,18 +393,31 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
             .attr("opacity", 1)
           label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
           label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
-
+          rect.attr("x",d3.mouse(this)[0]+x1)
+              .attr("y",d3.mouse(this)[1]-rheight+y1)
+              .attr("width",rwidth)
+              .attr("height",rheight)
+              .attr("fill","rgba(255,255,255,1)")
         })
         .on("mouseout", function () {
           d3.select(this)
             .attr("opacity", 0.9)
           label.text("")
           label2.text("")
+          rect.attr("x",d3.mouse(this)[0]+x1)
+              .attr("y",d3.mouse(this)[1]-rheight+y1)
+              .attr("width",rwidth)
+              .attr("height",rheight)
+              .attr("fill","rgba(255,255,255,0)")
         })
         .on("mousemove", function () {
           label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 20 + y1))
           label2.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
-
+          rect.attr("x",d3.mouse(this)[0]+x1)
+              .attr("y",d3.mouse(this)[1]-rheight+y1)
+              .attr("width",rwidth)
+              .attr("height",rheight)
+              .attr("fill","rgba(255,255,255,1)")
         });
 
   // canvas.selectAll(".circle" + uniqueID)
