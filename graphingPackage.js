@@ -90,6 +90,10 @@ var colors=[
             // convToRGB(15,"#4B878BFF"),
   ]
 
+function generateColorString(color,alpha){
+  return 'rgb('+ color.r +', ' + color.g + ', ' + color.b + ','+alpha+')'
+}
+
 function getColor(index){
 
     return colors[index];
@@ -99,71 +103,142 @@ function getColorSize(){
   return colors.length;
 }
 
-function addPieChart(canvas, percent1, percent2, cx, cy, radius, thickness) {
-  //method signature: data, uniqueID, canvas, x1, y1, x2, y2,colorDex
-  let dashArrayString = (Math.PI * 2 * radius) * percent1 + " " + (Math.PI * 2 * radius) * percent2
-  let circle1 = canvas.append("circle")
-    .attr("r", radius)
-    .attr("cx", cx)
-    .attr("cy", cy)
-    .attr("fill", "transparent")
-    .attr("stroke", "red")
-    .attr("stroke-width", thickness)
-    .attr("percentNum", percent2);
-  let circle2 = canvas.append("circle")
-    .attr("r", radius)
-    .attr("cx", cx)
-    .attr("cy", cy)
-    .attr("fill", "transparent")
-    .attr("stroke", "rgb(0,0,255)")
-    .attr("stroke-width", thickness)
-    .attr("stroke-dasharray", dashArrayString)
-    .attr("percentNum", percent1);
+function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
+    var outDex = (colorDex+data.length)%getColorSize();
+    var gap = 10;
+    x2-=gap;
+    var datatotal = data.reduce(((accum,data)=>accum+data.val),0);
+    var cx = (x1+x2)/2;
+    var cy = (y1+y2)/2;
+    var strokeWidth = 5;
+    var diameter = Math.min(x2-x1,y2-y1);
+    var radius = diameter/2;
+    var currpointx = cx;
+    var currpointy = cy - radius;
+    var currtheta =  2*Math.PI * data[0].val/datatotal;
+    var flag = "0";
+    if(currtheta > Math.PI){
+      flag = "1";
+    }
+    var nextpointx = cx + radius*Math.sin(currtheta);
+    var nextpointy = cy - radius*Math.cos(currtheta);
+    var colordex = colorDex;
+    var color = getColor(colordex);
+    colordex++;
+    canvas.append("path")
+      .attr("d", " M " + currpointx + " " + currpointy +
+                 " A " + radius + " " + radius +" 0 "+flag+" "+1+ " " + nextpointx + " " + nextpointy +
+                 " L " + (cx) + " " + (cy) + " Z")
+      .attr("fill", generateColorString(color,1))
+      .attr("stroke","#DDDDDD")
+      .attr("stroke-width",strokeWidth);
 
-  circle1.on("mouseover", function () {
-    let label = canvas.select("text.pieLabel");
-    label.text(Math.round(circle1.attr("percentNum") * 100) + "%").attr("x", 100).attr("y", 100).attr("text-anchor", "left");
+    //console.log(cx,cy,diameter);
+    console.log("printing graph")
+    for(var i = 1; i < data.length;i++){
 
-    let dashArrayString2 = (Math.PI * 2 * (radius + 30)) * (circle2.attr("percentNum")) + " " + (Math.PI * 2 * (radius + 30)) * (circle1.attr("percentNum"))
-    circle1.transition().duration(200)
-      .attr("r", (radius + 30))
-    circle2.transition().duration(200)
-      .attr("r", (radius + 30))
-      .attr("stroke-dasharray", dashArrayString2)
-  });
-  circle1.on("mouseout", function () {
-    let label = canvas.select("text.pieLabel");
-    label.text("");
+      console.log("proportion",data[i].val/datatotal)
+      console.log("first",currtheta);
+      currpointx = nextpointx;
+      currpointy = nextpointy;
+      console.log("currpoitns",currpointx,currpointy)
+      //var temp = currtheta;
+      currtheta += 2*Math.PI * data[i].val/datatotal;
+      console.log("second",currtheta);
+      flag = "0";
+      if(data[i].val/datatotal > .5){
+        flag = "1";
+      }
+      nextpointx = cx + radius*Math.sin(currtheta);
+      nextpointy = cy - radius*Math.cos(currtheta);
+      console.log(cx,radius,radius*Math.sin(currtheta))
+      console.log("points",currpointx,currpointy,nextpointx,nextpointy)
+      colordex = colordex%getColorSize()
+      color = getColor(colordex);
+      colordex++;
+      canvas.append("path")
+        .attr("d", " M " + currpointx + " " + currpointy +
+                   " A " + radius + " " + radius +" 0 "+flag+" "+1+ " " + nextpointx + " " + nextpointy +
+                   " L " + (cx) + " " + (cy) + " Z")
 
-    circle1.transition().duration(200)
-      .attr("r", (radius))
-    circle2.transition().duration(200)
-      .attr("r", (radius))
-      .attr("stroke-dasharray", dashArrayString)
-  });
-
-  circle2.on("mouseover", function () {
-    let label = canvas.select("text.pieLabel");
-    label.text(Math.round(circle2.attr("percentNum") * 100).toString() + "%").attr("x", 100).attr("y", 100).attr("text-anchor", "left");
-
-    let dashArrayString2 = (Math.PI * 2 * (radius + 30)) * (circle2.attr("percentNum")) + " " + (Math.PI * 2 * (radius + 30)) * (circle1.attr("percentNum"))
-    circle1.transition().duration(200)
-      .attr("r", (radius + 30))
-    circle2.transition().duration(200)
-      .attr("r", (radius + 30))
-      .attr("stroke-dasharray", dashArrayString2)
-  });
-  circle2.on("mouseout", function () {
-    let label = canvas.select("text.pieLabel");
-    label.text("");
-
-    circle1.transition().duration(200)
-      .attr("r", (radius))
-    circle2.transition().duration(200)
-      .attr("r", (radius))
-      .attr("stroke-dasharray", dashArrayString)
-  });
+        .attr("fill", generateColorString(color,1))
+        .attr("stroke","#DDDDDD")
+        .attr("stroke-width",strokeWidth);
+      }
+      var centerrad = radius/2;
+      canvas.append("circle")
+        .attr("r",centerrad)
+        .attr("cx",cx)
+        .attr("cy",cy)
+        .attr("fill","#DDDDDD")
+      return outDex;
 }
+
+// function addPieChart(canvas, percent1, percent2, cx, cy, radius, thickness) {
+//   //method signature: data, uniqueID, canvas, x1, y1, x2, y2,colorDex
+//   let dashArrayString = (Math.PI * 2 * radius) * percent1 + " " + (Math.PI * 2 * radius) * percent2
+//   let circle1 = canvas.append("circle")
+//     .attr("r", radius)
+//     .attr("cx", cx)
+//     .attr("cy", cy)
+//     .attr("fill", "transparent")
+//     .attr("stroke", "red")
+//     .attr("stroke-width", thickness)
+//     .attr("percentNum", percent2);
+//   let circle2 = canvas.append("circle")
+//     .attr("r", radius)
+//     .attr("cx", cx)
+//     .attr("cy", cy)
+//     .attr("fill", "transparent")
+//     .attr("stroke", "rgb(0,0,255)")
+//     .attr("stroke-width", thickness)
+//     .attr("stroke-dasharray", dashArrayString)
+//     .attr("percentNum", percent1);
+//
+//   circle1.on("mouseover", function () {
+//     let label = canvas.select("text.pieLabel");
+//     label.text(Math.round(circle1.attr("percentNum") * 100) + "%").attr("x", 100).attr("y", 100).attr("text-anchor", "left");
+//
+//     let dashArrayString2 = (Math.PI * 2 * (radius + 30)) * (circle2.attr("percentNum")) + " " + (Math.PI * 2 * (radius + 30)) * (circle1.attr("percentNum"))
+//     circle1.transition().duration(200)
+//       .attr("r", (radius + 30))
+//     circle2.transition().duration(200)
+//       .attr("r", (radius + 30))
+//       .attr("stroke-dasharray", dashArrayString2)
+//   });
+//   circle1.on("mouseout", function () {
+//     let label = canvas.select("text.pieLabel");
+//     label.text("");
+//
+//     circle1.transition().duration(200)
+//       .attr("r", (radius))
+//     circle2.transition().duration(200)
+//       .attr("r", (radius))
+//       .attr("stroke-dasharray", dashArrayString)
+//   });
+//
+//   circle2.on("mouseover", function () {
+//     let label = canvas.select("text.pieLabel");
+//     label.text(Math.round(circle2.attr("percentNum") * 100).toString() + "%").attr("x", 100).attr("y", 100).attr("text-anchor", "left");
+//
+//     let dashArrayString2 = (Math.PI * 2 * (radius + 30)) * (circle2.attr("percentNum")) + " " + (Math.PI * 2 * (radius + 30)) * (circle1.attr("percentNum"))
+//     circle1.transition().duration(200)
+//       .attr("r", (radius + 30))
+//     circle2.transition().duration(200)
+//       .attr("r", (radius + 30))
+//       .attr("stroke-dasharray", dashArrayString2)
+//   });
+//   circle2.on("mouseout", function () {
+//     let label = canvas.select("text.pieLabel");
+//     label.text("");
+//
+//     circle1.transition().duration(200)
+//       .attr("r", (radius))
+//     circle2.transition().duration(200)
+//       .attr("r", (radius))
+//       .attr("stroke-dasharray", dashArrayString)
+//   });
+// }
 
 function addLoadingBars(canvas) {
   canvas.append("line")
@@ -274,7 +349,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       // console.log(color);
       // console.log(colorDex+data.length-1);
       colorDex--;
-      return 'rgb('+ color.r +', ' + color.g + ', ' + color.b + ')'
+      return generateColorString(color,1)
     })
     .attr("x", 0)
     .attr("y", function(d,i){
@@ -1005,7 +1080,8 @@ async function generateScorecards(filename){
 
            svg = d3.select(("#scoreCard"+i));
            if(!(d3.select("#graph1").text()=='None')){
-               startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+               startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
+               // startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
                currX = currX+sep;
            }
            if(d3.select("#sankey1").property("checked")){
