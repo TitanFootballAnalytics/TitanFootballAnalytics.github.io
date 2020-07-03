@@ -370,55 +370,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("name", d => d.category)
     .attr("width", d => x(d.val))
 
-    let rect = canvas.append("rect").attr("x",0)
-                                    .attr("y",0)
-                                    .attr("width",0)
-                                    .attr("height",0)
-                                    .attr("fill","rgba(255,255,255,1)")
-    let rwidth = 100;
-    let rheight = 100;
-    let label = canvas.append("text")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("fill", "black")
-      .text("")
-    let label2 = canvas.append("text")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("fill", "black")
-      .text("")
-    canvas.selectAll(".bar" + uniqueID)
-        .on("mouseover", function () {
-          d3.select(this)
-            .attr("opacity", 1)
-          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
-          label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
-          rect.attr("x",d3.mouse(this)[0]+x1)
-              .attr("y",d3.mouse(this)[1]-rheight+y1)
-              .attr("width",rwidth)
-              .attr("height",rheight)
-              .attr("fill","rgba(255,255,255,1)")
-        })
-        .on("mouseout", function () {
-          d3.select(this)
-            .attr("opacity", 0.9)
-          label.text("")
-          label2.text("")
-          rect.attr("x",d3.mouse(this)[0]+x1)
-              .attr("y",d3.mouse(this)[1]-rheight+y1)
-              .attr("width",rwidth)
-              .attr("height",rheight)
-              .attr("fill","rgba(255,255,255,0)")
-        })
-        .on("mousemove", function () {
-          label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 20 + y1))
-          label2.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
-          rect.attr("x",d3.mouse(this)[0]+x1)
-              .attr("y",d3.mouse(this)[1]-rheight+y1)
-              .attr("width",rwidth)
-              .attr("height",rheight)
-              .attr("fill","rgba(255,255,255,1)")
-        });
+
 
   // canvas.selectAll(".circle" + uniqueID)
   //   .data(data)
@@ -485,6 +437,57 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
       .attr("stroke","black")
       .attr("stroke-width",0.2)
       .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
+
+      let rect = canvas.append("rect").attr("x",0)
+                                      .attr("y",0)
+                                      .attr("width",0)
+                                      .attr("height",0)
+                                      .attr("fill","rgba(255,255,255,1)")
+      let rwidth = 130;
+      let rheight = 30;
+      let label = canvas.append("text")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("fill", "black")
+        .text("")
+      let label2 = canvas.append("text")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("fill", "black")
+        .text("")
+      var mgap = 3;
+      canvas.selectAll(".bar" + uniqueID)
+          .on("mouseover", function () {
+            d3.select(this)
+              .attr("opacity", 1)
+            label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
+            label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
+            rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+                .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
+                .attr("width",rwidth)
+                .attr("height",rheight)
+                .attr("fill","rgba(255,255,255,.9)")
+          })
+          .on("mouseout", function () {
+            d3.select(this)
+              .attr("opacity", 0.9)
+            label.text("")
+            label2.text("")
+            rect.attr("x",d3.mouse(this)[0]+x1)
+                .attr("y",d3.mouse(this)[1]-rheight+y1)
+                .attr("width",0)
+                .attr("height",0)
+                .attr("fill","rgba(255,255,255,0)")
+          })
+          .on("mousemove", function () {
+            label2.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 20 + y1))
+            label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
+            rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+                .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
+                .attr("width",rwidth)
+                .attr("height",rheight)
+                .attr("fill","rgba(255,255,255,.9)")
+          });
     return outDex;
 
 };
@@ -531,6 +534,8 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
 
   // console.log(colors);
+  console.log("begin data count",uniqueID);
+  var inTotals = {};
   var total = 0;
   var val = data[0].in;
   for (var i = 0; i < data.length; i++) {
@@ -542,12 +547,19 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     data[i].color = getColor(colorDex1);
     // console.log(color_start)
     // console.log(data[i].color)
-
+    if(data[i].in in inTotals){
+      console.log("second",data[i])
+      inTotals[data[i].in] += data[i].count;
+    }
+    else{
+      console.log("first",data[i])
+      inTotals[data[i].in] = data[i].count;
+    }
     data[i].start = total;
     data[i].id = i;
     total += data[i].count;
   }
-
+  console.log(inTotals)
   //sort in order to be able to easily set end locations
   //sort will be on the out collumn first, since the in collumn is already ordered
   //it is exepcted that the it will remain ordered after a bubble sort, within
@@ -566,6 +578,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   //end order calculation
   var sum = 0;
   for (var i = 0; i < data.length; i++) {
+    //populates datas intotals
+    data[i].intotal = inTotals[data[i].in];
+    //populates end calculation
     data[i].end = sum;
     sum += data[i].count;
   }
@@ -598,11 +613,13 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       if (data[i].out != first) {
         // console.log("gottem")
         canvas.append("path")
+          .attr("class","sankeyrect"+uniqueID)
+          .attr("count",data[i].count)
+          .attr("val",data[i].out)
           .attr("d", " M " + toString(x2 , y1 + (start * vert_scale) -vertstroke) +
                      " H " + (x2 - 20) +
                      " V " + (y1 + (end * vert_scale) + vertstroke) +
                      " H " + x2)
-
           .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")")
         colorDex2 = (colorDex2 + 1) % getColorSize();
         first = data[i].out;
@@ -619,6 +636,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     end = data[data.length - 1].end + data[data.length - 1].count;
     data[data.length - 1].end_color = color;
     canvas.append("path")
+      .attr("class","sankeyrect"+uniqueID)
+      .attr("count",data[data.length-1].count)
+      .attr("val",data[data.length-1].out)
       .attr("d", " M " + toString(x2, y1 + start * vert_scale -vertstroke) +
         " H " + (x2 - 20) +
         " V " + (y1 + end * vert_scale + vertstroke) +
@@ -654,6 +674,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       }
       //console.log(data[i])
       canvas.append("path")
+        .attr("class","sankeyrect"+uniqueID)
+        .attr("count",data[i].intotal)
+        .attr("val",data[i].in)
         .attr("d", " M " + toString(x1, y1 + data[i].start * vert_scale - vertstroke) +
           " H " + (x1 + 20) +
           " V " + (y1 + data[i].start*vert_scale + data[i].count * vert_scale + vertstroke) +
@@ -680,11 +703,12 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
     })
     .attr("fill", function (d, i) {
-      //console.log(d)
       var col = d.color;
+
+        console.log(col)
       var ecol = d.end_color;
       canvas.insert("defs").html("<linearGradient id='"+uniqueID+"grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
-        "<stop offset='0%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:.7' />" +
+        "<stop offset='0%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:1' />" +
         "<stop offset='100%' style='stop-color:rgb(" + col.r + "," + col.g + "," + col.b + ");stop-opacity:1' />" +
         "</linearGradient>");
       return "url(#"+uniqueID+"grad" + i + ")"//'rgba('+col.r+', ' + col.g + ', ' + col.b  + ',.5)'
@@ -721,27 +745,103 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     //     " H " + (x2-20))
 
 
+    let rect = canvas.append("rect").attr("x",0)
+                                    .attr("y",0)
+                                    .attr("width",0)
+                                    .attr("height",0)
+                                    .attr("fill","rgba(255,255,255,1)")
+    let rwidth = 130;
+    let rheight = 30;
+    var mgap = 3;
+    let label = canvas.append("text")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("fill", "black")
+      .text("")
+    let label2 = canvas.append("text")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("fill", "black")
+      .text("")
+    canvas.selectAll(".sankeyline"+uniqueID)
+        .on("mouseover", function () {
+          d3.select(this)
+            .attr("opacity", 1)
+          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
+          rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+              .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
+              .attr("width",rwidth)
+              .attr("height",rheight)
+              .attr("fill","rgba(255,255,255,.9)")
+        })
+        .on("mouseout", function () {
+          d3.select(this)
+            .attr("opacity", 0.5)
+          label.text("")
+          rect.attr("x",d3.mouse(this)[0]+x1)
+              .attr("y",d3.mouse(this)[1]-rheight+y1)
+              .attr("width",0)
+              .attr("height",0)
+              .attr("fill","rgba(255,255,255,0)")
+        })
+        .on("mousemove", function () {
+          label.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20))
+          rect.attr("x",d3.mouse(this)[0]+mgap)
+              .attr("y",d3.mouse(this)[1]-rheight-mgap)
+              .attr("width",rwidth)
+              .attr("height",rheight)
+              .attr("fill","rgba(255,255,255,.9)")
+        });
 
 
-  let label = canvas.append("text")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("fill", "black")
-    .text("")
-  canvas.selectAll(".sankeyline"+uniqueID)
-    .on("mouseover", function () {
-      d3.select(this)
-        .attr("opacity", 1)
-      label.text("Count: " + d3.select(this).attr("count")).attr("x", d3.mouse(this)[0] + 5).attr("y", d3.mouse(this)[1] - 5)
-    })
-    .on("mouseout", function () {
-      d3.select(this)
-        .attr("opacity", 0.5)
-      label.text("")
-    })
-    .on("mousemove", function () {
-      label.attr("x", d3.mouse(this)[0] + 5).attr("y", d3.mouse(this)[1] - 5)
-    })
+        canvas.selectAll(".sankeyrect"+uniqueID)
+            .on("mouseover", function () {
+              label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
+              label2.text("Name: "+ d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
+              rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+                  .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
+                  .attr("width",rwidth)
+                  .attr("height",rheight)
+                  .attr("fill","rgba(255,255,255,.9)")
+            })
+            .on("mouseout", function () {
+              label.text("")
+              label2.text("")
+              rect.attr("x",d3.mouse(this)[0]+x1)
+                  .attr("y",d3.mouse(this)[1]-rheight+y1)
+                  .attr("width",0)
+                  .attr("height",0)
+                  .attr("fill","rgba(255,255,255,0)")
+            })
+            .on("mousemove", function () {
+              label2.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20))
+              label.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5))
+              rect.attr("x",d3.mouse(this)[0]+mgap)
+                  .attr("y",d3.mouse(this)[1]-rheight-mgap)
+                  .attr("width",rwidth)
+                  .attr("height",rheight)
+                  .attr("fill","rgba(255,255,255,.9)")
+            });
+
+  // let label = canvas.append("text")
+  //   .attr("x", 0)
+  //   .attr("y", 0)
+  //   .attr("fill", "black")
+  //   .text("")
+  // canvas.selectAll(".sankeyline"+uniqueID)
+  //   .on("mouseover", function () {
+  //     d3.select(this)
+  //       .attr("opacity", 1)
+  //     label.text("Count: " + d3.select(this).attr("count")).attr("x", d3.mouse(this)[0] + 5).attr("y", d3.mouse(this)[1] - 5)
+  //   })
+  //   .on("mouseout", function () {
+  //     d3.select(this)
+  //       .attr("opacity", 0.5)
+  //     label.text("")
+  //   })
+  //   .on("mousemove", function () {
+  //     label.attr("x", d3.mouse(this)[0] + 5).attr("y", d3.mouse(this)[1] - 5)
+  //   })
 }
 
 
@@ -1082,10 +1182,10 @@ async function generateScorecards(filename){
        if((d3.select("#graph3").text()=='None')){
            numCharts = numCharts-1
        }
-       sep = (fixedWidth-30)/numCharts;
+       sep = (fixedWidth-20)/numCharts;
        for(let i = 0; i < data.scorecards.length; i++){
            var startDex1 = 0;
-           currX = 10;
+           currX = fixedWidth-10;
            d3.select("#mainDiv").append("div")
                .attr("class","row wrapper-div drop")
                .style("height",fixedHeight)
@@ -1102,38 +1202,43 @@ async function generateScorecards(filename){
            svg = d3.select(("#scoreCard"+i));
 
            //TODO DESIGN CHOICE: should the graphs on first load say graph 1 or bargraph
-           if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
-               //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
-               startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
-               currX = currX+sep;
-           }
-           else if(d3.select("#graph1").text()=='Pie Chart'){
-             startDex1 = addPieChart(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
-             currX = currX+sep;
-           }
-           if(d3.select("#sankey1").property("checked")){
-               addSankey(1, data.scorecards[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
-               currX = currX+sep
-           }
-           if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
-               startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
-               currX = currX+sep
-           }
-           else if(d3.select("#graph2").text()=='Pie Chart'){
-             startDex2 = addPieChart(data.scorecards[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
-             currX = currX+sep;
-           }
-           if(d3.select("#sankey2").property("checked")){
-               addSankey(2, data.scorecards[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
-               currX = currX+sep
-           }
            if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
-               addBarGraph(data.scorecards[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
-
+               startDex1 = addBarGraph(data.scorecards[i].datasets[2], 2, svg, currX-sep, svg.attr("height")*0.40, (currX), svg.attr("height")*0.90,0);
+               currX = currX-sep;
            }
            else if(d3.select("#graph3").text()=='Pie Chart'){
-             addPieChart(data.scorecards[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
+               addPieChart(data.scorecards[i].datasets[2], 2, svg, currX-sep, svg.attr("height")*0.40, (currX), svg.attr("height")*0.90,0);
+               currX = currX-sep;
            }
+           if(d3.select("#sankey2").property("checked")){
+               addSankey(""+i+"_1", data.scorecards[i].datasets[4], svg, 2, currX-sep , svg.attr("height")*0.40, (currX), svg.attr("height")*0.90,true,startDex1,0);
+               currX = currX-sep
+           }
+           if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
+               startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, currX-sep, svg.attr("height")*0.40, (currX), svg.attr("height")*0.90,startDex1);
+               currX = currX-sep
+           }
+           else if(d3.select("#graph2").text()=='Pie Chart'){
+             startDex2 = addPieChart(data.scorecards[i].datasets[1], 1, svg, currX-sep, svg.attr("height")*0.40, (currX), svg.attr("height")*0.90,startDex1);
+             currX = currX-sep;
+           }
+           if(d3.select("#sankey1").property("checked")){
+               addSankey(""+i+"_2", data.scorecards[i].datasets[3], svg, 2, currX-sep , svg.attr("height")*0.40, (currX), svg.attr("height")*0.90,true,startDex2,startDex1);
+               currX = currX-sep
+           }
+           if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
+               //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
+               startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX-sep, svg.attr("height")*0.40, (currX), svg.attr("height")*0.90,startDex2);
+
+           }
+           else if(d3.select("#graph1").text()=='Pie Chart'){
+             startDex1 = addPieChart(data.scorecards[i].datasets[0], 0, svg, currX-sep, svg.attr("height")*0.40, (currX), svg.attr("height")*0.90,startDex2);
+
+           }
+
+
+
+
            //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
            //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
            addHeader(svg, data.scorecards[i].datasets[5],data.scorecards[i].datasets[6]);
