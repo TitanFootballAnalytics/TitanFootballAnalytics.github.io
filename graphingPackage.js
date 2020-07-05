@@ -534,6 +534,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
 
   // console.log(colors);
+  var inTotals = {};
   var total = 0;
   var val = data[0].in;
   for (var i = 0; i < data.length; i++) {
@@ -545,6 +546,15 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     data[i].color = getColor(colorDex1);
     // console.log(color_start)
     // console.log(data[i].color)
+    if(data[i].in in inTotals){
+      console.log("second",data[i])
+      inTotals[data[i].in] += data[i].count;
+    }
+    else{
+      console.log("first",data[i])
+      inTotals[data[i].in] = data[i].count;
+    }
+
 
     data[i].start = total;
     data[i].id = i;
@@ -569,6 +579,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   //end order calculation
   var sum = 0;
   for (var i = 0; i < data.length; i++) {
+    //populates datas intotals
+    data[i].intotal = inTotals[data[i].in];
+    //populates end calculation
     data[i].end = sum;
     sum += data[i].count;
   }
@@ -663,7 +676,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       //console.log(data[i])
       canvas.append("path")
         .attr("class","sankeyrect"+uniqueID)
-        .attr("count",data[i].count)
+        .attr("count",data[i].intotal)
         .attr("val",data[i].in)
         .attr("d", " M " + toString(x1, y1 + data[i].start * vert_scale - vertstroke) +
           " H " + (x1 + 20) +
