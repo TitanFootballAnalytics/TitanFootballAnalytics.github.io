@@ -1222,7 +1222,7 @@ async function generateScorecards(filename){
              currX = currX+sep;
            }
            if(d3.select("#sankey1").property("checked")){
-               addSankey(1, data.scorecards[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
+               addSankey(""+i+"_"+1, data.scorecards[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
                currX = currX+sep
            }
            if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
@@ -1234,7 +1234,7 @@ async function generateScorecards(filename){
              currX = currX+sep;
            }
            if(d3.select("#sankey2").property("checked")){
-               addSankey(2, data.scorecards[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
+               addSankey(""+i+"_"+2, data.scorecards[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
                currX = currX+sep
            }
            if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
