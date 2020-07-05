@@ -467,6 +467,9 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
                 .attr("width",rwidth)
                 .attr("height",rheight)
                 .attr("fill","rgba(255,255,255,.9)")
+                rect.moveToFront();
+                label.moveToFront();
+                label2.moveToFront();
           })
           .on("mouseout", function () {
             d3.select(this)
@@ -773,8 +776,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
               .attr("width",rwidth)
               .attr("height",rheight)
               .attr("fill","rgba(255,255,255,.9)")
-          rect.moveToFront();
-          label.moveToFront();
+              rect.moveToFront();
+              label.moveToFront();
+              label2.moveToFront();
         })
         .on("mouseout", function () {
           d3.select(this)
