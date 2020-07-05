@@ -108,6 +108,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
     var gap = 10;
     x2-=gap;
     x1+=gap;
+    y1-=50;
     var datatotal = data.reduce(((accum,data)=>accum+data.val),0);
     var cx = (x1+x2)/2;
     var cy = (y1+y2)/2;
@@ -132,28 +133,31 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
                  " L " + (cx) + " " + (cy) + " Z")
       .attr("fill", generateColorString(color,1))
       .attr("stroke","#DDDDDD")
-      .attr("stroke-width",strokeWidth);
-
+      .attr("class", "pie" + uniqueID)
+      .attr("stroke-width",strokeWidth)
+      .attr("val",data[0].val)
+      .attr("cat",data[0].category)
+      .attr("opacity",.9);
     //console.log(cx,cy,diameter);
-    console.log("printing graph")
+    // console.log("printing graph")
     for(var i = 1; i < data.length;i++){
 
-      console.log("proportion",data[i].val/datatotal)
-      console.log("first",currtheta);
+      // console.log("proportion",data[i].val/datatotal)
+      // console.log("first",currtheta);
       currpointx = nextpointx;
       currpointy = nextpointy;
-      console.log("currpoitns",currpointx,currpointy)
+      // console.log("currpoitns",currpointx,currpointy)
       //var temp = currtheta;
       currtheta += 2*Math.PI * data[i].val/datatotal;
-      console.log("second",currtheta);
+      // console.log("second",currtheta);
       flag = "0";
       if(data[i].val/datatotal > .5){
         flag = "1";
       }
       nextpointx = cx + radius*Math.sin(currtheta);
       nextpointy = cy - radius*Math.cos(currtheta);
-      console.log(cx,radius,radius*Math.sin(currtheta))
-      console.log("points",currpointx,currpointy,nextpointx,nextpointy)
+      // console.log(cx,radius,radius*Math.sin(currtheta))
+      // console.log("points",currpointx,currpointy,nextpointx,nextpointy)
       colordex = colordex%getColorSize()
       color = getColor(colordex);
       colordex++;
@@ -164,15 +168,73 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
 
         .attr("fill", generateColorString(color,1))
         .attr("stroke","#DDDDDD")
-        .attr("stroke-width",strokeWidth);
-      }
-      var centerrad = radius/2;
-      canvas.append("circle")
-        .attr("r",centerrad)
-        .attr("cx",cx)
-        .attr("cy",cy)
-        .attr("fill","#DDDDDD")
-      return outDex;
+        .attr("class", "pie" + uniqueID)
+        .attr("stroke-width",strokeWidth)
+        .attr("val",data[0].val)
+        .attr("cat",data[0].category)
+        .attr("opacity",.9);
+    }
+    var centerrad = radius/2;
+    canvas.append("circle")
+      .attr("r",centerrad)
+      .attr("cx",cx)
+      .attr("cy",cy)
+      .attr("fill","#DDDDDD")
+
+    let rect = canvas.append("rect").attr("x",0)
+                                    .attr("y",0)
+                                    .attr("width",0)
+                                    .attr("height",0)
+                                    .attr("fill","rgba(255,255,255,1)")
+    let rwidth = 130;
+    let rheight = 30;
+    let label = canvas.append("text")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("fill", "black")
+      .text("")
+    let label2 = canvas.append("text")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("fill", "black")
+      .text("")
+    var mgap = 3;
+    canvas.selectAll(".pie" + uniqueID)
+        .on("mouseover", function () {
+          d3.select(this)
+            .attr("opacity", 1)
+          label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20))
+          label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5))
+          rect.attr("x",d3.mouse(this)[0]+mgap)
+              .attr("y",d3.mouse(this)[1]-rheight-mgap)
+              .attr("width",rwidth)
+              .attr("height",rheight)
+              .attr("fill","rgba(255,255,255,.9)")
+              rect.moveToFront();
+              label.moveToFront();
+              label2.moveToFront();
+        })
+        .on("mouseout", function () {
+          d3.select(this)
+            .attr("opacity", 0.9)
+          label.text("")
+          label2.text("")
+          rect.attr("x",d3.mouse(this)[0])
+              .attr("y",d3.mouse(this)[1]-rheight)
+              .attr("width",0)
+              .attr("height",0)
+              .attr("fill","rgba(255,255,255,0)")
+        })
+        .on("mousemove", function () {
+          label2.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20 ))
+          label.attr("x", (d3.mouse(this)[0] + 5 )).attr("y", (d3.mouse(this)[1] - 5 ))
+          rect.attr("x",d3.mouse(this)[0]+mgap)
+              .attr("y",d3.mouse(this)[1]-rheight-mgap)
+              .attr("width",rwidth)
+              .attr("height",rheight)
+              .attr("fill","rgba(255,255,255,.9)")
+        });
+    return outDex;
 }
 
 // function addPieChart(canvas, percent1, percent2, cx, cy, radius, thickness) {
@@ -550,11 +612,11 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     // console.log(color_start)
     // console.log(data[i].color)
     if(data[i].in in inTotals){
-      console.log("second",data[i])
+      // console.log("second",data[i])
       inTotals[data[i].in] += data[i].count;
     }
     else{
-      console.log("first",data[i])
+      // console.log("first",data[i])
       inTotals[data[i].in] = data[i].count;
     }
 
@@ -816,8 +878,8 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
             .on("mouseout", function () {
               label.text("")
               label2.text("")
-              rect.attr("x",d3.mouse(this)[0]+x1)
-                  .attr("y",d3.mouse(this)[1]-rheight+y1)
+              rect.attr("x",d3.mouse(this)[0])
+                  .attr("y",d3.mouse(this)[1]-rheight)
                   .attr("width",0)
                   .attr("height",0)
                   .attr("fill","rgba(255,255,255,0)")
