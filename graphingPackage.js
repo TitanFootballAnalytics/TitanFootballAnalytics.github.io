@@ -104,17 +104,28 @@ function getColorSize(){
 }
 
 function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
+  // canvas.append("rect")
+  //   .attr("x",x1)
+  //   .attr("y",y1)
+  //   .attr("width",(x2)-(x1))
+  //   .attr("height",y2-(y1))
+  //   .attr("fill","red")
+  //   .attr("stroke","black")
+
     var outDex = (colorDex+data.length)%getColorSize();
     var gap = 10;
     x2-=gap;
     x1+=gap;
-    y1-=50;
     var datatotal = data.reduce(((accum,data)=>accum+data.val),0);
-    var cx = (x1+x2)/2;
-    var cy = (y1+y2)/2;
+
     var strokeWidth = 5;
     var diameter = Math.min(x2-x1,y2-y1);
     var radius = diameter/2;
+
+
+    var cx = (x1+x2)/2;
+    var cy = (y1+y2)/2;
+    cy-=((y2-y1)/2 - radius);
     var currpointx = cx;
     var currpointy = cy - radius;
     var currtheta =  2*Math.PI * data[0].val/datatotal;
@@ -196,6 +207,63 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("cx",cx)
       .attr("cy",cy)
       .attr("fill","#DDDDDD")
+
+    // canvas.append("rect")
+    //   .attr("x",x1-gap)
+    //   .attr("y",y1+diameter)
+    //   .attr("width",(x2+gap)-(x1-gap))
+    //   .attr("height",y2-(y1+diameter) + 40)
+    //   .attr("stroke","black")
+    var maxWidth =  (x2+gap)-(x1-gap);
+    var lx = x1-gap;
+    var ly = y1+diameter;
+    var line = 1;
+    var linesize = 20;
+    var pad = 2;
+    var lineAccum = 0;
+    for(var i = 0; i < data.length;i++){
+      colorDex = colorDex%getColorSize()
+      color = getColor(colorDex);
+      colorDex++;
+      var lrect = canvas.append("rect")
+        .attr("x",lx+lineAccum+pad)
+        .attr("y",ly+linesize*(line-1) + pad)
+        .attr("width",linesize-2*pad)
+        .attr("height",linesize-2*pad)
+        .attr("fill",generateColorString(color,1));
+
+
+      var text = canvas.append("text")
+                    .attr("text-anchor","start")
+                    .attr("alignment-baseline","middle")
+                    .attr("fill","black")
+                    .attr("font-size","15px")
+                    .text(data[i].category)
+      var textWidth = text.node().getBBox().width;
+      if(linesize+textWidth + 2*pad> maxWidth){
+        //handle content spillover
+      }
+      else if(lineAccum + linesize+textWidth+2*pad > maxWidth){
+        //handle wrap
+        line++;
+        lineAccum=0;
+        lrect.attr("x",lx+lineAccum+pad)
+            .attr("y",ly+linesize*(line-1) + pad)
+        text.attr("x",lx+lineAccum + linesize + pad)
+            .attr("y",ly+linesize*(line-.5));
+        lineAccum = linesize+2*pad+textWidth;
+
+      }
+      else{
+        //handle normal text placement
+        text.attr("x",lx+lineAccum + linesize + pad)
+            .attr("y",ly+linesize*(line-.5));
+        lineAccum += linesize+2*pad+textWidth;
+      }
+      // console.log(text.node().getBBox())
+    }
+
+    console.log(y2-(y1+diameter) + 40);
 
     let rect = canvas.append("rect").attr("x",0)
                                     .attr("y",0)
@@ -693,10 +761,10 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   // { r: 28, g: 172, b: 120 },
   // { r: 146, g: 110, b: 174 }];
 
-  console.log(data)
-  for(var i = 0;i<data.length;i++){
-    console.log(data[i])
-  }
+  // console.log(data)
+  // for(var i = 0;i<data.length;i++){
+  //   console.log(data[i])
+  // }
   //==second set of bars=================================================================
   var first = data[0].out;
   var vertstroke = 1;//in pixels
@@ -706,11 +774,11 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   data[0].end_color = color;
   if(barflag){
     for (var i = 1; i < data.length; i++) {
-      console.log(data[i])
+      // console.log(data[i])
       // console.log(i)
       // console.log(first);
       // console.log(data[i].out);
-      console.log("----------");
+      // console.log("----------");
       if (data[i].out != first) {
         // console.log("gottem")
         canvas.append("path")
@@ -736,7 +804,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     }
     end = data[data.length - 1].end + data[data.length - 1].count;
     data[data.length - 1].end_color = color;
-    console.log(data[data.length-1])
+    // console.log(data[data.length-1])
     canvas.append("path")
       .attr("class","sankeyrect"+uniqueID)
       .attr("count",data[data.length-1].outtotal)
@@ -747,7 +815,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
         " H " + (x2))
       .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
   }
-  console.log("===================")
+  // console.log("===================")
   //=========================================================================
 
   //reorder for aesthetic
