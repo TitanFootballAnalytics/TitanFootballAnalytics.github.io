@@ -593,7 +593,7 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
   var yunit = (y2-y1)/5;
   canvas.insert("defs").html(
     "<pattern id='grass' width='100%' height='100%'>" +
-      "<image xlink:href='./Images/grasstexture-low-res.jpg' width='"+(y2-y1)+"'/>" +
+      "<image xlink:href='./Images/grasstexture-low-res.jpg' width='"+(x2-x1)+"'/>" +
     "</pattern>");
 
   canvas.insert("defs").html(
@@ -782,6 +782,148 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("R");
+
+}
+
+function addRunGapChart(data,canvas,x1,y1,x2,y2){
+  var xunit = (x2-x1)/5;
+  canvas.insert("defs").html(
+    "<pattern id='grass' width='100%' height='100%'>" +
+      "<image xlink:href='./Images/grasstexture-low-res.jpg' width='"+(x2-x1)+"'/>" +
+    "</pattern>");
+
+  canvas.insert("defs").html(
+    "<filter id='gaus' x='-40%' y='-40%' width='300%' height ='300%'>" +
+      "<feGaussianBlur in='SourceGraphic' stdDeviation='5' />" +
+    "</filter>");
+    canvas.append("rect")
+      .attr("x",x1)
+      .attr("y",y1)
+      .attr("width",xunit*5)
+      .attr("height",y2-y1)
+      .attr("fill","url(#grass)")
+      .attr("filter","url(#gaus)")
+
+    var tWidth = 8;
+    var width = x2-x1;
+    if(width > 320){
+      tWidth = 16;
+    }
+    else if(width>250){
+      tWidth = 14;
+    }
+    else if(width>220){
+      tWidth = 12;
+    }
+    else if(width>180){
+      tWidth = 10;
+    }
+    console.log(tWidth)
+
+    var dataTotal = 0;
+    for(var ix = 0; ix < 5; ix++){
+      dataTotal += data[ix];
+    }
+
+    for(var ix = 0; ix < 5; ix++){
+      var col = convToRGB(0,"#00539CFF");
+      // console.log(col)
+
+
+      canvas.append("rect")
+        .attr("x",x1+ix*xunit)
+        .attr("y",y1)
+        .attr("width",xunit)
+        .attr("height",y2-y1)
+        .attr("fill","rgba("+col.r+","+col.g+","+col.b+","+(1.5*data[ix]/dataTotal) +")")
+        .attr("stroke","white")
+        .attr("stroke-width","5px");
+
+      var textAnchor = {
+        x: x1+(ix+.5)*xunit,
+        y: (y2+y1)/2
+      }
+
+      canvas.append("text")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline","middle")
+        .attr("x", textAnchor.x)
+        .attr("y", textAnchor.y)
+        .attr("fill", "white")
+        .attr("stroke", "white")
+        .attr("stroke-width",.3)
+        .attr("letter-spacing",.2)
+        .text(Math.round(((data[ix]/dataTotal)+Number.EPSILON)*1000)/10 + "%")
+        .attr("font-size", tWidth + "px");
+
+    }
+
+    var othick = .3;
+    var gap = 10;
+
+    var textAnchor = {
+      x: x1 + (xunit/2),
+      y: y1 - gap
+    }
+
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("stroke", "Black")
+        .attr("stroke-width",othick)
+        .attr("font-size",tWidth+"px")
+        .text("LO");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("stroke", "Black")
+        .attr("stroke-width",othick)
+        .attr("font-size",tWidth+"px")
+        .text("LI");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("stroke", "Black")
+        .attr("stroke-width",othick)
+        .attr("font-size",tWidth+"px")
+        .text("M");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("stroke", "Black")
+        .attr("stroke-width",othick)
+        .attr("font-size",tWidth+"px")
+        .text("RI");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("stroke", "Black")
+        .attr("stroke-width",othick)
+        .attr("font-size",tWidth+"px")
+        .text("RO");
 
 }
 
