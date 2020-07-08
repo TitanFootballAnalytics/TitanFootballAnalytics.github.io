@@ -894,7 +894,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     })
     .attr("opacity",0.5)
     //fade in sankey bars^^^^^
-    //TODO: show jean animation and ask for decision
+    //COMPLETE: show jean animation and ask for decision
     //wipe in sankey barsvvvv
     // x1-=(20+gap)
     // var panel = convToRGB("#FFFFFF")
@@ -1069,7 +1069,7 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
     var tp1 = { x: p1.x + (i - 1) * step, y: p1.y };
     var tp2 = { x: p1.x + (i) * step, y: p1.y };
     canvas.append("path")
-      .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //TODO: add padding within function calls, not to output
+      .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //COMPLETE: add padding within function calls, not to output
         " L " + toString(newPoint(tp1, pm, p).x + pad, newPoint(tp1, pm, p).y + 2 * pad) +
         " L " + toString(newPoint(tp2, pm, p).x - pad, newPoint(tp2, pm, p).y + 2 * pad) +
         " L " + toString(tp2.x - pad, tp2.y - 2 * pad) +
