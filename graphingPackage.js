@@ -608,7 +608,22 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
       .attr("fill","url(#grass)")
       .attr("filter","url(#gaus)")
 
-    var tWidth = 18;
+    var tWidth = 12;
+    var width = x2-x1;
+    if(width > 320){
+      tWidth = 18;
+    }
+    else if(width>250){
+      tWidth = 16;
+    }
+    else if(width>200){
+      tWidth = 15;
+    }
+    else if(width>180){
+      tWidth = 14;
+    }
+    console.log(tWidth)
+
     var dataTotal = 0;
     for(var ix = 0; ix < 3; ix++){
       for(var iy = 0; iy < data.length;iy++){
