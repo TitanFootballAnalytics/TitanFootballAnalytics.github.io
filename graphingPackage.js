@@ -241,7 +241,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
                     .text(data[i].category)
       var textWidth = text.node().getBBox().width;
       if(linesize+textWidth + 2*pad> maxWidth){
-        //handle content spillover
+        //TODO:handle content spillover
       }
       else if(lineAccum + linesize+textWidth+2*pad > maxWidth){
         //handle wrap
@@ -289,6 +289,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
           var arc = d3.select(this);
           arc
             .attr("opacity", 1)
+            //TODO: hover over making slice bigger
             // .transition().duration(200)
             // .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
             //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
