@@ -137,7 +137,15 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("stroke-width",strokeWidth)
       .attr("val",data[0].val)
       .attr("cat",data[0].category)
-      .attr("opacity",.9);
+      .attr("opacity",.9)
+      .attr("rad",radius)
+      .attr("cpx",currpointx)
+      .attr("cpy",currpointy)
+      .attr("flg",flag)
+      .attr("npx",nextpointx)
+      .attr("npy",nextpointy)
+      .attr("centx",cx)
+      .attr("centy",cy);
     //console.log(cx,cy,diameter);
     // console.log("printing graph")
     for(var i = 1; i < data.length;i++){
@@ -172,7 +180,15 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         .attr("stroke-width",strokeWidth)
         .attr("val",data[0].val)
         .attr("cat",data[0].category)
-        .attr("opacity",.9);
+        .attr("opacity",.9)
+        .attr("rad",radius)
+        .attr("cpx",currpointx)
+        .attr("cpy",currpointy)
+        .attr("flg",flag)
+        .attr("npx",nextpointx)
+        .attr("npy",nextpointy)
+        .attr("centx",cx)
+        .attr("centy",cy);
     }
     var centerrad = radius/2;
     canvas.append("circle")
@@ -199,20 +215,26 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("fill", "black")
       .text("")
     var mgap = 3;
+
     canvas.selectAll(".pie" + uniqueID)
         .on("mouseover", function () {
-          d3.select(this)
+          var arc = d3.select(this);
+          arc
             .attr("opacity", 1)
-          label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20))
-          label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5))
+            // .transition().duration(200)
+            // .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
+            //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
+            //            " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
+          label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20));
+          label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5));
           rect.attr("x",d3.mouse(this)[0]+mgap)
               .attr("y",d3.mouse(this)[1]-rheight-mgap)
               .attr("width",rwidth)
               .attr("height",rheight)
-              .attr("fill","rgba(255,255,255,.9)")
-              rect.moveToFront();
-              label.moveToFront();
-              label2.moveToFront();
+              .attr("fill","rgba(255,255,255,.9)");
+          rect.moveToFront();
+          label.moveToFront();
+          label2.moveToFront();
         })
         .on("mouseout", function () {
           d3.select(this)
@@ -565,7 +587,6 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   //                           " H " + x2 +
   //                           " V " + y2 +
   //                           " H " + x1)
-
   function toString(x, y) {
     return "" + x + " " + y + "";
   }
@@ -600,6 +621,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
   // console.log(colors);
   var inTotals = {};
+  var outTotals = {};
   var total = 0;
   var val = data[0].in;
   for (var i = 0; i < data.length; i++) {
@@ -619,6 +641,16 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       // console.log("first",data[i])
       inTotals[data[i].in] = data[i].count;
     }
+
+    if(data[i].out in outTotals){
+      // console.log("second",data[i])
+      outTotals[data[i].out] += data[i].count;
+    }
+    else{
+      // console.log("first",data[i])
+      outTotals[data[i].out] = data[i].count;
+    }
+
 
 
     data[i].start = total;
@@ -640,12 +672,12 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       }
     }
   }
-
   //end order calculation
   var sum = 0;
   for (var i = 0; i < data.length; i++) {
     //populates datas intotals
     data[i].intotal = inTotals[data[i].in];
+    data[i].outtotal = outTotals[data[i].out];
     //populates end calculation
     data[i].end = sum;
     sum += data[i].count;
@@ -661,8 +693,10 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   // { r: 28, g: 172, b: 120 },
   // { r: 146, g: 110, b: 174 }];
 
-
-
+  console.log(data)
+  for(var i = 0;i<data.length;i++){
+    console.log(data[i])
+  }
   //==second set of bars=================================================================
   var first = data[0].out;
   var vertstroke = 1;//in pixels
@@ -672,16 +706,17 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   data[0].end_color = color;
   if(barflag){
     for (var i = 1; i < data.length; i++) {
+      console.log(data[i])
       // console.log(i)
       // console.log(first);
       // console.log(data[i].out);
-      // console.log("----------");
+      console.log("----------");
       if (data[i].out != first) {
         // console.log("gottem")
         canvas.append("path")
           .attr("class","sankeyrect"+uniqueID)
-          .attr("count",data[i].count)
-          .attr("val",data[i].out)
+          .attr("count",data[i].outtotal)
+          .attr("val",data[i-1].out)
           .attr("d", " M " + toString(x2 , y1 + (start * vert_scale) -vertstroke) +
                      " H " + (x2 - 20) +
                      " V " + (y1 + (end * vert_scale) + vertstroke) +
@@ -701,9 +736,10 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     }
     end = data[data.length - 1].end + data[data.length - 1].count;
     data[data.length - 1].end_color = color;
+    console.log(data[data.length-1])
     canvas.append("path")
       .attr("class","sankeyrect"+uniqueID)
-      .attr("count",data[data.length-1].count)
+      .attr("count",data[data.length-1].outtotal)
       .attr("val",data[data.length-1].out)
       .attr("d", " M " + toString(x2, y1 + start * vert_scale -vertstroke) +
         " H " + (x2 - 20) +
@@ -711,6 +747,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
         " H " + (x2))
       .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
   }
+  console.log("===================")
   //=========================================================================
 
   //reorder for aesthetic
