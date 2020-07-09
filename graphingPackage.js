@@ -4,7 +4,20 @@ function convToRGB(i,hex){
   // console.log(rgb);
   return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
 }
+d3.selection.prototype.moveToFront = function() {
+   return this.each(function(){
+     this.parentNode.appendChild(this);
+   });
+ };
 
+d3.selection.prototype.moveToBack = function() {
+  return this.each(function() {
+      var firstChild = this.parentNode.firstChild;
+      if (firstChild) {
+          this.parentNode.insertBefore(this, firstChild);
+      }
+  });
+};
 function colorPallete(canvas){
 
   //create start locations for bezier rect
@@ -208,12 +221,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("cy",cy)
       .attr("fill","#DDDDDD")
 
-    // canvas.append("rect")
-    //   .attr("x",x1-gap)
-    //   .attr("y",y1+diameter)
-    //   .attr("width",(x2+gap)-(x1-gap))
-    //   .attr("height",y2-(y1+diameter) + 40)
-    //   .attr("stroke","black")
+
     var maxWidth =  (x2+gap)-(x1-gap);
     var lx = x1-gap;
     var ly = y1+diameter;
@@ -221,6 +229,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
     var linesize = 20;
     var pad = 2;
     var lineAccum = 0;
+    var currItems = new Array();
     for(var i = 0; i < data.length;i++){
       colorDex = colorDex%getColorSize()
       color = getColor(colorDex);
@@ -231,6 +240,9 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         .attr("width",linesize-2*pad)
         .attr("height",linesize-2*pad)
         .attr("fill",generateColorString(color,1));
+
+
+
 
 
       var text = canvas.append("text")
@@ -245,6 +257,19 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       }
       else if(lineAccum + linesize+textWidth+2*pad > maxWidth){
         //handle wrap
+        //VVVVV bounding box for centered items
+        // canvas.append("rect")
+        //   .attr("x",lx+ (maxWidth-lineAccum)/2)
+        //   .attr("y",ly+linesize*(line-1))
+        //   .attr("width",lineAccum)
+        //   .attr("height",linesize)
+        //   .attr("stroke","black").moveToBack();
+        for(var j = 0; j < currItems.length;j++){
+           var xDelta = parseFloat(currItems[j].attr("x"));
+           currItems[j].attr("x",xDelta+(maxWidth-lineAccum)/2);
+        }
+        console.log(currItems);
+        currItems = new Array();
         line++;
         lineAccum=0;
         lrect.attr("x",lx+lineAccum+pad)
@@ -252,6 +277,8 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         text.attr("x",lx+lineAccum + linesize + pad)
             .attr("y",ly+linesize*(line-.5));
         lineAccum = linesize+2*pad+textWidth;
+        currItems.push(text);
+        currItems.push(lrect);
 
       }
       else{
@@ -259,8 +286,23 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         text.attr("x",lx+lineAccum + linesize + pad)
             .attr("y",ly+linesize*(line-.5));
         lineAccum += linesize+2*pad+textWidth;
+        currItems.push(text);
+        currItems.push(lrect);
       }
       // console.log(text.node().getBBox())
+    }
+    if(currItems.length > 0){
+      console.log(currItems);
+      // canvas.append("rect")
+      //   .attr("x",lx+ (maxWidth-lineAccum)/2)
+      //   .attr("y",ly+linesize*(line-1))
+      //   .attr("width",lineAccum)
+      //   .attr("height",linesize)
+      //   .attr("stroke","black").moveToBack();
+      for(var i = 0; i < currItems.length;i++){
+         var xDelta = parseFloat(currItems[i].attr("x"));
+         currItems[i].attr("x",xDelta+(maxWidth-lineAccum)/2);
+      }
     }
 
     console.log(y2-(y1+diameter) + 40);
@@ -1377,11 +1419,7 @@ async function generateScorecards(filename){
                    .attr("id","scoreCard"+i)
 
            svg = d3.select(("#scoreCard"+i));
-           d3.selection.prototype.moveToFront = function() {
-              return this.each(function(){
-                this.parentNode.appendChild(this);
-              });
-            };
+
 
            //TODO DESIGN CHOICE: should the graphs on first load say graph 1 or bargraph
            if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
