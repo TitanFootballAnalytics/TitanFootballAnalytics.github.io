@@ -333,7 +333,6 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
 
 };
 
-
 function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,colorDex2) {
 
   //bounding box
@@ -587,7 +586,6 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     })
 }
 
-
 function addFieldChart(data, canvas, x1, y1, x2, y2) {
   let p1 = { x: 100.0, y: 400.0 };
   let p2 = { x: 580.0, y: 400.0 };
@@ -679,7 +677,6 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
 
 
 }
-
 
 function mouseon(shape, index) {
   shape.on("mouseover", function () {
@@ -794,20 +791,30 @@ function addHeader(svg, data,metadata) {
       .attr("height", radius * 2)
       .attr("width", radius * 2)
     let txt = canvas.select("text.rectLabel")
-    txt.text("Titan Analytics")
+    txt.text("TITAN ANALYTICS")
       .attr("x", 10)
       .attr("y", 130)
-      .attr("stroke", "#00203FFF")
+      .attr("fill", "#00203FFF")
       .attr("text-anchor", "left")
-      .style("font", "bold 20px sans-serif")
+      .style("font", "bold 15px sans-serif")
+      .style("font-weight", "bold")
   }
 
+  //EDIT HERE JEAN
   function addParallelograms(canvas, t, h, w, separation, rad) {
     var shapes_top = [];
     var shapes_bottom = [];
     let bottom = t + rad * 2;
     let xcur = rad * 2 + 20;
-    var titles = [metadata.Down, metadata.DistSit, metadata.FieldZone, "Personnel", "Formation", "Play Type"];
+    var titles = [metadata.Down, metadata.DistSit, metadata.FieldZone, "", "", ""];
+
+    var columntitles = ["Down","Distance","FieldZone","Personnel", "Formation", "Play Type"]
+
+
+    // Code needs help merging HERE
+    console.log(titles)
+
+
 
     for (var i = 0; i < 6; i++) {
       if (i == 0) {
@@ -820,10 +827,19 @@ function addHeader(svg, data,metadata) {
           .attr("id", "parallel" + i))
         canvas.append("text")
           .attr("x", xcur + separation)
-          .attr("y", (h + t + t) / 2)
+          .attr("y", ((h + t + t) / 2)+15)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "bold")
           .text(titles[i])
+          .attr("text-anchor", "left")
+        canvas.append("text")
+          .attr("x", xcur + separation)
+          .attr("y", ((h + t + t) / 2))
+          .attr("fill", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "normal")
+          .text(columntitles[i])
           .attr("text-anchor", "left")
       }
       else {
@@ -836,10 +852,19 @@ function addHeader(svg, data,metadata) {
           .attr("id", "parallel" + i))
         canvas.append("text")
           .attr("x", xcur + separation)
-          .attr("y", (h + t + t) / 2)
+          .attr("y", ((h + t + t) / 2)+15)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "bold")
           .text(titles[i])
+          .attr("text-anchor", "left")
+        canvas.append("text")
+          .attr("x", xcur + separation)
+          .attr("y", ((h + t + t) / 2))
+          .attr("fill", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "normal")
+          .text(columntitles[i])
           .attr("text-anchor", "left")
       }
       xcur = xcur + w + separation;
