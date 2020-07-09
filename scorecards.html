@@ -15,6 +15,7 @@
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/topojson.v2.min.js"></script>
   <script src="graphingPackage.js"></script>
+  <script src="sortingPackage.js"></script>
   <script src="navBar.js"></script>
     <div class='nav'>
       <ul>
@@ -51,6 +52,14 @@
             </ul>
         </li>
         <li><a href='#' id="submit">Submit</a></li>
+        <li><a href='#' id = "sort">Sort</a>
+            <ul>
+                <li><a href='#' id = "sortoption1">Down</a></li>
+                <li><a href='#' id = "sortoption2">Dist</a></li>
+                <li><a href='#' id = "sortoption3">Field Zone</a></li>
+                <li><a href='#' id = "sortoption4">None</a></li>
+            </ul>
+        </li>
       </ul>
     </div>
   <style>
@@ -80,6 +89,8 @@
 
 <body>
     <div class = "container-fluid mainbackground", id = "mainDiv">
+      <div id = "sortselect">
+      </div>
     </div>
   <script>
         const fixedHeight = 500
@@ -88,7 +99,7 @@
         const height = fixedHeight - margin.top - margin.bottom;
         const width = fixedWidth - margin.left - margin.right;
 
-        generateScorecards("scoreCardAutomation.json")
+        generateScorecards("scoreCardAutomation.json",[])
         setupNavClicks();
 
 

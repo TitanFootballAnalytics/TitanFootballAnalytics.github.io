@@ -1,5 +1,7 @@
-{"scorecards": [
-      {
+[
+      {   "Down":"1st",
+          "DistSit":"Short",
+          "FieldZone":"10-20",
           "datasets" : [
                 [
                     {"category":"11","val":4},
@@ -40,13 +42,13 @@
                   {"Category":"Average Yards","Value":22},
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
-                ],
-                {"Down":"1st",
-                 "DistSit":"Long",
-                 "FieldZone":"10-20"}
+                ]
+
             ]
       },
-      {
+      {   "Down":"1st",
+          "DistSit":"Medium",
+          "FieldZone":"20-30",
           "datasets" : [
                 [
                     {"category":"11","val":6},
@@ -97,14 +99,13 @@
                   {"Category":"Average Yards","Value":22},
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
-                ],
-                {"Down":"1st",
-                 "DistSit":"Long",
-                 "FieldZone":"20-30"}
+                ]
 
             ]
       },
-      {
+      {   "Down":"3rd",
+          "DistSit":"Long",
+          "FieldZone":"60-70",
           "datasets" : [
                 [
                     {"category":"11","val":3},
@@ -138,13 +139,9 @@
                   {"Category":"Average Yards","Value":22},
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
-                ],
-                  {"Down":"3rd",
-                   "DistSit":"Short",
-                   "FieldZone":"60-70"}
+                ]
 
             ]
 
       }
    ]
-}

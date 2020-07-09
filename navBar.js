@@ -34,9 +34,53 @@
 });
 
 function setupNavClicks(){
+    d3.select("#sortoption1")
+        .on("click",function(){
+            d3.select("#sort").text(d3.select(this).text());
+            generateScorecards("scoreCardAutomation.json",["Down"]);
+        })
+        .on("mouseover",function(){
+            d3.select(this).style("background","rgb(220,220,220)");
+        })
+        .on("mouseout",function(){
+            d3.select(this).style("background","#eee");
+    })
+    d3.select("#sortoption2")
+        .on("click",function(){
+            d3.select("#sort").text(d3.select(this).text());
+            generateScorecards("scoreCardAutomation.json",["DistSit"]);
+        })
+        .on("mouseover",function(){
+            d3.select(this).style("background","rgb(220,220,220)");
+        })
+        .on("mouseout",function(){
+            d3.select(this).style("background","#eee");
+    })
+    d3.select("#sortoption3")
+        .on("click",function(){
+            d3.select("#sort").text(d3.select(this).text());
+            generateScorecards("scoreCardAutomation.json",["FieldZone"]);
+        })
+        .on("mouseover",function(){
+            d3.select(this).style("background","rgb(220,220,220)");
+        })
+        .on("mouseout",function(){
+            d3.select(this).style("background","#eee");
+    })
+    d3.select("#sortoption4")
+        .on("click",function(){
+            d3.select("#sort").text("Sort");
+            generateScorecards("scoreCardAutomation.json",[]);
+        })
+        .on("mouseover",function(){
+            d3.select(this).style("background","rgb(220,220,220)");
+        })
+        .on("mouseout",function(){
+            d3.select(this).style("background","#eee");
+    })
     d3.select("#submit")
         .on("click",function(){
-            generateScorecards("scoreCardAutomation.json");
+            generateScorecards("scoreCardAutomation.json",[]);
     })
     d3.select("#baroption1")
         .on("click",function(){
