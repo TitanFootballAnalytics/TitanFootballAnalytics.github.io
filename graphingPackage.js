@@ -202,8 +202,8 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         .attr("stroke","#DDDDDD")
         .attr("class", "pie" + uniqueID)
         .attr("stroke-width",strokeWidth)
-        .attr("val",data[0].val)
-        .attr("cat",data[0].category)
+        .attr("val",data[i].val)
+        .attr("cat",data[i].category)
         .attr("opacity",.9)
         .attr("rad",radius)
         .attr("cpx",currpointx)
@@ -325,20 +325,22 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("fill", "black")
       .text("")
     var mgap = 3;
+    var adjust = 0;
 
     canvas.selectAll(".pie" + uniqueID)
         .on("mouseover", function () {
           var arc = d3.select(this);
           arc
-            .attr("opacity", 1)
+            .attr("opacity", 1);
             //TODO: hover over making slice bigger
             // .transition().duration(200)
             // .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
             //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
             //            " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
-          label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20));
-          label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5));
-          rect.attr("x",d3.mouse(this)[0]+mgap)
+          label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5));
+          label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20));
+          rwidth = label2.node().getBBox().width + 5;
+          rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
               .attr("y",d3.mouse(this)[1]-rheight-mgap)
               .attr("width",rwidth)
               .attr("height",rheight)
@@ -359,13 +361,20 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
               .attr("fill","rgba(255,255,255,0)")
         })
         .on("mousemove", function () {
-          label2.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20 ))
-          label.attr("x", (d3.mouse(this)[0] + 5 )).attr("y", (d3.mouse(this)[1] - 5 ))
-          rect.attr("x",d3.mouse(this)[0]+mgap)
+          if(d3.mouse(this)[0]+mgap + rwidth > fixedWidth){
+            adjust = rwidth;
+          }
+          else{
+            adjust = 0;
+          }
+          label2.attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20 ))
+          label.attr("x", (d3.mouse(this)[0] + 5 )-adjust).attr("y", (d3.mouse(this)[1] - 5 ))
+          rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
               .attr("y",d3.mouse(this)[1]-rheight-mgap)
               .attr("width",rwidth)
               .attr("height",rheight)
               .attr("fill","rgba(255,255,255,.9)")
+
         });
     return outDex;
 }
@@ -537,9 +546,10 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .data(data)
     .enter().append("rect")
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
-    .attr("class", "bar" + uniqueID)
+    .attr("class", "bar" + uniqueID + " hover"+uniqueID)
     .attr("opacity", 0.9)
     .attr("fill", function (d, i) {
+
       colorDex = colorDex%getColorSize();
       var color = getColor((colorDex+data.length-1)%getColorSize());
       // console.log(color);
@@ -556,12 +566,12 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("height", function(d,i){
         return barHeight;
     })
+    .attr("count",d => d.val)
     .transition()
     .duration(1000)
     .delay(function (d, i) {
       return data.length*500 - i * 500;
     })
-    .attr("count",d => d.val)
     .attr("name", d => d.category)
     .attr("width", d => x(d.val))
 
@@ -594,19 +604,36 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     var accumHeight = y2-y1;;
     var temp = 0;
     for(let i = 0; i < data.length; i++){
-        canvas.append("text")
+        var bText = canvas.append("text")
           .text(data[i].category)
-          .attr("class","bar-graph-text")
+          .attr("class","bar-graph-text hover"+uniqueID)
           .attr("fill","black")
+          .attr("count",data[i].val)
+          .attr("name",data[i].category)
+          .style("cursor","default")
+          // .attr("baseline-alignmnet","middle")
           // .attr("stroke","#FFFFFF")
           .style("font-size",15)
           .style("font-weight","bold")
           .attr("stroke-width",1)
-          .attr("transform",function(){
-              temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
-              accumHeight = accumHeight - (barHeight*data[i].val)
-              return "translate("+x2+","+((y1+temp)+barHeight/2+5)+")"
-          })
+       // var tWidth = bText.node().getBBox().width;
+       // bText.attr("x",x2-tWidth)
+       //      .attr("y",y1+accumHeight-barHeight/2)
+          // .attr("transform",function(){
+          //     temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
+          //     accumHeight = accumHeight - (barHeight*data[i].val)
+          //     return "translate("+x2+","+((y1+temp)+barHeight/2+5)+")"
+          // })
+        temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
+        accumHeight = accumHeight - (barHeight*data[i].val)
+        bText.attr("x",x2)
+        bText.attr("y",(y1+temp)+barHeight/2+5)
+        // canvas.append("circle")
+        //   .attr("r",4)
+        //   .attr("cx",x2)
+        //   .attr("cy",(y1+temp)+barHeight/2+5)
+        //   .attr("fill","#000000")
+          //return "translate("+x2+","+((y1+temp)+barHeight/2+5)+")"
     }
     canvas.append("text")
       .text("Count")
@@ -651,13 +678,15 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
         .attr("fill", "black")
         .text("")
       var mgap = 3;
-      canvas.selectAll(".bar" + uniqueID)
+      var adjust = 0;
+      canvas.selectAll(".bar" + uniqueID)//TODO: make hover over text to (change class from bar to hover and fix bugs)
           .on("mouseover", function () {
             d3.select(this)
               .attr("opacity", 1)
-            label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
-            label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
-            rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+            label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 5+y1))
+            label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 20+y1))
+            rwidth = label2.node().getBBox().width + 5;
+            rect.attr("x",d3.mouse(this)[0]+x1+mgap - adjust)
                 .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
                 .attr("width",rwidth)
                 .attr("height",rheight)
@@ -678,9 +707,16 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
                 .attr("fill","rgba(255,255,255,0)")
           })
           .on("mousemove", function () {
-            label2.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 20 + y1))
-            label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
-            rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+            if(d3.mouse(this)[0]+mgap + rwidth +x1> fixedWidth){
+              adjust = rwidth;
+            }
+            else{
+              adjust = 0;
+            }
+            console.log(d3.mouse(this),rheight,y1,mgap);
+            label2.attr("x", (d3.mouse(this)[0] + 5 + x1)-adjust).attr("y", (d3.mouse(this)[1] - 20 + y1))
+            label.attr("x", (d3.mouse(this)[0] + 5 + x1)-adjust).attr("y", (d3.mouse(this)[1] - 5 + y1))
+            rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
                 .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
                 .attr("width",rwidth)
                 .attr("height",rheight)
@@ -965,6 +1001,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                                     .attr("fill","rgba(255,255,255,1)")
     let rwidth = 130;
     let rheight = 30;
+    var adjust = 0;
     var mgap = 3;
     let label = canvas.append("text")
       .attr("x", 0)
@@ -980,11 +1017,12 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
         .on("mouseover", function () {
           d3.select(this)
             .attr("opacity", 1)
-          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
-          rect.attr("x",d3.mouse(this)[0]+x1+mgap)
-              .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
+          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1-adjust)).attr("y", (d3.mouse(this)[1] - 20+y1))
+          rwidth = label.node().getBBox().width + 5;
+          rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
+              .attr("y",d3.mouse(this)[1]-.5*rheight+y1-mgap)
               .attr("width",rwidth)
-              .attr("height",rheight)
+              .attr("height",rheight/2)
               .attr("fill","rgba(255,255,255,.9)")
               rect.moveToFront();
               label.moveToFront();
@@ -995,26 +1033,33 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
             .attr("opacity", 0.5)
           label.text("")
           rect.attr("x",d3.mouse(this)[0]+x1)
-              .attr("y",d3.mouse(this)[1]-rheight+y1)
+              .attr("y",d3.mouse(this)[1]+y1)
               .attr("width",0)
               .attr("height",0)
               .attr("fill","rgba(255,255,255,0)")
         })
         .on("mousemove", function () {
-          label.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20))
-          rect.attr("x",d3.mouse(this)[0]+mgap)
-              .attr("y",d3.mouse(this)[1]-rheight-mgap)
+          if(d3.mouse(this)[0]+mgap + rwidth > fixedWidth-5){
+            adjust = rwidth;
+          }
+          else{
+            adjust = 0;
+          }
+          label.attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5 ))
+          rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
+              .attr("y",d3.mouse(this)[1]-.5*rheight-mgap)
               .attr("width",rwidth)
-              .attr("height",rheight)
+              .attr("height",rheight/2)
               .attr("fill","rgba(255,255,255,.9)")
         });
 
 
         canvas.selectAll(".sankeyrect"+uniqueID)
             .on("mouseover", function () {
-              label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
-              label2.text("Name: "+ d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
-              rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+              label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 5+y1))
+              label2.text("Name: "+ d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 20+y1))
+              rwidth = label2.node().getBBox().width + 5;
+              rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
                   .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
                   .attr("width",rwidth)
                   .attr("height",rheight)
@@ -1033,9 +1078,15 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                   .attr("fill","rgba(255,255,255,0)")
             })
             .on("mousemove", function () {
-              label2.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20))
-              label.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5))
-              rect.attr("x",d3.mouse(this)[0]+mgap)
+              if(d3.mouse(this)[0]+mgap + rwidth > fixedWidth){
+                adjust = rwidth;
+              }
+              else{
+                adjust = 0;
+              }
+              label2.attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20))
+              label.attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5))
+              rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
                   .attr("y",d3.mouse(this)[1]-rheight-mgap)
                   .attr("width",rwidth)
                   .attr("height",rheight)
