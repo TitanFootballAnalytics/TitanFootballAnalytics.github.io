@@ -760,7 +760,6 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
 
 };
 
-
 function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,colorDex2) {
 
   //bounding box
@@ -1812,7 +1811,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
 
 }
 
-
 function mouseon(shape, index) {
   shape.on("mouseover", function () {
     var s = d3.select(this);
@@ -1882,41 +1880,41 @@ function addHeader(svg, data,metadata) {
   //     console.log(stat.Category);
   // })
 
-  function addTableInfo(canvas, w, h, text_size) {
-    var wd = svg.attr("width")
-    var coordinates = [[wd - w, 0], [wd - w * 2, 0], [wd - w, h], [wd - w * 2, h], [wd - w, h * 2], [wd - w * 2, h * 2], [wd - w, h * 3], [wd - w * 2, h * 3]]
-    coordinates.forEach(function (coordinate, index) {
-      let rec = canvas.append("rect")
-        .attr("x", coordinate[0])
-        .attr("y", coordinate[1])
-        .attr("width", w)
-        .attr("height", h)
-        .attr("fill", "white")
-        .attr("stroke", "black")
-        .attr("stroke-width", 2)
-
-      if (coordinate[0] == wd - w) {
-        let txt = canvas.append("text")
-          .attr("x", coordinate[0] + text_size / 2)
-          .attr("y", coordinate[1] + h / 2)
-          .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
-          .text(data[Math.floor(index/2)].Value)
-          .attr("text-anchor", "left")
-          .attr("font-size", text_size + "px")
-      }
-      else {
-        let txt2 = canvas.append("text")
-          .attr("x", coordinate[0] + text_size / 2)
-          .attr("y", coordinate[1] + h / 2)
-          .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
-          .text(data[Math.floor(index/2)].Category)
-          .attr("text-anchor", "left")
-          .attr("font-size", text_size + "px")
-      }
-    })
-  }
+  // function addTableInfo(canvas, w, h, text_size) {
+  //   var wd = svg.attr("width")
+  //   var coordinates = [[wd - w, 0], [wd - w * 2, 0], [wd - w, h], [wd - w * 2, h], [wd - w, h * 2], [wd - w * 2, h * 2], [wd - w, h * 3], [wd - w * 2, h * 3]]
+  //   coordinates.forEach(function (coordinate, index) {
+  //     let rec = canvas.append("rect")
+  //       .attr("x", coordinate[0])
+  //       .attr("y", coordinate[1])
+  //       .attr("width", w)
+  //       .attr("height", h)
+  //       .attr("fill", "white")
+  //       .attr("stroke", "black")
+  //       .attr("stroke-width", 2)
+  //
+  //     if (coordinate[0] == wd - w) {
+  //       let txt = canvas.append("text")
+  //         .attr("x", coordinate[0] + text_size / 2)
+  //         .attr("y", coordinate[1] + h / 2)
+  //         .attr("fill", "#00203FFF")
+  //         .attr("stroke", "#00203FFF")
+  //         .text(data[Math.floor(index/2)].Value)
+  //         .attr("text-anchor", "left")
+  //         .attr("font-size", text_size + "px")
+  //     }
+  //     else {
+  //       let txt2 = canvas.append("text")
+  //         .attr("x", coordinate[0] + text_size / 2)
+  //         .attr("y", coordinate[1] + h / 2)
+  //         .attr("fill", "#00203FFF")
+  //         .attr("stroke", "#00203FFF")
+  //         .text(data[Math.floor(index/2)].Category)
+  //         .attr("text-anchor", "left")
+  //         .attr("font-size", text_size + "px")
+  //     }
+  //   })
+  // }
 
   function addLogo(canvas, radius) {
     let im = canvas.append("image")
@@ -1927,20 +1925,30 @@ function addHeader(svg, data,metadata) {
       .attr("width", radius * 2)
       .attr("class","logos")
     let txt = canvas.select("text.rectLabel")
-    txt.text("Titan Analytics")
+    txt.text("TITAN ANALYTICS")
       .attr("x", 10)
       .attr("y", 130)
-      .attr("stroke", "#00203FFF")
+      .attr("fill", "#00203FFF")
       .attr("text-anchor", "left")
-      .style("font", "bold 20px sans-serif")
+      .style("font", "bold 15px sans-serif")
+      .style("font-weight", "bold")
   }
 
+  //EDIT HERE JEAN
   function addParallelograms(canvas, t, h, w, separation, rad) {
     var shapes_top = [];
     var shapes_bottom = [];
     let bottom = t + rad * 2;
     let xcur = rad * 2 + 20;
-    var titles = [metadata.Down, metadata.DistSit, metadata.FieldZone, "Personnel", "Formation", "Play Type"];
+    var titles = [metadata.Down, metadata.DistSit, metadata.FieldZone, "", "", ""];
+
+    var columntitles = ["Down","Distance","FieldZone","Personnel", "Formation", "Play Type"]
+
+
+    // Code needs help merging HERE
+    console.log(titles)
+
+
 
     for (var i = 0; i < 6; i++) {
       if (i == 0) {
@@ -1953,26 +1961,57 @@ function addHeader(svg, data,metadata) {
           .attr("id", "parallel" + i))
         canvas.append("text")
           .attr("x", xcur + separation)
-          .attr("y", (h + t + t) / 2)
+          .attr("y", ((h + t + t) / 2)+15)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "bold")
           .text(titles[i])
+          .attr("text-anchor", "left")
+        canvas.append("text")
+          .attr("x", xcur + separation)
+          .attr("y", ((h + t + t) / 2))
+          .attr("fill", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "normal")
+          .text(columntitles[i])
           .attr("text-anchor", "left")
       }
       else {
+        if(i > 2) {
         shapes_top.push(canvas.append("path")
           .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
-          .attr("fill", "#FC766AFF")
+          .attr("fill", "#58d0db")
           .attr("fill-opacity", 0.6)
-          .attr("stroke", "maroon")
+          .attr("stroke", "#586cdb")
           .attr("stroke-width", 1)
           .attr("id", "parallel" + i))
+        }
+
+        if(i <= 2) {
+          shapes_top.push(canvas.append("path")
+            .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
+            .attr("fill", "#FC766AFF")
+            .attr("fill-opacity", 0.6)
+            .attr("stroke", "maroon")
+            .attr("stroke-width", 1)
+            .attr("id", "parallel" + i))
+
+        }
         canvas.append("text")
           .attr("x", xcur + separation)
-          .attr("y", (h + t + t) / 2)
+          .attr("y", ((h + t + t) / 2)+15)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "bold")
           .text(titles[i])
+          .attr("text-anchor", "left")
+        canvas.append("text")
+          .attr("x", xcur + separation)
+          .attr("y", ((h + t + t) / 2))
+          .attr("fill", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "normal")
+          .text(columntitles[i])
           .attr("text-anchor", "left")
       }
       xcur = xcur + w + separation;
@@ -2022,7 +2061,10 @@ function addHeader(svg, data,metadata) {
     shapes.forEach(mouseclick);
   }
 
-  addTableInfo(svg, 140, 35, 16);
+  //addTableInfo(svg, 140, 35, 16);
+  // addHeatChart(sample_data2,svg,800,10,1180,150);
+  var sample_data2 = [["","Pass","Run","Total"],["Play Count",1,5,0],["Total Yards",2,7,0],["Average Yards",1,3,0],["TD Count",3,10,0]];
+  addJeanTable(sample_data2,svg,800,10,1180,150);
   addLogo(svg, 50);
   var ht = 47;
   var wid = 100;
@@ -2030,6 +2072,131 @@ function addHeader(svg, data,metadata) {
   var tp = 10;
   var radius = 50;
   addParallelograms(svg, tp, ht, wid, separation, radius);
+}
+
+function addJeanTable(data,canvas,x1,y1,x2,y2){
+
+
+  var yunit = (y2-y1)/5;
+  var xunit2 = (x2-x1)*(2/5);
+  var xunit = ((x2-x1)*(3/5))/3;
+
+
+    var tWidth = 12;
+    var width = x2-x1;
+    if(width > 320){
+      tWidth = 15;
+    }
+    else if(width>250){
+      tWidth = 16;
+    }
+    else if(width>200){
+      tWidth = 15;
+    }
+    else if(width>180){
+      tWidth = 14;
+    }
+    console.log(tWidth)
+
+
+    for(var ix = 0; ix < 4; ix++){
+      for(var iy = 0; iy < data.length;iy++){
+        var col = convToRGB(0,"#00539CFF");
+        // console.log(col)
+
+        if(ix == 0){
+
+          if(iy > 0){
+            var elem = canvas.append("rect")
+              .attr("x",x1+ix*xunit)
+              .attr("y",y1+iy*yunit)
+              .attr("width",xunit2)
+              .attr("height",yunit)
+              .attr("fill","lightgrey")
+              .attr("stroke","#1c1c1c")
+              .attr("stroke-width","2px");
+
+
+            var textAnchor = {
+              x: x1+(ix+.5)*xunit2,
+              y: y1+(iy+.5)*yunit
+            }
+
+            canvas.append("text")
+              .attr("text-anchor", "middle")
+              .attr("alignment-baseline","middle")
+              .attr("x", textAnchor.x)
+              .attr("y", textAnchor.y)
+              .attr("fill", "#1c1c1c")
+              .attr("letter-spacing",.2)
+              .text(data[iy][ix])
+              .style("font-weight", "bold")
+              .attr("font-size", tWidth + "px");
+          }
+
+
+        }
+        else {
+
+          if(iy == 0){
+
+            var colheadcolors = ["deepskyblue","crimson","limegreen"]
+
+            canvas.append("rect")
+              .attr("x",x1+xunit2+((ix-1)*xunit))
+              .attr("y",y1+iy*yunit)
+              .attr("width",xunit)
+              .attr("height",yunit)
+              .attr("fill",colheadcolors[ix-1])
+              .attr("stroke","#1c1c1c")
+              .attr("stroke-width","2px");
+
+            var textAnchor = {
+              x: x1+(xunit2*.5)+((ix+.5)*xunit),
+              y: y1+(iy+.5)*yunit
+            }
+
+            canvas.append("text")
+              .attr("text-anchor", "middle")
+              .attr("alignment-baseline","middle")
+              .attr("x", textAnchor.x)
+              .attr("y", textAnchor.y)
+              .attr("fill", "#1c1c1c")
+              .attr("letter-spacing",.2)
+              .text(data[iy][ix])
+              .style("font-weight", "bold")
+              .attr("font-size", tWidth + "px");
+          }
+          else {canvas.append("rect")
+            .attr("x",x1+xunit2+((ix-1)*xunit))
+            .attr("y",y1+iy*yunit)
+            .attr("width",xunit)
+            .attr("height",yunit)
+            .attr("fill","white")
+            .attr("stroke","#1c1c1c")
+            .attr("stroke-width","2px");
+
+          var textAnchor = {
+            x: x1+(xunit2*.5)+((ix+.5)*xunit),
+            y: y1+(iy+.5)*yunit
+          }
+
+          canvas.append("text")
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline","middle")
+            .attr("x", textAnchor.x)
+            .attr("y", textAnchor.y)
+            .attr("fill", "#1c1c1c")
+            .attr("letter-spacing",.2)
+            .text(data[iy][ix])
+            .attr("font-size", tWidth + "px");}
+
+
+
+        }
+
+      }
+    }
 }
 
 async function generateScorecards(filename, filter){
