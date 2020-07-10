@@ -138,8 +138,6 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
           }
       })
       .attr("class","bar-graph-title")
-      .attr("stroke","black")
-      .attr("stroke-width",0.2)
       .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
 
     var outDex = (colorDex+data.length)%getColorSize();
@@ -369,7 +367,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
                        " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
           label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5));
           label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20));
-          rwidth = label2.node().getBBox().width + 5;
+          rwidth = Math.max(label2.node().getBBox().width + 5,label.node().getBBox().width + 5);
           rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
               .attr("y",d3.mouse(this)[1]-rheight-mgap)
               .attr("width",rwidth)
@@ -672,8 +670,6 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     canvas.append("text")
       .text("Count")
       .attr("class","bar-graph-text2")
-      .attr("stroke","black")
-      .attr("stroke-width",0.2)
       .attr("transform","translate("+((x1+x2)/2)+","+(y2+40)+")")
     var yHeight = "";
     var xHeight = "";
@@ -690,8 +686,6 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
           }
       })
       .attr("class","bar-graph-title")
-      .attr("stroke","black")
-      .attr("stroke-width",0.2)
       .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
 
       let rect = canvas.append("rect").attr("x",0)
@@ -719,7 +713,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
               .attr("opacity", 1)
             label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 5+y1))
             label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 20+y1))
-            rwidth = label2.node().getBBox().width + 5;
+            rwidth = Math.max(label2.node().getBBox().width + 5,label.node().getBBox().width + 5);
             rect.attr("x",d3.mouse(this)[0]+x1+mgap - adjust)
                 .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
                 .attr("width",rwidth)
@@ -1216,8 +1210,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
           .attr("x", textAnchor.x)
           .attr("y", textAnchor.y)
           .attr("fill", "white")
-          .attr("stroke", "white")
-          .attr("stroke-width",.3)
           .attr("letter-spacing",.2)
           .text(Math.round(((data[iy][ix]/dataTotal)+Number.EPSILON)*1000)/10 + "%")
           .attr("font-size", tWidth + "px");
@@ -1237,8 +1229,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("-5");
 
@@ -1250,8 +1240,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("0");
         // ("d", " M " + toString(p1.x, p1.y) +
@@ -1271,8 +1259,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("5");
 
@@ -1284,8 +1270,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("10");
 
@@ -1297,8 +1281,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("15+");
 
@@ -1313,8 +1295,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("L");
 
@@ -1325,8 +1305,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("M");
 
@@ -1337,8 +1315,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("R");
 
@@ -1409,8 +1385,6 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
         .attr("x", textAnchor.x)
         .attr("y", textAnchor.y)
         .attr("fill", "white")
-        .attr("stroke", "white")
-        .attr("stroke-width",.3)
         .attr("letter-spacing",.2)
         .text(Math.round(((data[ix]/dataTotal)+Number.EPSILON)*1000)/10 + "%")
         .attr("font-size", tWidth + "px");
@@ -1431,8 +1405,6 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("LO");
 
@@ -1443,8 +1415,6 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("LI");
 
@@ -1455,8 +1425,6 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("M");
 
@@ -1467,8 +1435,6 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("RI");
 
@@ -1479,8 +1445,6 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
         .attr("x",textAnchor.x)
         .attr("y",textAnchor.y)
         .attr("fill","Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",othick)
         .attr("font-size",tWidth+"px")
         .text("RO");
 
@@ -1583,8 +1547,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
       .attr("x", lTextAnchor.x)
       .attr("y", lTextAnchor.y)
       .attr("fill", "Black")
-      .attr("stroke", "Black")
-      .attr("stroke-width",.3)
       .attr("letter-spacing",.2)
       .text(metadata.team1)
       .attr("font-size", 18 + "px")
@@ -1609,8 +1571,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
       .attr("x", rTextAnchor.x)
       .attr("y", rTextAnchor.y)
       .attr("fill", "Black")
-      .attr("stroke", "Black")
-      .attr("stroke-width",.3)
       .attr("letter-spacing",.2)
       .text(metadata.team2)
       .attr("font-size", 18 + "px")
@@ -1622,8 +1582,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
         .attr("x", mTextAnchor.x)
         .attr("y", mTextAnchor.y)
         .attr("fill", "Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",.3)
         .attr("letter-spacing",.2)
         .text(metadata.score)
         .attr("font-size", 16 + "px")
@@ -1634,8 +1592,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
         .attr("x", mTextAnchor.x)
         .attr("y", mTextAnchor.y)
         .attr("fill", "Black")
-        .attr("stroke", "Black")
-        .attr("stroke-width",.3)
         .attr("letter-spacing",.2)
         .text(metadata.gameClock)
         .attr("font-size", 10 + "px")
@@ -1647,8 +1603,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
           .attr("x", mTextAnchor.x)
           .attr("y", mTextAnchor.y)
           .attr("fill", "Black")
-          .attr("stroke", "Black")
-          .attr("stroke-width",.3)
           .attr("letter-spacing",.2)
           .text(metadata.outcome + " => " + totalyards)
           .attr("font-size", 15 + "px")
@@ -2031,7 +1985,6 @@ function addHeader(svg, data,metadata) {
           .attr("x", xcur + separation)
           .attr("y", (bottom + (t + h + separation)) / 2)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
           .text(1)
           .attr("text-anchor", "left")
       }
@@ -2047,7 +2000,6 @@ function addHeader(svg, data,metadata) {
           .attr("x", xcur + separation)
           .attr("y", (bottom + (t + h + separation)) / 2)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
           .text(1)
           .attr("text-anchor", "left")
       }
@@ -2065,6 +2017,8 @@ function addHeader(svg, data,metadata) {
   // addHeatChart(sample_data2,svg,800,10,1180,150);
   var sample_data2 = [["","Pass","Run","Total"],["Play Count",1,5,0],["Total Yards",2,7,0],["Average Yards",1,3,0],["TD Count",3,10,0]];
   addJeanTable(sample_data2,svg,800,10,1180,150);
+
+
   addLogo(svg, 50);
   var ht = 47;
   var wid = 100;
@@ -2204,7 +2158,7 @@ async function generateScorecards(filename, filter){
 
        // console.log(data);
        // console.log(data);
-       var sortedData = tieredSort(data,filter);
+       var sortedData = tieredSort(data,["NumPlays"]);
 
        var svg;
        var sep;
