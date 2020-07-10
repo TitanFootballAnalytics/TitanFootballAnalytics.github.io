@@ -99,7 +99,7 @@
                   {"Category":"Average Yards","Value":22},
                   {"Category":"Pass yard avg","Value":25},
                   {"Category":"Run yard average","Value":21}
-                ]
+                ]]
 
       },
       {   "Down":"3rd",
@@ -142,3 +142,5 @@
 
 
    ]
+ }
+]
