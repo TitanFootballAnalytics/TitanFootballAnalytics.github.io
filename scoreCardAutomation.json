@@ -101,38 +101,37 @@
                   {"Category":"Run yard average","Value":21}
                 ]
 
-            ]
       },
       {   "Down":"3rd",
           "DistSit":"Long",
           "FieldZone":"60-70",
           "datasets" : [
                 [
-                    {"category":"11","val":3},
-                    {"category":"12","val":1}
+                  {"category":"11","val":3},
+                  {"category":"12","val":1}
                 ],
                 [
-                    {"category":"DEUCE","val":1},
-                    {"category":"DUO ON","val":1},
-                    {"category":"TRIO","val":1},
-                    {"category":"TRUNK SQZ","val":1}
+                  {"category":"DEUCE","val":1},
+                  {"category":"DUO ON","val":1},
+                  {"category":"TRIO","val":1},
+                  {"category":"TRUNK SQZ","val":1}
                 ],
                 [
-                    {"category":"DBP","val":1},
-                    {"category":"QUICK","val":2},
-                    {"category":"SHOVEL","val":1}
+                  {"category":"DBP","val":1},
+                  {"category":"QUICK","val":2},
+                  {"category":"SHOVEL","val":1}
                 ],
                 [
-                    {"in":"11","out":"DEUCE","count":1},
-                    {"in":"11","out":"DUO ON","count":1},
-                    {"in":"11","out":"TRIO","count":1},
-                    {"in":"12","out":"TRUNK SQZ","count":1}
+                  {"in":"11","out":"DEUCE","count":1},
+                  {"in":"11","out":"DUO ON","count":1},
+                  {"in":"11","out":"TRIO","count":1},
+                  {"in":"12","out":"TRUNK SQZ","count":1}
                 ],
                 [
-                    {"in":"DEUCE","out":"QUICK","count":1},
-                    {"in":"DUO ON","out":"QUICK","count":1},
-                    {"in":"TRIO","out":"SHOVEL","count":1},
-                    {"in":"TRUNK SQZ","out":"DBP","count":1}
+                  {"in":"DEUCE","out":"QUICK","count":1},
+                  {"in":"DUO ON","out":"QUICK","count":1},
+                  {"in":"TRIO","out":"SHOVEL","count":1},
+                  {"in":"TRUNK SQZ","out":"DBP","count":1}
                 ],
                 [
                   {"Category":"Play Count","Value":7},
@@ -141,7 +140,5 @@
                   {"Category":"Run yard average","Value":21}
                 ]
 
-            ]
 
-      }
    ]
