@@ -363,14 +363,10 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
           var cpy = centy - rads*Math.cos(theta1);
           arc
             .attr("opacity", 1)
-            //TODO: hover over making slice bigger
             .transition().duration(200)
             .attr("d", " M " + cpx + " " + cpy +
                        " A " + rads + " " + rads +" 0 "+arc.attr("flg")+" "+1+ " " + npx + " " + npy +
                        " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
-          // console.log(" M " + arc.attr("cpx") + " " + arc.attr("cpy") +
-          //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
-          //            " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
           label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5));
           label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20));
           rwidth = label2.node().getBBox().width + 5;
@@ -1700,7 +1696,7 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
     }
 
     // canvas.append("path")
-    //   .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //TODO: add padding within function calls, not to output
+    //   .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //COMPLETE: add padding within function calls, not to output
     //     " L " + toString(newPoint(tp1, pm, p).x + pad, newPoint(tp1, pm, p).y + 2 * pad) +
     //     " L " + toString(newPoint(tp2, pm, p).x - pad, newPoint(tp2, pm, p).y + 2 * pad) +
     //     " L " + toString(tp2.x - pad, tp2.y - 2 * pad) +
@@ -2038,8 +2034,9 @@ function addHeader(svg, data,metadata) {
 
 async function generateScorecards(filename, filter){
        const data = await d3.json(filename);
+
        // console.log(data);
-       console.log(data);
+       // console.log(data);
        var sortedData = tieredSort(data,filter);
 
        var svg;
@@ -2079,6 +2076,7 @@ async function generateScorecards(filename, filter){
                    .attr("width",fixedWidth)
                    .attr("height",fixedHeight)
                    .attr("class","scorecard centered-basic")
+                   // .style("animation-delay",i*.2+"s")
                    .attr("id","scoreCard"+i)
 
            svg = d3.select(("#scoreCard"+i));
@@ -2124,7 +2122,7 @@ async function generateScorecards(filename, filter){
              "DistSit":sortedData[i]["DistSit"],
              "FieldZone":sortedData[i]["FieldZone"]
            }
-           console.log(meta);
+           // console.log(meta);
            addHeader(svg, sortedData[i].datasets[5],meta);
        }
 }

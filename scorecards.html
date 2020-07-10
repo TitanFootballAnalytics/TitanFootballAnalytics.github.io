@@ -17,7 +17,36 @@
   <script src="graphingPackage.js"></script>
   <script src="sortingPackage.js"></script>
   <script src="navBar.js"></script>
-    <div class='nav'>
+
+  <style>
+
+  line.dashed {
+    stroke: #aaa;
+    stroke-width: 1px;
+    stroke-dasharray: 2;
+  }
+  text.axis {
+    text-anchor: end;
+    font-variant: all-small-caps;
+  }
+  .bar-graph-text{
+      text-anchor: end;
+  }
+  .bar-graph-text2{
+      text-anchor: middle;
+  }
+  .bar-graph-title{
+      text-anchor: middle;
+  }
+
+
+  </style>
+</head>
+
+<body>
+    <div class = "container-fluid mainbackground", id = "backgroundDiv">
+    </div>
+    <div class='nav' style='position:fixed;width:100%'>
       <ul>
         <li><a href='#' id = "graph1">Graph 1</a>
             <ul>
@@ -59,35 +88,7 @@
         </li>
       </ul>
     </div>
-  <style>
-
-  line.dashed {
-    stroke: #aaa;
-    stroke-width: 1px;
-    stroke-dasharray: 2;
-  }
-  text.axis {
-    text-anchor: end;
-    font-variant: all-small-caps;
-  }
-  .bar-graph-text{
-      text-anchor: end;
-  }
-  .bar-graph-text2{
-      text-anchor: middle;
-  }
-  .bar-graph-title{
-      text-anchor: middle;
-  }
-
-
-  </style>
-</head>
-
-<body>
-    <div class = "container-fluid mainbackground", id = "mainDiv">
-      <div id = "sortselect">
-      </div>
+    <div class = "container-fluid", id = "mainDiv">
     </div>
   <script>
         const fixedHeight = 500
