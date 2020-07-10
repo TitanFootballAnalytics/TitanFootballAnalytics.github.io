@@ -170,6 +170,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("npy",nextpointy)
       .attr("centx",cx)
       .attr("centy",cy);
+    console.log(radius)
     //console.log(cx,cy,diameter);
     // console.log("printing graph")
     for(var i = 1; i < data.length;i++){
@@ -197,7 +198,6 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         .attr("d", " M " + currpointx + " " + currpointy +
                    " A " + radius + " " + radius +" 0 "+flag+" "+1+ " " + nextpointx + " " + nextpointy +
                    " L " + (cx) + " " + (cy) + " Z")
-
         .attr("fill", generateColorString(color,1))
         .attr("stroke","#DDDDDD")
         .attr("class", "pie" + uniqueID)
@@ -330,13 +330,17 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
     canvas.selectAll(".pie" + uniqueID)
         .on("mouseover", function () {
           var arc = d3.select(this);
+          var rads = parseFloat(arc.attr("rad")) + 30;
           arc
-            .attr("opacity", 1);
+            .attr("opacity", 1)
             //TODO: hover over making slice bigger
-            // .transition().duration(200)
+            .transition().duration(200)
             // .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
-            //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
+            //            " A " + rads + " " + rads +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
             //            " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
+          // console.log(" M " + arc.attr("cpx") + " " + arc.attr("cpy") +
+          //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
+          //            " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
           label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5));
           label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20));
           rwidth = label2.node().getBBox().width + 5;
