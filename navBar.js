@@ -102,16 +102,6 @@ function setupNavClicks(){
         .on("mouseout",function(){
             d3.select(this).style("background","#eee");
     })
-    d3.select("#fieldoption1")
-        .on("click",function(){
-            d3.select("#graph1").text(d3.select(this).text());
-        })
-        .on("mouseover",function(){
-            d3.select(this).style("background","rgb(220,220,220)");
-        })
-        .on("mouseout",function(){
-            d3.select(this).style("background","#eee");
-    })
     d3.select("#noneoption1")
         .on("click",function(){
             d3.select("#graph1").text(d3.select(this).text());
@@ -142,16 +132,6 @@ function setupNavClicks(){
         .on("mouseout",function(){
             d3.select(this).style("background","#eee");
     })
-    d3.select("#fieldoption2")
-        .on("click",function(){
-            d3.select("#graph2").text(d3.select(this).text());
-        })
-        .on("mouseover",function(){
-            d3.select(this).style("background","rgb(220,220,220)");
-        })
-        .on("mouseout",function(){
-            d3.select(this).style("background","#eee");
-    })
     d3.select("#noneoption2")
         .on("click",function(){
             d3.select("#graph2").text(d3.select(this).text());
@@ -173,16 +153,6 @@ function setupNavClicks(){
             d3.select(this).style("background","#eee");
     })
     d3.select("#pieoption3")
-        .on("click",function(){
-            d3.select("#graph3").text(d3.select(this).text());
-        })
-        .on("mouseover",function(){
-            d3.select(this).style("background","rgb(220,220,220)");
-        })
-        .on("mouseout",function(){
-            d3.select(this).style("background","#eee");
-    })
-    d3.select("#fieldoption3")
         .on("click",function(){
             d3.select("#graph3").text(d3.select(this).text());
         })

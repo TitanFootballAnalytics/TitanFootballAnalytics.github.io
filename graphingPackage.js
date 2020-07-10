@@ -124,6 +124,22 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
   //   .attr("height",y2-(y1))
   //   .attr("fill","red")
   //   .attr("stroke","black")
+    canvas.append("text")
+      .text(function(){
+          if(uniqueID==0){
+              return "Personnel"
+          }
+          else if(uniqueID==1){
+              return "Formation"
+          }
+          else{
+              return "Play Type"
+          }
+      })
+      .attr("class","bar-graph-title")
+      .attr("stroke","black")
+      .attr("stroke-width",0.2)
+      .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
 
     var outDex = (colorDex+data.length)%getColorSize();
     var gap = 10;
@@ -169,7 +185,9 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("npx",nextpointx)
       .attr("npy",nextpointy)
       .attr("centx",cx)
-      .attr("centy",cy);
+      .attr("centy",cy)
+      .attr("theta",currtheta)
+      .attr("thetaDelta",2*Math.PI * data[0].val/datatotal);
     console.log(radius)
     //console.log(cx,cy,diameter);
     // console.log("printing graph")
@@ -212,7 +230,9 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         .attr("npx",nextpointx)
         .attr("npy",nextpointy)
         .attr("centx",cx)
-        .attr("centy",cy);
+        .attr("centy",cy)
+        .attr("theta",currtheta)
+        .attr("thetaDelta",2*Math.PI * data[i].val/datatotal);
     }
     var centerrad = radius/2;
     canvas.append("circle")
@@ -330,14 +350,23 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
     canvas.selectAll(".pie" + uniqueID)
         .on("mouseover", function () {
           var arc = d3.select(this);
-          var rads = parseFloat(arc.attr("rad")) + 30;
+          arc.moveToBack();
+          var rads = parseFloat(arc.attr("rad")) + 10;//ludacris 1000;
+          var centx = parseFloat(arc.attr("centx"));
+          var centy = parseFloat(arc.attr("centy"));
+          var theta2 = parseFloat(arc.attr("theta"))
+          var theta1 = theta2 - parseFloat(arc.attr("thetaDelta"))
+          var npx = centx + rads*Math.sin(theta2);
+          var npy = centy - rads*Math.cos(theta2);
+          var cpx = centx + rads*Math.sin(theta1);
+          var cpy = centy - rads*Math.cos(theta1);
           arc
             .attr("opacity", 1)
             //TODO: hover over making slice bigger
             .transition().duration(200)
-            // .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
-            //            " A " + rads + " " + rads +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
-            //            " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
+            .attr("d", " M " + cpx + " " + cpy +
+                       " A " + rads + " " + rads +" 0 "+arc.attr("flg")+" "+1+ " " + npx + " " + npy +
+                       " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
           // console.log(" M " + arc.attr("cpx") + " " + arc.attr("cpy") +
           //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
           //            " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
@@ -354,8 +383,12 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
           label2.moveToFront();
         })
         .on("mouseout", function () {
-          d3.select(this)
-            .attr("opacity", 0.9)
+          var arc = d3.select(this);
+          arc
+            .attr("opacity", 0.9).transition().duration(200)
+            .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
+                       " A " + (arc.attr("rad")) + " " + (arc.attr("rad")) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
+                       " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
           label.text("")
           label2.text("")
           rect.attr("x",d3.mouse(this)[0])
