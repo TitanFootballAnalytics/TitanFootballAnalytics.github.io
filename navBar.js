@@ -34,9 +34,53 @@
 });
 
 function setupNavClicks(){
+    d3.select("#sortoption1")
+        .on("click",function(){
+            d3.select("#sort").text(d3.select(this).text());
+            generateScorecards("scoreCardAutomation.json",["Down"]);
+        })
+        .on("mouseover",function(){
+            d3.select(this).style("background","rgb(220,220,220)");
+        })
+        .on("mouseout",function(){
+            d3.select(this).style("background","#eee");
+    })
+    d3.select("#sortoption2")
+        .on("click",function(){
+            d3.select("#sort").text(d3.select(this).text());
+            generateScorecards("scoreCardAutomation.json",["DistSit"]);
+        })
+        .on("mouseover",function(){
+            d3.select(this).style("background","rgb(220,220,220)");
+        })
+        .on("mouseout",function(){
+            d3.select(this).style("background","#eee");
+    })
+    d3.select("#sortoption3")
+        .on("click",function(){
+            d3.select("#sort").text(d3.select(this).text());
+            generateScorecards("scoreCardAutomation.json",["FieldZone"]);
+        })
+        .on("mouseover",function(){
+            d3.select(this).style("background","rgb(220,220,220)");
+        })
+        .on("mouseout",function(){
+            d3.select(this).style("background","#eee");
+    })
+    d3.select("#sortoption4")
+        .on("click",function(){
+            d3.select("#sort").text("Sort");
+            generateScorecards("scoreCardAutomation.json",[]);
+        })
+        .on("mouseover",function(){
+            d3.select(this).style("background","rgb(220,220,220)");
+        })
+        .on("mouseout",function(){
+            d3.select(this).style("background","#eee");
+    })
     d3.select("#submit")
         .on("click",function(){
-            generateScorecards("scoreCardAutomation.json");
+            generateScorecards("scoreCardAutomation.json",[]);
     })
     d3.select("#baroption1")
         .on("click",function(){
@@ -49,16 +93,6 @@ function setupNavClicks(){
             d3.select(this).style("background","#eee");
     })
     d3.select("#pieoption1")
-        .on("click",function(){
-            d3.select("#graph1").text(d3.select(this).text());
-        })
-        .on("mouseover",function(){
-            d3.select(this).style("background","rgb(220,220,220)");
-        })
-        .on("mouseout",function(){
-            d3.select(this).style("background","#eee");
-    })
-    d3.select("#fieldoption1")
         .on("click",function(){
             d3.select("#graph1").text(d3.select(this).text());
         })
@@ -98,16 +132,6 @@ function setupNavClicks(){
         .on("mouseout",function(){
             d3.select(this).style("background","#eee");
     })
-    d3.select("#fieldoption2")
-        .on("click",function(){
-            d3.select("#graph2").text(d3.select(this).text());
-        })
-        .on("mouseover",function(){
-            d3.select(this).style("background","rgb(220,220,220)");
-        })
-        .on("mouseout",function(){
-            d3.select(this).style("background","#eee");
-    })
     d3.select("#noneoption2")
         .on("click",function(){
             d3.select("#graph2").text(d3.select(this).text());
@@ -129,16 +153,6 @@ function setupNavClicks(){
             d3.select(this).style("background","#eee");
     })
     d3.select("#pieoption3")
-        .on("click",function(){
-            d3.select("#graph3").text(d3.select(this).text());
-        })
-        .on("mouseover",function(){
-            d3.select(this).style("background","rgb(220,220,220)");
-        })
-        .on("mouseout",function(){
-            d3.select(this).style("background","#eee");
-    })
-    d3.select("#fieldoption3")
         .on("click",function(){
             d3.select("#graph3").text(d3.select(this).text());
         })

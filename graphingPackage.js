@@ -1,10 +1,24 @@
 function convToRGB(i,hex){
+  // console.log(i)
   obj = d3.hsl(hex);
   rgb = obj.rgb();
   // console.log(rgb);
   return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
 }
+d3.selection.prototype.moveToFront = function() {
+   return this.each(function(){
+     this.parentNode.appendChild(this);
+   });
+ };
 
+d3.selection.prototype.moveToBack = function() {
+  return this.each(function() {
+      var firstChild = this.parentNode.firstChild;
+      if (firstChild) {
+          this.parentNode.insertBefore(this, firstChild);
+      }
+  });
+};
 function colorPallete(canvas){
 
   //create start locations for bezier rect
@@ -104,6 +118,31 @@ function getColorSize(){
 }
 
 function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
+<<<<<<< HEAD
+=======
+  // canvas.append("rect")
+  //   .attr("x",x1)
+  //   .attr("y",y1)
+  //   .attr("width",(x2)-(x1))
+  //   .attr("height",y2-(y1))
+  //   .attr("fill","red")
+  //   .attr("stroke","black")
+    canvas.append("text")
+      .text(function(){
+          if(uniqueID==0){
+              return "Personnel"
+          }
+          else if(uniqueID==1){
+              return "Formation"
+          }
+          else{
+              return "Play Type"
+          }
+      })
+      .attr("class","bar-graph-title")
+      .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
+
+>>>>>>> 700bbef0ab639b1f7819bf5752ebbf10152f67fd
     var outDex = (colorDex+data.length)%getColorSize();
     var gap = 10;
     x2-=gap;
@@ -145,7 +184,10 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("npx",nextpointx)
       .attr("npy",nextpointy)
       .attr("centx",cx)
-      .attr("centy",cy);
+      .attr("centy",cy)
+      .attr("theta",currtheta)
+      .attr("thetaDelta",2*Math.PI * data[0].val/datatotal);
+    console.log(radius)
     //console.log(cx,cy,diameter);
     // console.log("printing graph")
     for(var i = 1; i < data.length;i++){
@@ -173,13 +215,12 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         .attr("d", " M " + currpointx + " " + currpointy +
                    " A " + radius + " " + radius +" 0 "+flag+" "+1+ " " + nextpointx + " " + nextpointy +
                    " L " + (cx) + " " + (cy) + " Z")
-
         .attr("fill", generateColorString(color,1))
         .attr("stroke","#DDDDDD")
         .attr("class", "pie" + uniqueID)
         .attr("stroke-width",strokeWidth)
-        .attr("val",data[0].val)
-        .attr("cat",data[0].category)
+        .attr("val",data[i].val)
+        .attr("cat",data[i].category)
         .attr("opacity",.9)
         .attr("rad",radius)
         .attr("cpx",currpointx)
@@ -188,7 +229,9 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
         .attr("npx",nextpointx)
         .attr("npy",nextpointy)
         .attr("centx",cx)
-        .attr("centy",cy);
+        .attr("centy",cy)
+        .attr("theta",currtheta)
+        .attr("thetaDelta",2*Math.PI * data[i].val/datatotal);
     }
     var centerrad = radius/2;
     canvas.append("circle")
@@ -197,6 +240,95 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("cy",cy)
       .attr("fill","#DDDDDD")
 
+<<<<<<< HEAD
+=======
+
+    var maxWidth =  (x2+gap)-(x1-gap);
+    var lx = x1-gap;
+    var ly = y1+diameter;
+    var line = 1;
+    var linesize = 20;
+    var pad = 2;
+    var lineAccum = 0;
+    var currItems = new Array();
+    for(var i = 0; i < data.length;i++){
+      colorDex = colorDex%getColorSize()
+      color = getColor(colorDex);
+      colorDex++;
+      var lrect = canvas.append("rect")
+        .attr("x",lx+lineAccum+pad)
+        .attr("y",ly+linesize*(line-1) + pad)
+        .attr("width",linesize-2*pad)
+        .attr("height",linesize-2*pad)
+        .attr("fill",generateColorString(color,1));
+
+
+
+
+
+      var text = canvas.append("text")
+                    .attr("text-anchor","start")
+                    .attr("alignment-baseline","middle")
+                    .attr("fill","black")
+                    .attr("font-size","15px")
+                    .text(data[i].category)
+      var textWidth = text.node().getBBox().width;
+      if(linesize+textWidth + 2*pad> maxWidth){
+        //TODO:handle content spillover
+      }
+      else if(lineAccum + linesize+textWidth+2*pad > maxWidth){
+        //handle wrap
+        //VVVVV bounding box for centered items
+        // canvas.append("rect")
+        //   .attr("x",lx+ (maxWidth-lineAccum)/2)
+        //   .attr("y",ly+linesize*(line-1))
+        //   .attr("width",lineAccum)
+        //   .attr("height",linesize)
+        //   .attr("stroke","black").moveToBack();
+        for(var j = 0; j < currItems.length;j++){
+           var xDelta = parseFloat(currItems[j].attr("x"));
+           currItems[j].attr("x",xDelta+(maxWidth-lineAccum)/2);
+        }
+        console.log(currItems);
+        currItems = new Array();
+        line++;
+        lineAccum=0;
+        lrect.attr("x",lx+lineAccum+pad)
+            .attr("y",ly+linesize*(line-1) + pad)
+        text.attr("x",lx+lineAccum + linesize + pad)
+            .attr("y",ly+linesize*(line-.5));
+        lineAccum = linesize+2*pad+textWidth;
+        currItems.push(text);
+        currItems.push(lrect);
+
+      }
+      else{
+        //handle normal text placement
+        text.attr("x",lx+lineAccum + linesize + pad)
+            .attr("y",ly+linesize*(line-.5));
+        lineAccum += linesize+2*pad+textWidth;
+        currItems.push(text);
+        currItems.push(lrect);
+      }
+      // console.log(text.node().getBBox())
+    }
+    if(currItems.length > 0){
+      console.log(currItems);
+      // canvas.append("rect")
+      //   .attr("x",lx+ (maxWidth-lineAccum)/2)
+      //   .attr("y",ly+linesize*(line-1))
+      //   .attr("width",lineAccum)
+      //   .attr("height",linesize)
+      //   .attr("stroke","black").moveToBack();
+      for(var i = 0; i < currItems.length;i++){
+         var xDelta = parseFloat(currItems[i].attr("x"));
+         currItems[i].attr("x",xDelta+(maxWidth-lineAccum)/2);
+      }
+    }
+
+    console.log(y2-(y1+diameter) + 40);
+
+>>>>>>> 700bbef0ab639b1f7819bf5752ebbf10152f67fd
     let rect = canvas.append("rect").attr("x",0)
                                     .attr("y",0)
                                     .attr("width",0)
@@ -215,12 +347,24 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .attr("fill", "black")
       .text("")
     var mgap = 3;
+    var adjust = 0;
 
     canvas.selectAll(".pie" + uniqueID)
         .on("mouseover", function () {
           var arc = d3.select(this);
+          arc.moveToBack();
+          var rads = parseFloat(arc.attr("rad")) + 10;//ludacris 1000;
+          var centx = parseFloat(arc.attr("centx"));
+          var centy = parseFloat(arc.attr("centy"));
+          var theta2 = parseFloat(arc.attr("theta"))
+          var theta1 = theta2 - parseFloat(arc.attr("thetaDelta"))
+          var npx = centx + rads*Math.sin(theta2);
+          var npy = centy - rads*Math.cos(theta2);
+          var cpx = centx + rads*Math.sin(theta1);
+          var cpy = centy - rads*Math.cos(theta1);
           arc
             .attr("opacity", 1)
+<<<<<<< HEAD
             // .transition().duration(200)
             // .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
             //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
@@ -228,6 +372,16 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
           label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20));
           label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5));
           rect.attr("x",d3.mouse(this)[0]+mgap)
+=======
+            .transition().duration(200)
+            .attr("d", " M " + cpx + " " + cpy +
+                       " A " + rads + " " + rads +" 0 "+arc.attr("flg")+" "+1+ " " + npx + " " + npy +
+                       " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
+          label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5));
+          label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20));
+          rwidth = Math.max(label2.node().getBBox().width + 5,label.node().getBBox().width + 5);
+          rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
+>>>>>>> 700bbef0ab639b1f7819bf5752ebbf10152f67fd
               .attr("y",d3.mouse(this)[1]-rheight-mgap)
               .attr("width",rwidth)
               .attr("height",rheight)
@@ -237,8 +391,12 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
           label2.moveToFront();
         })
         .on("mouseout", function () {
-          d3.select(this)
-            .attr("opacity", 0.9)
+          var arc = d3.select(this);
+          arc
+            .attr("opacity", 0.9).transition().duration(200)
+            .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
+                       " A " + (arc.attr("rad")) + " " + (arc.attr("rad")) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
+                       " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
           label.text("")
           label2.text("")
           rect.attr("x",d3.mouse(this)[0])
@@ -248,13 +406,20 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
               .attr("fill","rgba(255,255,255,0)")
         })
         .on("mousemove", function () {
-          label2.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20 ))
-          label.attr("x", (d3.mouse(this)[0] + 5 )).attr("y", (d3.mouse(this)[1] - 5 ))
-          rect.attr("x",d3.mouse(this)[0]+mgap)
+          if(d3.mouse(this)[0]+mgap + rwidth > fixedWidth){
+            adjust = rwidth;
+          }
+          else{
+            adjust = 0;
+          }
+          label2.attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20 ))
+          label.attr("x", (d3.mouse(this)[0] + 5 )-adjust).attr("y", (d3.mouse(this)[1] - 5 ))
+          rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
               .attr("y",d3.mouse(this)[1]-rheight-mgap)
               .attr("width",rwidth)
               .attr("height",rheight)
               .attr("fill","rgba(255,255,255,.9)")
+
         });
     return outDex;
 }
@@ -426,9 +591,10 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .data(data)
     .enter().append("rect")
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
-    .attr("class", "bar" + uniqueID)
+    .attr("class", "bar" + uniqueID + " hover"+uniqueID)
     .attr("opacity", 0.9)
     .attr("fill", function (d, i) {
+
       colorDex = colorDex%getColorSize();
       var color = getColor((colorDex+data.length-1)%getColorSize());
       // console.log(color);
@@ -445,12 +611,12 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("height", function(d,i){
         return barHeight;
     })
+    .attr("count",d => d.val)
     .transition()
     .duration(1000)
     .delay(function (d, i) {
       return data.length*500 - i * 500;
     })
-    .attr("count",d => d.val)
     .attr("name", d => d.category)
     .attr("width", d => x(d.val))
 
@@ -483,25 +649,40 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     var accumHeight = y2-y1;;
     var temp = 0;
     for(let i = 0; i < data.length; i++){
-        canvas.append("text")
+        var bText = canvas.append("text")
           .text(data[i].category)
-          .attr("class","bar-graph-text")
+          .attr("class","bar-graph-text hover"+uniqueID)
           .attr("fill","black")
+          .attr("count",data[i].val)
+          .attr("name",data[i].category)
+          .style("cursor","default")
+          // .attr("baseline-alignmnet","middle")
           // .attr("stroke","#FFFFFF")
           .style("font-size",15)
           .style("font-weight","bold")
           .attr("stroke-width",1)
-          .attr("transform",function(){
-              temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
-              accumHeight = accumHeight - (barHeight*data[i].val)
-              return "translate("+x2+","+((y1+temp)+barHeight/2+5)+")"
-          })
+       // var tWidth = bText.node().getBBox().width;
+       // bText.attr("x",x2-tWidth)
+       //      .attr("y",y1+accumHeight-barHeight/2)
+          // .attr("transform",function(){
+          //     temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
+          //     accumHeight = accumHeight - (barHeight*data[i].val)
+          //     return "translate("+x2+","+((y1+temp)+barHeight/2+5)+")"
+          // })
+        temp = accumHeight - ((barHeight*data[i].val)/2)-barHeight/2
+        accumHeight = accumHeight - (barHeight*data[i].val)
+        bText.attr("x",x2)
+        bText.attr("y",(y1+temp)+barHeight/2+5)
+        // canvas.append("circle")
+        //   .attr("r",4)
+        //   .attr("cx",x2)
+        //   .attr("cy",(y1+temp)+barHeight/2+5)
+        //   .attr("fill","#000000")
+          //return "translate("+x2+","+((y1+temp)+barHeight/2+5)+")"
     }
     canvas.append("text")
       .text("Count")
       .attr("class","bar-graph-text2")
-      .attr("stroke","black")
-      .attr("stroke-width",0.2)
       .attr("transform","translate("+((x1+x2)/2)+","+(y2+40)+")")
     var yHeight = "";
     var xHeight = "";
@@ -518,8 +699,6 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
           }
       })
       .attr("class","bar-graph-title")
-      .attr("stroke","black")
-      .attr("stroke-width",0.2)
       .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
 
       let rect = canvas.append("rect").attr("x",0)
@@ -540,13 +719,15 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
         .attr("fill", "black")
         .text("")
       var mgap = 3;
-      canvas.selectAll(".bar" + uniqueID)
+      var adjust = 0;
+      canvas.selectAll(".bar" + uniqueID)//TODO: make hover over text to (change class from bar to hover and fix bugs)
           .on("mouseover", function () {
             d3.select(this)
               .attr("opacity", 1)
-            label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
-            label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
-            rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+            label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 5+y1))
+            label2.text("Name: " + d3.select(this).attr("name")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 20+y1))
+            rwidth = Math.max(label2.node().getBBox().width + 5,label.node().getBBox().width + 5);
+            rect.attr("x",d3.mouse(this)[0]+x1+mgap - adjust)
                 .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
                 .attr("width",rwidth)
                 .attr("height",rheight)
@@ -567,9 +748,16 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
                 .attr("fill","rgba(255,255,255,0)")
           })
           .on("mousemove", function () {
-            label2.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 20 + y1))
-            label.attr("x", (d3.mouse(this)[0] + 5 + x1)).attr("y", (d3.mouse(this)[1] - 5 + y1))
-            rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+            if(d3.mouse(this)[0]+mgap + rwidth +x1> fixedWidth){
+              adjust = rwidth;
+            }
+            else{
+              adjust = 0;
+            }
+            console.log(d3.mouse(this),rheight,y1,mgap);
+            label2.attr("x", (d3.mouse(this)[0] + 5 + x1)-adjust).attr("y", (d3.mouse(this)[1] - 20 + y1))
+            label.attr("x", (d3.mouse(this)[0] + 5 + x1)-adjust).attr("y", (d3.mouse(this)[1] - 5 + y1))
+            rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
                 .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
                 .attr("width",rwidth)
                 .attr("height",rheight)
@@ -578,7 +766,6 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     return outDex;
 
 };
-
 
 function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,colorDex2) {
 
@@ -854,6 +1041,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                                     .attr("fill","rgba(255,255,255,1)")
     let rwidth = 130;
     let rheight = 30;
+    var adjust = 0;
     var mgap = 3;
     let label = canvas.append("text")
       .attr("x", 0)
@@ -869,11 +1057,12 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
         .on("mouseover", function () {
           d3.select(this)
             .attr("opacity", 1)
-          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
-          rect.attr("x",d3.mouse(this)[0]+x1+mgap)
-              .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
+          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1-adjust)).attr("y", (d3.mouse(this)[1] - 20+y1))
+          rwidth = label.node().getBBox().width + 5;
+          rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
+              .attr("y",d3.mouse(this)[1]-.5*rheight+y1-mgap)
               .attr("width",rwidth)
-              .attr("height",rheight)
+              .attr("height",rheight/2)
               .attr("fill","rgba(255,255,255,.9)")
               rect.moveToFront();
               label.moveToFront();
@@ -884,26 +1073,33 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
             .attr("opacity", 0.5)
           label.text("")
           rect.attr("x",d3.mouse(this)[0]+x1)
-              .attr("y",d3.mouse(this)[1]-rheight+y1)
+              .attr("y",d3.mouse(this)[1]+y1)
               .attr("width",0)
               .attr("height",0)
               .attr("fill","rgba(255,255,255,0)")
         })
         .on("mousemove", function () {
-          label.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20))
-          rect.attr("x",d3.mouse(this)[0]+mgap)
-              .attr("y",d3.mouse(this)[1]-rheight-mgap)
+          if(d3.mouse(this)[0]+mgap + rwidth > fixedWidth-5){
+            adjust = rwidth;
+          }
+          else{
+            adjust = 0;
+          }
+          label.attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5 ))
+          rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
+              .attr("y",d3.mouse(this)[1]-.5*rheight-mgap)
               .attr("width",rwidth)
-              .attr("height",rheight)
+              .attr("height",rheight/2)
               .attr("fill","rgba(255,255,255,.9)")
         });
 
 
         canvas.selectAll(".sankeyrect"+uniqueID)
             .on("mouseover", function () {
-              label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 20+y1))
-              label2.text("Name: "+ d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5+x1)).attr("y", (d3.mouse(this)[1] - 5+y1))
-              rect.attr("x",d3.mouse(this)[0]+x1+mgap)
+              label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 5+y1))
+              label2.text("Name: "+ d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 20+y1))
+              rwidth = label2.node().getBBox().width + 5;
+              rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
                   .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
                   .attr("width",rwidth)
                   .attr("height",rheight)
@@ -922,9 +1118,15 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                   .attr("fill","rgba(255,255,255,0)")
             })
             .on("mousemove", function () {
-              label2.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20))
-              label.attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5))
-              rect.attr("x",d3.mouse(this)[0]+mgap)
+              if(d3.mouse(this)[0]+mgap + rwidth > fixedWidth){
+                adjust = rwidth;
+              }
+              else{
+                adjust = 0;
+              }
+              label2.attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20))
+              label.attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5))
+              rect.attr("x",d3.mouse(this)[0]+mgap-adjust)
                   .attr("y",d3.mouse(this)[1]-rheight-mgap)
                   .attr("width",rwidth)
                   .attr("height",rheight)
@@ -952,11 +1154,323 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   //   })
 }
 
+function addHeatChart(data,canvas,x1,y1,x2,y2){
+  var xunit = (x2-x1)/3;
+  var yunit = (y2-y1)/5;
+  canvas.insert("defs").html(
+    "<pattern id='grass' width='100%' height='100%'>" +
+      "<image xlink:href='./Images/grasstexture-low-res.jpg' width='"+(x2-x1)+"'/>" +
+    "</pattern>");
 
-function addFieldChart(data, canvas, x1, y1, x2, y2) {
-  let p1 = { x: 100.0, y: 400.0 };
-  let p2 = { x: 580.0, y: 400.0 };
-  let pm = { x: 340.0, y: -80.0 };
+  canvas.insert("defs").html(
+    "<filter id='gaus' x='-40%' y='-40%' width='300%' height ='300%'>" +
+      "<feGaussianBlur in='SourceGraphic' stdDeviation='5' />" +
+    "</filter>");
+    canvas.append("rect")
+      .attr("x",x1)
+      .attr("y",y1)
+      .attr("width",xunit*3)
+      .attr("height",yunit*5)
+      .attr("fill","url(#grass)")
+      .attr("filter","url(#gaus)")
+
+    var tWidth = 12;
+    var width = x2-x1;
+    if(width > 320){
+      tWidth = 18;
+    }
+    else if(width>250){
+      tWidth = 16;
+    }
+    else if(width>200){
+      tWidth = 15;
+    }
+    else if(width>180){
+      tWidth = 14;
+    }
+    console.log(tWidth)
+
+    var dataTotal = 0;
+    for(var ix = 0; ix < 3; ix++){
+      for(var iy = 0; iy < data.length;iy++){
+        dataTotal += data[iy][ix];
+      }
+    }
+    console.log(dataTotal);
+    for(var ix = 0; ix < 3; ix++){
+      for(var iy = 0; iy < data.length;iy++){
+        var col = convToRGB(0,"#00539CFF");
+        // console.log(col)
+
+
+        canvas.append("rect")
+          .attr("x",x1+ix*xunit)
+          .attr("y",y1+iy*yunit)
+          .attr("width",xunit)
+          .attr("height",yunit)
+          .attr("fill","rgba("+col.r+","+col.g+","+col.b+","+(4*data[iy][ix]/dataTotal) +")")
+          .attr("stroke","white")
+          .attr("stroke-width","5px");
+
+        var textAnchor = {
+          x: x1+(ix+.5)*xunit,
+          y: y1+(iy+.5)*yunit
+        }
+
+        canvas.append("text")
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline","middle")
+          .attr("x", textAnchor.x)
+          .attr("y", textAnchor.y)
+          .attr("fill", "white")
+          .attr("letter-spacing",.2)
+          .text(Math.round(((data[iy][ix]/dataTotal)+Number.EPSILON)*1000)/10 + "%")
+          .attr("font-size", tWidth + "px");
+      }
+    }
+
+    var othick = .3;
+    var gap = 10;
+    var textAnchor = {
+      x: x1 - gap,
+      y: y2
+    };
+
+    canvas.append("text")
+        .attr("text-anchor","end")
+        .attr("alignment-baseline","middle")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("-5");
+
+    textAnchor.y -= yunit;
+
+    canvas.append("text")
+        .attr("text-anchor","end")
+        .attr("alignment-baseline","middle")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("0");
+        // ("d", " M " + toString(p1.x, p1.y) +
+        //   " L " + toString(newPoint(p1, pm, p).x, newPoint(p1, pm, p).y) +
+        //   " L " + toString(newPoint(p2, pm, p).x, newPoint(p2, pm, p).y) +
+        //   " L " + toString(p2.x, p2.y) +
+        //   " Z ")
+    canvas.append("path")
+      .attr("d"," M " + "" + (x1-(gap/2)) + " " + textAnchor.y + " H " + (x2 + (gap/2)))
+      .attr("stroke","yellow")
+      .attr("stroke-width","5px")
+    textAnchor.y -= yunit;
+
+    canvas.append("text")
+        .attr("text-anchor","end")
+        .attr("alignment-baseline","middle")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("5");
+
+    textAnchor.y -= yunit;
+
+    canvas.append("text")
+        .attr("text-anchor","end")
+        .attr("alignment-baseline","middle")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("10");
+
+    textAnchor.y -= yunit;
+
+    canvas.append("text")
+        .attr("text-anchor","end")
+        .attr("alignment-baseline","middle")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("15+");
+
+    textAnchor = {
+      x: x1 + (xunit/2),
+      y: y1 - gap
+    }
+
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("L");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("M");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("R");
+
+}
+
+function addRunGapChart(data,canvas,x1,y1,x2,y2){
+  var xunit = (x2-x1)/5;
+  canvas.insert("defs").html(
+    "<pattern id='grass' width='100%' height='100%'>" +
+      "<image xlink:href='./Images/grasstexture-low-res.jpg' width='"+(x2-x1)+"'/>" +
+    "</pattern>");
+
+  canvas.insert("defs").html(
+    "<filter id='gaus' x='-40%' y='-40%' width='300%' height ='300%'>" +
+      "<feGaussianBlur in='SourceGraphic' stdDeviation='5' />" +
+    "</filter>");
+    canvas.append("rect")
+      .attr("x",x1)
+      .attr("y",y1)
+      .attr("width",xunit*5)
+      .attr("height",y2-y1)
+      .attr("fill","url(#grass)")
+      .attr("filter","url(#gaus)")
+
+    var tWidth = 8;
+    var width = x2-x1;
+    if(width > 320){
+      tWidth = 16;
+    }
+    else if(width>250){
+      tWidth = 14;
+    }
+    else if(width>220){
+      tWidth = 12;
+    }
+    else if(width>180){
+      tWidth = 10;
+    }
+    console.log(tWidth)
+
+    var dataTotal = 0;
+    for(var ix = 0; ix < 5; ix++){
+      dataTotal += data[ix];
+    }
+
+    for(var ix = 0; ix < 5; ix++){
+      var col = convToRGB(0,"#00539CFF");
+      // console.log(col)
+
+
+      canvas.append("rect")
+        .attr("x",x1+ix*xunit)
+        .attr("y",y1)
+        .attr("width",xunit)
+        .attr("height",y2-y1)
+        .attr("fill","rgba("+col.r+","+col.g+","+col.b+","+(1.5*data[ix]/dataTotal) +")")
+        .attr("stroke","white")
+        .attr("stroke-width","5px");
+
+      var textAnchor = {
+        x: x1+(ix+.5)*xunit,
+        y: (y2+y1)/2
+      }
+
+      canvas.append("text")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline","middle")
+        .attr("x", textAnchor.x)
+        .attr("y", textAnchor.y)
+        .attr("fill", "white")
+        .attr("letter-spacing",.2)
+        .text(Math.round(((data[ix]/dataTotal)+Number.EPSILON)*1000)/10 + "%")
+        .attr("font-size", tWidth + "px");
+
+    }
+
+    var othick = .3;
+    var gap = 10;
+
+    var textAnchor = {
+      x: x1 + (xunit/2),
+      y: y1 - gap
+    }
+
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("LO");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("LI");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("M");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("RI");
+
+    textAnchor.x += xunit;
+    canvas.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","baseline")
+        .attr("x",textAnchor.x)
+        .attr("y",textAnchor.y)
+        .attr("fill","Black")
+        .attr("font-size",tWidth+"px")
+        .text("RO");
+
+}
+
+function addFieldChart(data, metadata,canvas, x1, y1, x2) {
+
+  // let p1 = { x: 400.0, y: 400.0 };
+  // let p2 = { x: 880.0, y: 400.0 };
+  // let pm = { x: 640.0, y: -800.0 };
+  let p1 = { x: x1, y: y1 };
+  let p2 = { x: x2, y: y1 };
+  let pm = { x: (x1+x2)/2, y: y1-(x2-x1) };
   let p = .25;
   function toString(x, y) {
     return "" + x + " " + y + "";
@@ -989,27 +1503,211 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
       " Z ")
     .attr("fill", "white");
 
-  var pad = 2;
+  var gapProp = .05;
   var step = (p2.x - p1.x) / 12;
 
+//=======add outer edges======
+  var tp1 = { x: p1.x + (1 - 1) * step , y: p1.y };
+  var tp2 = { x: p1.x + (1) * step, y: p1.y };
+  var width = newPoint(tp1,tp2,gapProp).x-tp1.x;
+  var tp12 = {x:tp1.x-width,y:tp1.y}
+  var tp13 = newPoint(tp12,pm,p);
+  var tp14 = newPoint(tp1,pm,p)
+
+
+  p3= tp13;
+
+  canvas.append("path")
+    .attr("d"," M " +toString(tp1.x,tp1.y) +
+              " L " +toString(tp12.x,tp12.y) +
+              " L " +toString(tp13.x,tp13.y) +
+              " L " +toString(tp14.x,tp14.y) +
+              " Z ")
+    .attr("fill","White")
+
+  var tp3 = { x: p1.x + (12 - 1) * step , y: p1.y };
+  var tp4 = { x: p1.x + (12) * step, y: p1.y };
+  var width = newPoint(tp3,tp4,gapProp).x-tp3.x;
+  var tp42 = {x:tp4.x+width,y:tp4.y}
+  var tp43 = newPoint(tp42,pm,p);
+  var tp44 = newPoint(tp4,pm,p);
+  p4=tp43;
+  canvas.append("path")
+    .attr("d"," M " +toString(tp4.x,tp4.y) +
+              " L " +toString(tp42.x,tp42.y) +
+              " L " +toString(tp43.x,tp43.y) +
+              " L " +toString(tp44.x,tp44.y) +
+              " Z ")
+    .attr("fill","white")
+
+    temp = newPoint(p3,p4,.2);
+    p4 = newPoint(p4,p3,.2);
+    p3 = temp;
+    canvas.append("path")
+    .attr("d", " M " + toString(p3.x, p3.y-2) +
+      " L " + toString(p3.x, p3.y-75) +
+      " L " + toString(p4.x, p4.y-75) +
+      " L " + toString(p4.x, p4.y-2) +
+      " Z ")
+    .attr("fill", "White")
+    .attr("stroke","Black");
+
+    //Metadata display
+    var lTextAnchor = newPoint(p3,p4,.2);
+    lTextAnchor.y -= 50;
+    canvas.append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", lTextAnchor.x)
+      .attr("y", lTextAnchor.y)
+      .attr("fill", "Black")
+      .attr("letter-spacing",.2)
+      .text(metadata.team1)
+      .attr("font-size", 18 + "px")
+
+
+
+
+    canvas.append("path")
+    .attr("d", " M " + toString(lTextAnchor.x, lTextAnchor.y-15) +
+               " L " + toString(lTextAnchor.x+5, lTextAnchor.y-19) +
+               " L " + toString(lTextAnchor.x-5, lTextAnchor.y-19) +
+               " Z ")
+    .attr("fill", "Red")
+    .attr("stroke","Black");
+
+
+
+    var rTextAnchor = newPoint(p4,p3,.2);
+    rTextAnchor.y -= 50;
+    canvas.append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", rTextAnchor.x)
+      .attr("y", rTextAnchor.y)
+      .attr("fill", "Black")
+      .attr("letter-spacing",.2)
+      .text(metadata.team2)
+      .attr("font-size", 18 + "px")
+
+      var mTextAnchor = newPoint(p4,p3,.5);
+      mTextAnchor.y -= 50;
+      canvas.append("text")
+        .attr("text-anchor", "middle")
+        .attr("x", mTextAnchor.x)
+        .attr("y", mTextAnchor.y)
+        .attr("fill", "Black")
+        .attr("letter-spacing",.2)
+        .text(metadata.score)
+        .attr("font-size", 16 + "px")
+
+      mTextAnchor.y += 12;
+      canvas.append("text")
+        .attr("text-anchor", "middle")
+        .attr("x", mTextAnchor.x)
+        .attr("y", mTextAnchor.y)
+        .attr("fill", "Black")
+        .attr("letter-spacing",.2)
+        .text(metadata.gameClock)
+        .attr("font-size", 10 + "px")
+
+        let totalyards = data[data.length-1].end - data[0].start;
+        mTextAnchor.y += 18;
+        canvas.append("text")
+          .attr("text-anchor", "middle")
+          .attr("x", mTextAnchor.x)
+          .attr("y", mTextAnchor.y)
+          .attr("fill", "Black")
+          .attr("letter-spacing",.2)
+          .text(metadata.outcome + " => " + totalyards)
+          .attr("font-size", 15 + "px")
+
+    //legend
+      canvas.append("rect")
+        .attr("x",p1.x + 96)
+        .attr("y",p1.y + 6)
+        .attr("width",148)
+        .attr("height",24)
+        .attr("fill","white")
+      canvas.append("rect")
+        .attr("x",p1.x + 100)
+        .attr("y",p1.y + 10)
+        .attr("width",15)
+        .attr("height",15)
+        .attr("fill","red")
+      canvas.append("text")
+        .attr("x",p1.x + 120)
+        .attr("y",p1.y + 25)
+        .attr("fill","black")
+        .attr("font-size","20px")
+        .text("Run")
+      canvas.append("rect")
+        .attr("x",p1.x + 175)
+        .attr("y",p1.y + 10)
+        .attr("width",15)
+        .attr("height",15)
+        .attr("fill","blue")
+      canvas.append("text")
+        .attr("x",p1.x + 195)
+        .attr("y",p1.y + 25)
+        .attr("fill","black")
+        .attr("font-size","20px")
+        .text("Pass")
+
+  //============================
+
+
   for (var i = 1; i <= 12; i++) {
-    var color = "green"
+    var color = "green" //can use a filter and feImage to create field background
     if (i == 1 || i == 12) {
       color = "grey";
     }
-    var tp1 = { x: p1.x + (i - 1) * step, y: p1.y };
-    var tp2 = { x: p1.x + (i) * step, y: p1.y };
+
+    // canvas.append("path")
+    //   .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //COMPLETE: add padding within function calls, not to output
+    //     " L " + toString(newPoint(tp1, pm, p).x + pad, newPoint(tp1, pm, p).y + 2 * pad) +
+    //     " L " + toString(newPoint(tp2, pm, p).x - pad, newPoint(tp2, pm, p).y + 2 * pad) +
+    //     " L " + toString(tp2.x - pad, tp2.y - 2 * pad) +
+    //     " Z ")
+    //   .attr("fill", color);
+
+
+    var cp1 = { x: p1.x + (i - 1) * step, y: p1.y };
+    var cp4 = { x: p1.x + (i) * step, y: p1.y };
+    var cp2 = newPoint(cp1, pm, p);
+    var cp3 = newPoint(cp4, pm, p);
+    var tp1 = newPoint(cp1,cp4,gapProp);
+    cp4 = newPoint(cp1,cp4,1-gapProp);
+    cp1 = tp1;
+    tp1 = newPoint(cp2,cp3,gapProp);
+    cp3 = newPoint(cp2,cp3,1-gapProp);
+    cp2 = tp1;
+
+    tp1 = newPoint(cp1,cp2,gapProp/2);
+    cp2 = newPoint(cp1,cp2,1-gapProp/2);
+    cp1 = tp1;
+    tp1 = newPoint(cp4,cp3,gapProp/2);
+    cp3 = newPoint(cp4,cp3,1-gapProp/2);
+    cp4 = tp1;
     canvas.append("path")
+<<<<<<< HEAD
       .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //TODO: add padding within function calls, not to output
         " L " + toString(newPoint(tp1, pm, p).x + pad, newPoint(tp1, pm, p).y + 2 * pad) +
         " L " + toString(newPoint(tp2, pm, p).x - pad, newPoint(tp2, pm, p).y + 2 * pad) +
         " L " + toString(tp2.x - pad, tp2.y - 2 * pad) +
         " Z ")
       .attr("fill", color);
+=======
+      .attr("d"," M " +toString(cp1.x,cp1.y) +
+                " L " +toString(cp2.x,cp2.y) +
+                " L " +toString(cp3.x,cp3.y) +
+                " L " +toString(cp4.x,cp4.y) +
+                " Z ")
+      .attr("fill",color)
+>>>>>>> 700bbef0ab639b1f7819bf5752ebbf10152f67fd
   }
-  var count = 6;
-  var base = newPoint(p1, pm, p).y + 2 * pad;
-  var bottom = p1.y - 2 * pad;
+  var count = data.length+1;
+  var padProp = .1
+  var base = newPoint(p1, pm, p).y ;
+  var bottom = p1.y ;
   var stepsize = (bottom - base) / count;
 
   // [{start:10,end:15,type:"pass"},
@@ -1017,9 +1715,12 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
   // {start:14,end:22,type:"run"},
   // {start:22,end:34,type:"pass"},
   // {start:34,end:40,type:"pass"}]
+  console.log("============")
   var zeroYDS = newPoint(p1, p2, 1 / 12);
-  var frankyYDS = newPoint(p1, p2, getColorSize() / 12);
+  var frankyYDS = newPoint(p1, p2, 11 / 12);
+  var halfYDS = newPoint(zeroYDS,frankyYDS,.5);
   for (var i = 0; i < count-1; i++) {
+
     var color = "blue";
     if (data[i].type == "run") {
       color = "red";
@@ -1030,13 +1731,54 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
     var tp2 = newPoint(b1, pm, (p - p * ((i) / count)));
     var tp3 = newPoint(b2, pm, (p - p * ((i) / count)));
     var tp4 = newPoint(b2, pm, (p - p * ((i + 1) / count)));
+    tp2 = newPoint(tp1,tp2,1-padProp);
+    tp3 = newPoint(tp4,tp3,1-padProp);
+    canvas.insert("defs").html(
+      "<filter id='f1' x='0' y='0' width='200%' height ='200%'>" +
+        "<feOffset result='offOut' in='SourceAlpha' dx='2' dy='2'/>" +
+        "<feGaussianBlur result='blurOut' in='offOut' stdDeviation='2'/>"+
+        "<feBlend in='SourceGraphic' in2='blurOut' mode='normal'/>" +
+      "</filter>");
+
+    var dx = (halfYDS.x-((tp3.x+tp2.x)/2))/((halfYDS.x-zeroYDS.x)/4);
+    dx = 1*Math.round(dx);
+    console.log(dx);
+    canvas.insert("defs").html(
+      "<filter id='f2"+i+"' x='-40%' y='-40%' width='300%' height ='300%'>" +
+        "<feDropShadow dx='"+dx+"' dy='2' stdDeviation='1'/>" +
+      "</filter>");
     canvas.append("path")
-      .attr("d", " M " + toString(tp1.x, tp1.y - pad) +
-        " L " + toString(tp2.x, tp2.y + pad) +
-        " L " + toString(tp3.x, tp3.y + pad) +
-        " L " + toString(tp4.x, tp4.y - pad) +
+      .attr("d", " M " + toString(tp1.x, tp1.y) +
+        " L " + toString(tp2.x, tp2.y) +
+        " L " + toString(tp3.x, tp3.y) +
+        " L " + toString(tp4.x, tp4.y) +
         " Z ")
-      .attr("fill", color);
+      .attr("fill", color)
+      .attr("filter","url(#f2"+i+")");
+    var pix = 1
+    lProp = pix/(Math.abs(tp4.x-tp1.x));
+    temp = newPoint(tp2,tp1,1+padProp);
+    tp2 = newPoint(tp1,tp2,1+padProp);
+    tp1 = temp;
+    temp = newPoint(tp3,tp4,1+padProp);
+    tp3 = newPoint(tp4,tp3,1+padProp);
+    tp4=temp;
+    tp3 = newPoint(tp2,tp3,lProp);
+    tp4 = newPoint(tp1,tp4,lProp);
+
+    canvas.append("path")
+      .attr("d", " M " + toString(tp1.x, tp1.y) +
+        " L " + toString(tp2.x, tp2.y) +
+        " L " + toString(tp3.x, tp3.y) +
+        " L " + toString(tp4.x, tp4.y) +
+        " Z ")
+      .attr("fill", "white")
+
+    // var p3 = newPoint(p1,pm,p);
+    // var p4 = newPoint(p2,pm,p);
+
+
+
   }
 
 
@@ -1044,7 +1786,6 @@ function addFieldChart(data, canvas, x1, y1, x2, y2) {
 
 
 }
-
 
 function mouseon(shape, index) {
   shape.on("mouseover", function () {
@@ -1115,41 +1856,41 @@ function addHeader(svg, data,metadata) {
   //     console.log(stat.Category);
   // })
 
-  function addTableInfo(canvas, w, h, text_size) {
-    var wd = svg.attr("width")
-    var coordinates = [[wd - w, 0], [wd - w * 2, 0], [wd - w, h], [wd - w * 2, h], [wd - w, h * 2], [wd - w * 2, h * 2], [wd - w, h * 3], [wd - w * 2, h * 3]]
-    coordinates.forEach(function (coordinate, index) {
-      let rec = canvas.append("rect")
-        .attr("x", coordinate[0])
-        .attr("y", coordinate[1])
-        .attr("width", w)
-        .attr("height", h)
-        .attr("fill", "white")
-        .attr("stroke", "black")
-        .attr("stroke-width", 2)
-
-      if (coordinate[0] == wd - w) {
-        let txt = canvas.append("text")
-          .attr("x", coordinate[0] + text_size / 2)
-          .attr("y", coordinate[1] + h / 2)
-          .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
-          .text(data[Math.floor(index/2)].Value)
-          .attr("text-anchor", "left")
-          .attr("font-size", text_size + "px")
-      }
-      else {
-        let txt2 = canvas.append("text")
-          .attr("x", coordinate[0] + text_size / 2)
-          .attr("y", coordinate[1] + h / 2)
-          .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
-          .text(data[Math.floor(index/2)].Category)
-          .attr("text-anchor", "left")
-          .attr("font-size", text_size + "px")
-      }
-    })
-  }
+  // function addTableInfo(canvas, w, h, text_size) {
+  //   var wd = svg.attr("width")
+  //   var coordinates = [[wd - w, 0], [wd - w * 2, 0], [wd - w, h], [wd - w * 2, h], [wd - w, h * 2], [wd - w * 2, h * 2], [wd - w, h * 3], [wd - w * 2, h * 3]]
+  //   coordinates.forEach(function (coordinate, index) {
+  //     let rec = canvas.append("rect")
+  //       .attr("x", coordinate[0])
+  //       .attr("y", coordinate[1])
+  //       .attr("width", w)
+  //       .attr("height", h)
+  //       .attr("fill", "white")
+  //       .attr("stroke", "black")
+  //       .attr("stroke-width", 2)
+  //
+  //     if (coordinate[0] == wd - w) {
+  //       let txt = canvas.append("text")
+  //         .attr("x", coordinate[0] + text_size / 2)
+  //         .attr("y", coordinate[1] + h / 2)
+  //         .attr("fill", "#00203FFF")
+  //         .attr("stroke", "#00203FFF")
+  //         .text(data[Math.floor(index/2)].Value)
+  //         .attr("text-anchor", "left")
+  //         .attr("font-size", text_size + "px")
+  //     }
+  //     else {
+  //       let txt2 = canvas.append("text")
+  //         .attr("x", coordinate[0] + text_size / 2)
+  //         .attr("y", coordinate[1] + h / 2)
+  //         .attr("fill", "#00203FFF")
+  //         .attr("stroke", "#00203FFF")
+  //         .text(data[Math.floor(index/2)].Category)
+  //         .attr("text-anchor", "left")
+  //         .attr("font-size", text_size + "px")
+  //     }
+  //   })
+  // }
 
   function addLogo(canvas, radius) {
     let im = canvas.append("image")
@@ -1160,20 +1901,30 @@ function addHeader(svg, data,metadata) {
       .attr("width", radius * 2)
       .attr("class","logos")
     let txt = canvas.select("text.rectLabel")
-    txt.text("Titan Analytics")
+    txt.text("TITAN ANALYTICS")
       .attr("x", 10)
       .attr("y", 130)
-      .attr("stroke", "#00203FFF")
+      .attr("fill", "#00203FFF")
       .attr("text-anchor", "left")
-      .style("font", "bold 20px sans-serif")
+      .style("font", "bold 15px sans-serif")
+      .style("font-weight", "bold")
   }
 
+  //EDIT HERE JEAN
   function addParallelograms(canvas, t, h, w, separation, rad) {
     var shapes_top = [];
     var shapes_bottom = [];
     let bottom = t + rad * 2;
     let xcur = rad * 2 + 20;
-    var titles = [metadata.Down, metadata.DistSit, metadata.FieldZone, "Personnel", "Formation", "Play Type"];
+    var titles = [metadata.Down, metadata.DistSit, metadata.FieldZone, "", "", ""];
+
+    var columntitles = ["Down","Distance","FieldZone","Personnel", "Formation", "Play Type"]
+
+
+    // Code needs help merging HERE
+    console.log(titles)
+
+
 
     for (var i = 0; i < 6; i++) {
       if (i == 0) {
@@ -1186,26 +1937,57 @@ function addHeader(svg, data,metadata) {
           .attr("id", "parallel" + i))
         canvas.append("text")
           .attr("x", xcur + separation)
-          .attr("y", (h + t + t) / 2)
+          .attr("y", ((h + t + t) / 2)+15)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "bold")
           .text(titles[i])
+          .attr("text-anchor", "left")
+        canvas.append("text")
+          .attr("x", xcur + separation)
+          .attr("y", ((h + t + t) / 2))
+          .attr("fill", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "normal")
+          .text(columntitles[i])
           .attr("text-anchor", "left")
       }
       else {
+        if(i > 2) {
         shapes_top.push(canvas.append("path")
           .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
-          .attr("fill", "#FC766AFF")
+          .attr("fill", "#58d0db")
           .attr("fill-opacity", 0.6)
-          .attr("stroke", "maroon")
+          .attr("stroke", "#586cdb")
           .attr("stroke-width", 1)
           .attr("id", "parallel" + i))
+        }
+
+        if(i <= 2) {
+          shapes_top.push(canvas.append("path")
+            .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
+            .attr("fill", "#FC766AFF")
+            .attr("fill-opacity", 0.6)
+            .attr("stroke", "maroon")
+            .attr("stroke-width", 1)
+            .attr("id", "parallel" + i))
+
+        }
         canvas.append("text")
           .attr("x", xcur + separation)
-          .attr("y", (h + t + t) / 2)
+          .attr("y", ((h + t + t) / 2)+15)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "bold")
           .text(titles[i])
+          .attr("text-anchor", "left")
+        canvas.append("text")
+          .attr("x", xcur + separation)
+          .attr("y", ((h + t + t) / 2))
+          .attr("fill", "#00203FFF")
+          .style("font", "bold sans-serif")
+          .style("font-weight", "normal")
+          .text(columntitles[i])
           .attr("text-anchor", "left")
       }
       xcur = xcur + w + separation;
@@ -1225,7 +2007,6 @@ function addHeader(svg, data,metadata) {
           .attr("x", xcur + separation)
           .attr("y", (bottom + (t + h + separation)) / 2)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
           .text(1)
           .attr("text-anchor", "left")
       }
@@ -1241,7 +2022,6 @@ function addHeader(svg, data,metadata) {
           .attr("x", xcur + separation)
           .attr("y", (bottom + (t + h + separation)) / 2)
           .attr("fill", "#00203FFF")
-          .attr("stroke", "#00203FFF")
           .text(1)
           .attr("text-anchor", "left")
       }
@@ -1255,7 +2035,12 @@ function addHeader(svg, data,metadata) {
     shapes.forEach(mouseclick);
   }
 
-  addTableInfo(svg, 140, 35, 16);
+  //addTableInfo(svg, 140, 35, 16);
+  // addHeatChart(sample_data2,svg,800,10,1180,150);
+  var sample_data2 = [["","Pass","Run","Total"],["Play Count",1,5,0],["Total Yards",2,7,0],["Average Yards",1,3,0],["TD Count",3,10,0]];
+  addJeanTable(sample_data2,svg,800,10,1180,150);
+
+
   addLogo(svg, 50);
   var ht = 47;
   var wid = 100;
@@ -1265,16 +2050,145 @@ function addHeader(svg, data,metadata) {
   addParallelograms(svg, tp, ht, wid, separation, radius);
 }
 
-async function generateScorecards(filename){
+function addJeanTable(data,canvas,x1,y1,x2,y2){
+
+
+  var yunit = (y2-y1)/5;
+  var xunit2 = (x2-x1)*(2/5);
+  var xunit = ((x2-x1)*(3/5))/3;
+
+
+    var tWidth = 12;
+    var width = x2-x1;
+    if(width > 320){
+      tWidth = 15;
+    }
+    else if(width>250){
+      tWidth = 16;
+    }
+    else if(width>200){
+      tWidth = 15;
+    }
+    else if(width>180){
+      tWidth = 14;
+    }
+    console.log(tWidth)
+
+
+    for(var ix = 0; ix < 4; ix++){
+      for(var iy = 0; iy < data.length;iy++){
+        var col = convToRGB(0,"#00539CFF");
+        // console.log(col)
+
+        if(ix == 0){
+
+          if(iy > 0){
+            var elem = canvas.append("rect")
+              .attr("x",x1+ix*xunit)
+              .attr("y",y1+iy*yunit)
+              .attr("width",xunit2)
+              .attr("height",yunit)
+              .attr("fill","lightgrey")
+              .attr("stroke","#1c1c1c")
+              .attr("stroke-width","2px");
+
+
+            var textAnchor = {
+              x: x1+(ix+.5)*xunit2,
+              y: y1+(iy+.5)*yunit
+            }
+
+            canvas.append("text")
+              .attr("text-anchor", "middle")
+              .attr("alignment-baseline","middle")
+              .attr("x", textAnchor.x)
+              .attr("y", textAnchor.y)
+              .attr("fill", "#1c1c1c")
+              .attr("letter-spacing",.2)
+              .text(data[iy][ix])
+              .style("font-weight", "bold")
+              .attr("font-size", tWidth + "px");
+          }
+
+
+        }
+        else {
+
+          if(iy == 0){
+
+            var colheadcolors = ["deepskyblue","crimson","limegreen"]
+
+            canvas.append("rect")
+              .attr("x",x1+xunit2+((ix-1)*xunit))
+              .attr("y",y1+iy*yunit)
+              .attr("width",xunit)
+              .attr("height",yunit)
+              .attr("fill",colheadcolors[ix-1])
+              .attr("stroke","#1c1c1c")
+              .attr("stroke-width","2px");
+
+            var textAnchor = {
+              x: x1+(xunit2*.5)+((ix+.5)*xunit),
+              y: y1+(iy+.5)*yunit
+            }
+
+            canvas.append("text")
+              .attr("text-anchor", "middle")
+              .attr("alignment-baseline","middle")
+              .attr("x", textAnchor.x)
+              .attr("y", textAnchor.y)
+              .attr("fill", "#1c1c1c")
+              .attr("letter-spacing",.2)
+              .text(data[iy][ix])
+              .style("font-weight", "bold")
+              .attr("font-size", tWidth + "px");
+          }
+          else {canvas.append("rect")
+            .attr("x",x1+xunit2+((ix-1)*xunit))
+            .attr("y",y1+iy*yunit)
+            .attr("width",xunit)
+            .attr("height",yunit)
+            .attr("fill","white")
+            .attr("stroke","#1c1c1c")
+            .attr("stroke-width","2px");
+
+          var textAnchor = {
+            x: x1+(xunit2*.5)+((ix+.5)*xunit),
+            y: y1+(iy+.5)*yunit
+          }
+
+          canvas.append("text")
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline","middle")
+            .attr("x", textAnchor.x)
+            .attr("y", textAnchor.y)
+            .attr("fill", "#1c1c1c")
+            .attr("letter-spacing",.2)
+            .text(data[iy][ix])
+            .attr("font-size", tWidth + "px");}
+
+
+
+        }
+
+      }
+    }
+}
+
+async function generateScorecards(filename, filter){
        const data = await d3.json(filename);
+
        // console.log(data);
+       // console.log(data);
+       var sortedData = tieredSort(data,["NumPlays"]);
+
        var svg;
        var sep;
        var numCharts = 5;
        var startDex1;
        var startDex2;
        var currX = 10;
-       d3.select("#mainDiv").selectAll('*').remove()
+       d3.select("#mainDiv").selectAll('.scorecardContainer').remove()
        if(!(d3.select("#sankey1").property("checked"))){
            numCharts = numCharts-1
        }
@@ -1291,11 +2205,11 @@ async function generateScorecards(filename){
            numCharts = numCharts-1
        }
        sep = (fixedWidth-30)/numCharts;
-       for(let i = 0; i < data.scorecards.length; i++){
+       for(let i = 0; i < sortedData.length; i++){
            var startDex1 = 0;
            currX = 10;
            d3.select("#mainDiv").append("div")
-               .attr("class","row wrapper-div drop")
+               .attr("class","row wrapper-div drop scorecardContainer")
                .style("height",fixedHeight)
                .style("width",fixedWidth)
                .style("margin-top","100px")
@@ -1305,55 +2219,58 @@ async function generateScorecards(filename){
                    .attr("width",fixedWidth)
                    .attr("height",fixedHeight)
                    .attr("class","scorecard centered-basic")
+                   // .style("animation-delay",i*.2+"s")
                    .attr("id","scoreCard"+i)
 
            svg = d3.select(("#scoreCard"+i));
-           d3.selection.prototype.moveToFront = function() {
-              return this.each(function(){
-                this.parentNode.appendChild(this);
-              });
-            };
+
 
            //TODO DESIGN CHOICE: should the graphs on first load say graph 1 or bargraph
            if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
                //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
-               startDex1 = addBarGraph(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+               startDex1 = addBarGraph(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
                currX = currX+sep;
            }
            else if(d3.select("#graph1").text()=='Pie Chart'){
-             startDex1 = addPieChart(data.scorecards[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+             startDex1 = addPieChart(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
              currX = currX+sep;
            }
            if(d3.select("#sankey1").property("checked")){
-               addSankey(""+i+"_"+1, data.scorecards[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
+               addSankey(""+i+"_"+1, sortedData[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
                currX = currX+sep
            }
            if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
-               startDex2 = addBarGraph(data.scorecards[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
+               startDex2 = addBarGraph(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
                currX = currX+sep
            }
            else if(d3.select("#graph2").text()=='Pie Chart'){
-             startDex2 = addPieChart(data.scorecards[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
+             startDex2 = addPieChart(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
              currX = currX+sep;
            }
            if(d3.select("#sankey2").property("checked")){
-               addSankey(""+i+"_"+2, data.scorecards[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
+               addSankey(""+i+"_"+2, sortedData[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
                currX = currX+sep
            }
            if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
-               addBarGraph(data.scorecards[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
+               addBarGraph(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
 
            }
            else if(d3.select("#graph3").text()=='Pie Chart'){
-             addPieChart(data.scorecards[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
+             addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
            }
            //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
            //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
-           addHeader(svg, data.scorecards[i].datasets[5],data.scorecards[i].datasets[6]);
+           var meta = {
+             "Down":sortedData[i]["Down"],
+             "DistSit":sortedData[i]["DistSit"],
+             "FieldZone":sortedData[i]["FieldZone"]
+           }
+           // console.log(meta);
+           addHeader(svg, sortedData[i].datasets[5],meta);
        }
 }
 function emptyScoreCards(svg){
-    d3.select("#mainDiv").selectAll('*').remove();
+    d3.select("#mainDiv").selectAll('.scorecardContainer').remove();
 }
 function MakeQuerablePromise(promise) {
     // Don't modify any promise that has been already modified.
