@@ -66,147 +66,193 @@ $(document).ready(function() {
     var clicked = [];
     var no_lines = [];
 
-    function deselect(s){
-        // var new_op, new_st;
-        // if (s.attr("fill-opacity") == 0.8) {
-        //   new_op = 1;
-        //   new_st = 4;
-        // }
-        // else {
-        //   new_op = 0.8;
-        //   new_st = 1;
-        // }
-        // s.transition().duration(200)
-        //   .attr("fill-opacity", new_op)
-        //   .attr("stroke", "maroon")
-        //   .attr("stroke-width", new_st)
+    function glow(shape) {
+        var new_opacity, new_width;
+        new_opacity = 1;
+        new_width = 3;
+        shape.transition().duration(200)
+            .attr("fill-opacity", new_opacity)
+            .attr("stroke-width", new_width);
     }
-
-    // function click(shape, index) {
-    //   shape.on("mousedown", function () {
-    //     var s = d3.select(this);
-    //     // deselect(s);
-    //
-    //     var id = s.attr("id");
-    //     if (clicked.length == 0){
-    //         clicked.push(id);
-    //     }
-    //     else{
-    //         if (id.slice(0,id.length-1) == clicked[0].slice(0,clicked[0].length-1)){
-    //             var temp = d3.select("#" + clicked[0])
-    //             // deselect(temp);
-    //             clicked = [id];
-    //         }
-    //         else{
-    //             // deselect(s);
-    //             // deselect(d3.select("#" + clicked[0]));
-    //             var lin;
-    //             if (id.slice(0,id.length-1) == "column"){
-    //                 lin = d3.select("#line" + id.slice(id.length-1) + clicked[0].slice(clicked[0].length-1));
-    //             }
-    //             else{
-    //                 lin = d3.select("#line" + clicked[0].slice(clicked[0].length-1) + id.slice(id.length-1));
-    //             }
-    //             var vis = lin.attr("visibility");
-    //             if (vis == "hidden"){
-    //                 no_lines.push(lin.attr("id"));
-    //                 lin.attr("visibility", "visible")
-    //             }else{
-    //                 var ind = no_lines.indexOf(lin.attr("id"));
-    //                 no_lines.splice(ind, 1);
-    //                 lin.attr("visibility", "hidden")
-    //             }
-    //             clicked = [];
-    //             }
-    //         }
-    //     if (no_lines.length == 3){
-    //         alert("You chose: " + no_lines);
-    //         changeNames(getNames(), no_lines.map(x => x.slice(4)));
-    //     }
-    // }
-    // )};
 
     function swap(s1, s2) {
         var id1 = s1.attr("id");
+        var ind1 = s1.attr("index");
+        var y1 = s1.attr("y");
+        console.log("swapping " + id1 + "(" + y1 + ")" + " with " + s2.attr("id") + "(" + s2.attr("y") + ")");
+
+        s1.transition().duration(1000)
+            .attr("id", s2.attr("id"))
+            .attr("index", s2.attr("index"))
+            .attr("y", s2.attr("y"))
+        s2.transition().duration(1000)
+            .attr("id", id1)
+            .attr("index", ind1)
+            .attr("y", y1);
+    }
+
+    function swap_text(s1, s2) {
+        var id1 = s1.attr("id");
         var y1 = s1.attr("y");
 
-        s1.transition().duration(200)
+        s1.transition().duration(1000)
             .attr("id", s2.attr("id"))
             .attr("y", s2.attr("y"));
-        s2.transition().duration(200)
+        s2.transition().duration(1000)
             .attr("id", id1)
             .attr("y", y1);
     }
 
-    function click2(shape, index) {
-        shape.on("mousedown", function () {
-            var s = d3.select(this);
-            var id = s.attr("id");
-
-            if (clicked.length == 0){
-                clicked.push(id);
-            }
-
-            else {
-                if (id.slice(0,id.length-1) == clicked[0].slice(0,clicked[0].length-1)){
-                    var temp = d3.select("#" + clicked[0])
-                    clicked = [id];
-                }
-                else {
-                    var lin;
-                    var ind;
-                    if (id.slice(0,id.length-1) == "column"){
-                        ind = clicked[0].slice(clicked[0].length-1);
-                        lin = d3.select("#line" + ind);
-                        swap(d3.select("#column" + ind), s);
-                        swap(d3.select("#text" + ind), d3.select("#text" + id.slice(id.length-1)));
-                    }
-                    else{
-                        ind = id.slice(id.length-1);
-                        lin = d3.select("#line" + ind);
-                        swap(d3.select("#column" + clicked[0].slice(clicked[0].length-1)), d3.select("#column" + ind));
-                        swap(d3.select("#text" + clicked[0].slice(clicked[0].length-1)), d3.select("#text" + ind));
-                    }
-
-                    var vis = lin.attr("visibility");
-                    if (vis == "hidden"){
-                        no_lines.push(lin.attr("id"));
-                        lin.attr("visibility", "visible")
-                    }
-                    else{
-                        var ind = no_lines.indexOf(lin.attr("id"));
-                        no_lines.splice(ind, 1);
-                        lin.attr("visibility", "hidden")
-                    }
-                    clicked = [];
-                    }
-                }
-
-            // if (no_lines.length == 3){
-            //     alert("You chose: " + no_lines);
-            //     changeNames(getNames(), no_lines.map(x => x.slice(4)));
-            // }
+    function mouseon(shape, index) {
+      shape.on("mouseover", function () {
+        var s = d3.select(this);
+        var new_op, new_st;
+        // console.log(parseInt(s.attr("selected"),10));
+        if (parseInt(s.attr("selected"),10) == 1) {
+          new_op = 1;
+          new_st = 4;
         }
-    )};
-
-    function drawConnections(canvas, lenI, lenR, top, left, height, width, separation, distance){
-        var lines = [];
-        for (var i = 0; i < lenI ; i++){
-            for (var j = 0 ; j < lenR ; j++){
-                lines.push(canvas.append("path")
-                    .attr("d", "M " + (left + width) + " " + (top + height/2 + separation*i) + " L " + (left + distance) + " " + (top + height/2 + separation*j))
-                    .attr("stroke-width", 2)
-                    .attr("fill", "black")
-                    .attr("fill-opacity", 0.6)
-                    .attr("stroke", "red")
-                    .attr("visibility", "hidden")
-                    .attr("id", "line" + i + j))
-            }
+        else {
+          new_op = 0.8;
+          new_st = 2;
         }
-        return lines;
+        shape.transition().duration(200)
+          .attr("fill-opacity", new_op)
+          .attr("stroke-width", new_st)
+      });
     }
 
-    function drawConnections2(canvas, lenResults, top, left, height, width, separation, distance){
+    function mouseoff(shape, index) {
+      shape.on("mouseout", function () {
+        console.log("off");
+        var s = d3.select(this);
+        var new_op, new_st;
+        // console.log(parseInt(s.attr("selected"), 10));
+        if (parseInt(s.attr("selected"),10) == 1 || parseInt(s.attr("connected"),10) == 1) {
+          new_op = 1;
+          new_st = 3;
+        }
+        else {
+          new_op = 0.6;
+          new_st = 1;
+        }
+        shape.transition().duration(200)
+          .attr("fill-opacity", new_op)
+          .attr("stroke-width", new_st)
+      });
+    }
+
+    function mouseclick(shape) {
+        var new_opacity, new_width;
+        if (parseInt(shape.attr("selected"),10) == 0) {
+            new_opacity = 1;
+            new_width = 3;
+        }
+        else {
+            new_opacity = 0.6;
+            new_width = 1;
+        }
+        shape.transition().duration(200)
+            .attr("fill-opacity", new_opacity)
+            .attr("stroke-width", new_width)
+            .attr("selected", Math.pow(parseInt(shape.attr("selected"),10) - 1, 2));
+        // console.log(shape.attr("selected"));
+    }
+
+    function disconnect(index) {
+        var res = d3.select("#result" + index);
+        var col = d3.select("#column" + index);
+        var lin = d3.select("#line" + index);
+
+        res.attr("connected", 0);
+        col.attr("connected", 0);
+        lin.attr("visibility", "hidden");
+
+        function deselect(shape) {
+            var new_opacity, new_width;
+            new_opacity = 0.6;
+            new_width = 1;
+            shape.transition().duration(200)
+                .attr("fill-opacity", new_opacity)
+                .attr("stroke-width", new_width)
+                .attr("selected", 0);
+        }
+        deselect(res);
+        deselect(col);
+    }
+
+    function click(shape, index) {
+        shape.on("mousedown", function () {
+            // shape.attr("connected", 1);
+            var id = shape.attr("id")
+            var chosen = d3.select("#" + clicked[0]);
+            // console.log(id);
+
+            if (shape.attr("connected") == 1) {
+                console.log("disconnecting");
+                disconnect(shape.attr("index"));
+                // clicked = [];
+            }
+            else if (clicked.length == 0) {
+                console.log("push");
+                mouseclick(shape);
+                clicked.push(id);
+            }
+            // If "shape" is connected to others
+            else if (shape.attr("id") == chosen.attr("id")) {
+                console.log("duplicate");
+                mouseclick(shape);
+                clicked = [];
+            }
+            else if (chosen.attr("class") == shape.attr("class") && chosen.attr("selected") == 1) {
+                console.log("swap same col");
+                mouseclick(chosen);
+                mouseclick(shape);
+                clicked = [shape.attr("id")];
+            }
+            else if (chosen.attr("class") != shape.attr("class")) {
+                console.log("choosing");
+                var dest_ind;
+                var lin;
+                glow(chosen);
+                glow(shape);
+                chosen.attr("connected", 1);
+                chosen.attr("selected", 0);
+                shape.attr("connected", 1);
+                shape.attr("selected", 0);
+
+                if (chosen.attr("class") == "column") {
+
+                    dest_ind = shape.attr("index")
+                    if (chosen.attr("index") != dest_ind) {
+                        swap(chosen, d3.select("#column" + dest_ind));
+                        swap_text(d3.select("#text" + chosen.attr("index")), d3.select("#text" + dest_ind));
+                    }
+                    lin = d3.select("#line" + dest_ind);
+                    lin.attr("visibility", "visible");
+                }
+                else if (chosen.attr("class") == "result") {
+                    console.log("bottom");
+
+                    dest_ind = chosen.attr("index");
+                    if (shape.attr("index") != dest_ind) {
+                        swap(shape, d3.select("#column" + dest_ind));
+                        glow(shape);
+                        // shape.attr("selected", 0);
+                        swap_text(d3.select("#text" + shape.attr("index")), d3.select("#text" + dest_ind));
+                    }
+                    lin = d3.select("#line" + dest_ind);
+                    lin.attr("visibility", "visible");
+                }
+                clicked = [];
+            }
+            else {
+                console.log("ERROR");
+            }
+        }
+    )}
+
+    function drawConnections(canvas, lenResults, top, left, height, width, separation, distance){
         var lines = [];
         for (var i = 0 ; i < lenResults ; i++){
             lines.push(canvas.append("path")
@@ -216,16 +262,17 @@ $(document).ready(function() {
                 .attr("fill-opacity", 0.6)
                 .attr("stroke", "red")
                 .attr("visibility", "hidden")
-                .attr("id", "line" + i))
+                .attr("id", "line" + i)
+                .attr("index", i));
             }
         return lines;
     }
 
-    function drawColumns(canvas, columnNames, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY){
-        var lines = drawConnections2(canvas, 3, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY, 500);
+    function drawColumns(canvas, columnNames, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY) {
+        var lines = drawConnections(canvas, 3, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY, 500);
         var temp = topMargin;
         var count = columnNames.length;
-        // var lines = drawConnections(canvas, count, 3, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY, 500);
+        var lines = drawConnections(canvas, count, 3, topMargin, leftMargin, blockHeight, blockWidth, blockSeparationY, 500);
         var columns = [];
         var column_text = [];
         var results = [];
@@ -238,10 +285,14 @@ $(document).ready(function() {
                 .attr("height", blockHeight)
                 .attr("width", blockWidth)
                 .attr("fill", "orange")
-                .attr("fill-opacity", 0.8)
+                .attr("fill-opacity", 0.6)
                 .attr("stroke-width", 1)
                 .attr("stroke", "maroon")
-                .attr("id", "column" + i))
+                .attr("id", "column" + i)
+                .attr("class", "column")
+                .attr("index", i)
+                .attr("selected", 0)
+                .attr("connected", 0))
             column_text.push(canvas.append("text")
                 .attr("x", leftMargin + blockWidth/2)
                 .attr("y", topMargin + blockHeight/2 + 16/4)
@@ -263,10 +314,14 @@ $(document).ready(function() {
                 .attr("height", blockHeight)
                 .attr("width", blockWidth)
                 .attr("fill", "orange")
-                .attr("fill-opacity", 0.8)
+                .attr("fill-opacity", 0.6)
                 .attr("stroke-width", 1)
                 .attr("stroke", "maroon")
-                .attr("id", "result" + j))
+                .attr("id", "result" + j)
+                .attr("class", "result")
+                .attr("index", j)
+                .attr("selected", 0)
+                .attr("connected", 0))
             result_text.push(canvas.append("text")
                 .attr("x", leftMargin + blockWidth/2 + 500)
                 .attr("y", topMargin + blockHeight/2 + 16/4)
@@ -279,9 +334,15 @@ $(document).ready(function() {
                 .attr("height", blockHeight/2))
             topMargin += blockSeparationY;
         }
-        columns.forEach(click2);
-        results.forEach(click2);
-        console.log(columns.forEach(x => x.attr("y")))
+        columns.forEach(click);
+        results.forEach(click);
+        // columns.forEach(mouseclick);
+        // results.forEach(mouseclick);
+        columns.forEach(mouseoff);
+        results.forEach(mouseoff);
+        columns.forEach(mouseon);
+        results.forEach(mouseon);
+        // console.log(columns.forEach(x => x.attr("y")))
     }
 
     function changeNames(colNames, indices){
@@ -290,7 +351,7 @@ $(document).ready(function() {
             var after = parseInt(indices[i].slice(1,2), 10);
             data[0][before] = "Data Point " + (after + 1);
         }
-        console.log(data);
+        // console.log(data);
 
     }
 });
