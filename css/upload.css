@@ -1,0 +1,21 @@
+#container{
+  width:100vw;
+  min-height:50vh;
+  display: table;
+}
+#wrapper{
+  display:table-row;
+}
+#lefthalf{
+  background-color: red;
+  display:table-cell;
+  width: 50vw;
+
+}
+
+#righthalf{
+  background-color: blue;
+  /* display:inline-block; */
+  width: 50vw;
+  display:table-cell;
+}

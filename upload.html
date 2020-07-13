@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/index.css" >
     <link rel="stylesheet" href="css/general.css" >
     <link rel="stylesheet" href="css/loadingbar.css" >
+    <link rel="stylesheet" href="css/upload.css" >
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -19,12 +20,12 @@
     <body>
         <div class = "container-fluid mainbackground", id = "mainDiv">
 
-			<section class="row">
-				<div class="col-xs-12">
+    			<section class="row">
+    				<div class="col-xs-12">
 
-					<fieldset>
-						<input type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
-					</fieldset>
+    					<fieldset>
+    						<input type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
+    					</fieldset>
 
 					<!-- <ul id="errorOutPut"  class="outPut hidden">
 						<li>Sorry there has been an error.</li>
@@ -36,9 +37,18 @@
 						<li>Highest number of integers in a single line: <span data-bind="text: highestLength">null</span></li>
 						<li>Most common integer: <span data-bind="text: commonInteger">null</span></li>
 					</ul> -->
-				</div>
-			</section>
-		<!-- </div> -->
+
+    				</div>
+    			</section>
+          <div id ="container">
+            <div id="wrapper">
+              <div id="lefthalf">
+              </div>
+              <div id="righthalf">
+              </div>
+            </div>
+          </div>
+		    </div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
