@@ -87,15 +87,15 @@ function colorPallete(canvas){
 var colors=[
             //Red below
             convToRGB(0,"#FC766AFF"),
-            convToRGB(7,"#00203FFF"),
-            convToRGB(1,"#EEA47FFF"),
+            // convToRGB(7,"#00203FFF"),
             convToRGB(8,"#5B84B1FF"),
             convToRGB(2,"#D01C1FFF"),
             convToRGB(9,"#00A4CCFF"),
             convToRGB(10,"#0E7A0DFF"),
             convToRGB(4,"#DD4132FF"),
             convToRGB(11,"#97BC62FF"),
-            convToRGB(5,"#990011FF"),
+            convToRGB(1,"#EEA47FFF")
+            // convToRGB(5,"#990011FF"),
 
 
             // convToRGB(12,"#9CC3D5FF"),
@@ -145,13 +145,15 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
     var gap = 10;
     x2-=gap;
     x1+=gap;
-    y1-=50;
+    //y1-=50;
     var datatotal = data.reduce(((accum,data)=>accum+data.val),0);
     var cx = (x1+x2)/2;
-    var cy = (y1+y2)/2;
+    //var cy = (y1+y2)/2;
     var strokeWidth = 5;
     var diameter = Math.min(x2-x1,y2-y1);
+
     var radius = diameter/2;
+    var cy = y1+radius ;
     var currpointx = cx;
     var currpointy = cy - radius;
     var currtheta =  2*Math.PI * data[0].val/datatotal;
@@ -242,11 +244,18 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
 
     var maxWidth =  (x2+gap)-(x1-gap);
     var lx = x1-gap;
-    var ly = y1+diameter;
+    console.log(diameter)
+    var ly = y1+diameter//+45;
     var line = 1;
     var linesize = 20;
     var pad = 2;
     var lineAccum = 0;
+    // canvas.append("rect")
+    //   .attr("x",lx)
+    //   .attr("y",y1)
+    //   .attr("width",maxWidth)
+    //   .attr("height",diameter)
+    //   .attr("stroke","black").moveToBack();
     var currItems = new Array();
     for(var i = 0; i < data.length;i++){
       colorDex = colorDex%getColorSize()
@@ -344,11 +353,14 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
       .text("")
     var mgap = 3;
     var adjust = 0;
+    canvas.selectAll(".pie" + uniqueID).each(function(d,i){
+      d3.select(this).moveToBack();
+    });
 
     canvas.selectAll(".pie" + uniqueID)
         .on("mouseover", function () {
           var arc = d3.select(this);
-          arc.moveToBack();
+
           var rads = parseFloat(arc.attr("rad")) + 10;//ludacris 1000;
           var centx = parseFloat(arc.attr("centx"));
           var centy = parseFloat(arc.attr("centy"));
@@ -365,14 +377,13 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
             // .attr("d", " M " + arc.attr("cpx") + " " + arc.attr("cpy") +
             //            " A " + (arc.attr("rad")+0) + " " + (arc.attr("rad")+0) +" 0 "+arc.attr("flg")+" "+1+ " " + arc.attr("npx") + " " + arc.attr("npy") +
             //            " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
-          label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 20));
-          label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)).attr("y", (d3.mouse(this)[1] - 5));
-          rect.attr("x",d3.mouse(this)[0]+mgap)
+
 
             .transition().duration(200)
             .attr("d", " M " + cpx + " " + cpy +
                        " A " + rads + " " + rads +" 0 "+arc.attr("flg")+" "+1+ " " + npx + " " + npy +
                        " L " + (arc.attr("centx")) + " " + (arc.attr("centy")) + " Z");
+
           label.text("Count: " + d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 5));
           label2.text("Name: " + d3.select(this).attr("cat")).attr("x", (d3.mouse(this)[0] + 5)-adjust).attr("y", (d3.mouse(this)[1] - 20));
           rwidth = Math.max(label2.node().getBBox().width + 5,label.node().getBBox().width + 5);
@@ -593,13 +604,13 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
   //   .attr("class", "y axis")
   //   .attr("transform", "translate(" + (margin2.left + x1) + "," + (margin2.top + y1) + ")")
   //   .call(d3.axisLeft(y).ticks(data.length))
-
+  var tix = Math.min(max,10)
   //add the x axisto the graph
   canvas.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(" + (margin2.left + x1) + "," + (y2 + margin2.top + 10) + ")")
-    .call(d3.axisBottom(x).ticks(max).tickFormat(d3.format("d")));
-  console.log("==================")
+    .call(d3.axisBottom(x).ticks(tix).tickFormat(d3.format("d")));
+  // console.log("==================")
   canvas.selectAll(".bar" + uniqueID)
     .data(data)
     .enter().append("rect")
@@ -619,8 +630,8 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     .attr("y", function(d,i){
         var temp = accumHeight - ((barHeight*d.val/minCount)/2)-barHeights[i]/2
         accumHeight = accumHeight - (barHeight*d.val/minCount)
-        console.log(temp);
-        console.log(this);
+        // console.log(temp);
+        // console.log(this);
         return temp;
     })
     .attr("height", function(d,i){
@@ -921,7 +932,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
         // console.log("gottem")
         canvas.append("path")
           .attr("class","sankeyrect"+uniqueID)
-          .attr("count",data[i].outtotal)
+          .attr("count",data[i-1].outtotal)
           .attr("val",data[i-1].out)
           .attr("d", " M " + toString(x2 , y1 + (start * vert_scale) -vertstroke) +
                      " H " + (x2 - 20) +
@@ -1117,7 +1128,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
             .on("mouseover", function () {
               label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 5+y1))
               label2.text("Name: "+ d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 20+y1))
-              rwidth = label2.node().getBBox().width + 5;
+              rwidth = Math.max(label2.node().getBBox().width + 5,label.node().getBBox().width + 5);
               rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
                   .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
                   .attr("width",rwidth)
@@ -2049,6 +2060,17 @@ function addHeader(svg, data,metadata) {
   // addHeatChart(sample_data2,svg,800,10,1180,150);
   var sample_data2 = [["","Pass","Run","Total"],["Play Count",1,5,0],["Total Yards",2,7,0],["Average Yards",1,3,0],["TD Count",3,10,0]];
   addJeanTable(sample_data2,svg,800,10,1180,150);
+//   var sample_data = [{type:"run",start:10,end:15},
+//                             {type:"run",start:15,end:14},
+//                             {type:"pass",start:14,end:20},
+//                             {type:"pass",start:20,end:40},
+//                             {type:"run",start:40,end:43},
+//                             {type:"pass",start:43,end:62},
+//                             {type:"pass",start:62,end:73},
+//                             {type:"run",start:73,end:80}
+//                           ]
+// var metadata = {team1:"Cornell",team2:"Penn",gameClock:"17:00",score:"42-24",outcome:"Field goal attempt"}
+//                 addFieldChart(sample_data, metadata,svg, 800, 150, 1180)
 
 
   addLogo(svg, 50);
