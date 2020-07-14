@@ -2015,39 +2015,39 @@ function addHeader(svg, data,metadata) {
 
     }
     xcur = rad * 2 + 20;
-    for (i; i < 9; i++) {
-      if (i == 6) {
-        shapes_bottom.push(canvas.append("path")
-          .attr("d", "M " + (rad + 42) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
-          .attr("fill", "#FC766AFF")
-          .attr("fill-opacity", 0.6)
-          .attr("stroke", "maroon")
-          .attr("stroke-width", 1)
-          .attr("id", "parallel" + i))
-        canvas.append("text")
-          .attr("x", xcur + separation)
-          .attr("y", (bottom + (t + h + separation)) / 2)
-          .attr("fill", "#00203FFF")
-          .text(1)
-          .attr("text-anchor", "left")
-      }
-      else {
-        shapes_bottom.push(canvas.append("path")
-          .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
-          .attr("fill", "#FC766AFF")
-          .attr("fill-opacity", 0.6)
-          .attr("stroke", "maroon")
-          .attr("stroke-width", 1)
-          .attr("id", "parallel" + i))
-        canvas.append("text")
-          .attr("x", xcur + separation)
-          .attr("y", (bottom + (t + h + separation)) / 2)
-          .attr("fill", "#00203FFF")
-          .text(1)
-          .attr("text-anchor", "left")
-      }
-      xcur = xcur + w + separation;
-    }
+    // for (i; i < 9; i++) {
+    //   if (i == 6) {
+    //     shapes_bottom.push(canvas.append("path")
+    //       .attr("d", "M " + (rad + 42) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
+    //       .attr("fill", "#FC766AFF")
+    //       .attr("fill-opacity", 0.6)
+    //       .attr("stroke", "maroon")
+    //       .attr("stroke-width", 1)
+    //       .attr("id", "parallel" + i))
+    //     canvas.append("text")
+    //       .attr("x", xcur + separation)
+    //       .attr("y", (bottom + (t + h + separation)) / 2)
+    //       .attr("fill", "#00203FFF")
+    //       .text(1)
+    //       .attr("text-anchor", "left")
+    //   }
+    //   else {
+    //     shapes_bottom.push(canvas.append("path")
+    //       .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
+    //       .attr("fill", "#FC766AFF")
+    //       .attr("fill-opacity", 0.6)
+    //       .attr("stroke", "maroon")
+    //       .attr("stroke-width", 1)
+    //       .attr("id", "parallel" + i))
+    //     canvas.append("text")
+    //       .attr("x", xcur + separation)
+    //       .attr("y", (bottom + (t + h + separation)) / 2)
+    //       .attr("fill", "#00203FFF")
+    //       .text(1)
+    //       .attr("text-anchor", "left")
+    //   }
+    //   xcur = xcur + w + separation;
+    // }
 
     var shapes = shapes_top.concat(shapes_bottom);
     // console.log(shapes);
@@ -2301,9 +2301,11 @@ async function generateScorecards(filename, filter){
            addHeader(svg, sortedData[i].datasets[5],meta);
        }
 }
+
 function emptyScoreCards(svg){
     d3.select("#mainDiv").selectAll('.scorecardContainer').remove();
 }
+
 function MakeQuerablePromise(promise) {
     // Don't modify any promise that has been already modified.
     if (promise.isResolved) return promise;
