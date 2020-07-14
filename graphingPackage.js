@@ -84,6 +84,7 @@ function colorPallete(canvas){
     })
 
 }
+
 var colors=[
             //Red below
             convToRGB(0,"#FC766AFF"),
@@ -117,7 +118,7 @@ function getColorSize(){
   return colors.length;
 }
 
-function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
+function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex,metadata){
 
   // canvas.append("rect")
   //   .attr("x",x1)
@@ -126,17 +127,23 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
   //   .attr("height",y2-(y1))
   //   .attr("fill","red")
   //   .attr("stroke","black")
+
+  console.log(data)
+
     canvas.append("text")
       .text(function(){
-          if(uniqueID==0){
-              return "Personnel"
-          }
-          else if(uniqueID==1){
-              return "Formation"
-          }
-          else{
-              return "Play Type"
-          }
+        if(uniqueID==0){
+            return metadata["col0"]
+        }
+        else if(uniqueID==1){
+            return metadata["col1"]
+        }
+        else{
+            return metadata["col2"]
+        }
+
+
+
       })
       .attr("class","bar-graph-title")
       .attr("transform","translate("+((x1+x2)/2)+","+(y1-10)+")")
@@ -244,7 +251,7 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
 
     var maxWidth =  (x2+gap)-(x1-gap);
     var lx = x1-gap;
-    console.log(diameter)
+    //console.log(diameter)
     var ly = y1+diameter//+45;
     var line = 1;
     var linesize = 20;
@@ -431,72 +438,6 @@ function addPieChart(data,uniqueID,canvas,x1,y1,x2,y2,colorDex){
     return outDex;
 }
 
-// function addPieChart(canvas, percent1, percent2, cx, cy, radius, thickness) {
-//   //method signature: data, uniqueID, canvas, x1, y1, x2, y2,colorDex
-//   let dashArrayString = (Math.PI * 2 * radius) * percent1 + " " + (Math.PI * 2 * radius) * percent2
-//   let circle1 = canvas.append("circle")
-//     .attr("r", radius)
-//     .attr("cx", cx)
-//     .attr("cy", cy)
-//     .attr("fill", "transparent")
-//     .attr("stroke", "red")
-//     .attr("stroke-width", thickness)
-//     .attr("percentNum", percent2);
-//   let circle2 = canvas.append("circle")
-//     .attr("r", radius)
-//     .attr("cx", cx)
-//     .attr("cy", cy)
-//     .attr("fill", "transparent")
-//     .attr("stroke", "rgb(0,0,255)")
-//     .attr("stroke-width", thickness)
-//     .attr("stroke-dasharray", dashArrayString)
-//     .attr("percentNum", percent1);
-//
-//   circle1.on("mouseover", function () {
-//     let label = canvas.select("text.pieLabel");
-//     label.text(Math.round(circle1.attr("percentNum") * 100) + "%").attr("x", 100).attr("y", 100).attr("text-anchor", "left");
-//
-//     let dashArrayString2 = (Math.PI * 2 * (radius + 30)) * (circle2.attr("percentNum")) + " " + (Math.PI * 2 * (radius + 30)) * (circle1.attr("percentNum"))
-//     circle1.transition().duration(200)
-//       .attr("r", (radius + 30))
-//     circle2.transition().duration(200)
-//       .attr("r", (radius + 30))
-//       .attr("stroke-dasharray", dashArrayString2)
-//   });
-//   circle1.on("mouseout", function () {
-//     let label = canvas.select("text.pieLabel");
-//     label.text("");
-//
-//     circle1.transition().duration(200)
-//       .attr("r", (radius))
-//     circle2.transition().duration(200)
-//       .attr("r", (radius))
-//       .attr("stroke-dasharray", dashArrayString)
-//   });
-//
-//   circle2.on("mouseover", function () {
-//     let label = canvas.select("text.pieLabel");
-//     label.text(Math.round(circle2.attr("percentNum") * 100).toString() + "%").attr("x", 100).attr("y", 100).attr("text-anchor", "left");
-//
-//     let dashArrayString2 = (Math.PI * 2 * (radius + 30)) * (circle2.attr("percentNum")) + " " + (Math.PI * 2 * (radius + 30)) * (circle1.attr("percentNum"))
-//     circle1.transition().duration(200)
-//       .attr("r", (radius + 30))
-//     circle2.transition().duration(200)
-//       .attr("r", (radius + 30))
-//       .attr("stroke-dasharray", dashArrayString2)
-//   });
-//   circle2.on("mouseout", function () {
-//     let label = canvas.select("text.pieLabel");
-//     label.text("");
-//
-//     circle1.transition().duration(200)
-//       .attr("r", (radius))
-//     circle2.transition().duration(200)
-//       .attr("r", (radius))
-//       .attr("stroke-dasharray", dashArrayString)
-//   });
-// }
-
 function addLoadingBars(canvas) {
   canvas.append("line")
     .attr("class", "loading-bar1")
@@ -543,7 +484,10 @@ function removeLoadingBars(canvas) {
   canvas.select("line.loading-bar4").remove();
 }
 
-function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
+function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex,metadata) {
+
+
+    console.log(metadata)
     x1 = x1+5;
     x2 = x2-5
   var outDex = (colorDex+data.length)%getColorSize();
@@ -719,13 +663,13 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex) {
     canvas.append("text")
       .text(function(){
           if(uniqueID==0){
-              return "Personnel"
+              return metadata["col0"]
           }
           else if(uniqueID==1){
-              return "Formation"
+              return metadata["col1"]
           }
           else{
-              return "Play Type"
+              return metadata["col2"]
           }
       })
       .attr("class","bar-graph-title")
@@ -1822,7 +1766,7 @@ function mouseon(shape, index) {
     }
     shape.transition().duration(200)
       .attr("fill-opacity", new_op)
-      .attr("stroke", "maroon")
+      .attr("stroke", "#1c1c1c")
       .attr("stroke-width", new_st)
   });
 }
@@ -1841,7 +1785,7 @@ function mouseoff(shape, index) {
     }
     shape.transition().duration(200)
       .attr("fill-opacity", new_op)
-      .attr("stroke", "maroon")
+      .attr("stroke", "#1c1c1c")
       .attr("stroke-width", 1)
   });
 }
@@ -1860,7 +1804,7 @@ function mouseclick(shape, index) {
     }
     shape.transition().duration(200)
       .attr("fill-opacity", new_op)
-      .attr("stroke", "maroon")
+      .attr("stroke", "#1c1c1c")
       .attr("stroke-width", new_st)
   });
 }
@@ -1937,9 +1881,11 @@ function addHeader(svg, data,metadata) {
     var shapes_bottom = [];
     let bottom = t + rad * 2;
     let xcur = rad * 2 + 20;
-    var titles = [metadata.Down, metadata.DistSit, metadata.FieldZone, "", "", ""];
 
-    var columntitles = ["Down","Distance","FieldZone","Personnel", "Formation", "Play Type"]
+    var columntitles = [metadata["sit0"],metadata["sit1"],metadata["sit2"],metadata["col0"], metadata["col1"], metadata["col2"]]
+    var titles = [metadata[metadata["sit0"]], metadata[metadata["sit1"]], metadata[metadata["sit2"]], "", "", ""];
+
+
 
 
     // Code needs help merging HERE
@@ -1979,7 +1925,7 @@ function addHeader(svg, data,metadata) {
           .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
           .attr("fill", "#58d0db")
           .attr("fill-opacity", 0.6)
-          .attr("stroke", "#586cdb")
+          .attr("stroke", "blue")
           .attr("stroke-width", 1)
           .attr("id", "parallel" + i))
         }
@@ -2058,7 +2004,14 @@ function addHeader(svg, data,metadata) {
 
   //addTableInfo(svg, 140, 35, 16);
   // addHeatChart(sample_data2,svg,800,10,1180,150);
-  var sample_data2 = [["","Pass","Run","Total"],["Play Count",1,5,0],["Total Yards",2,7,0],["Average Yards",1,3,0],["TD Count",3,10,0]];
+
+
+
+  var sample_data2 = [["","Pass","Run","Total"],
+    ["Play Count",data["Play Count"]["Pass"],data["Play Count"]["Run"],data["Play Count"]["Total"]],
+    ["Total Yards",data["Total Yards"]["Pass"],data["Total Yards"]["Run"],data["Total Yards"]["Total"]],
+    ["Average Yards",data["Average Yards"]["Pass"],data["Average Yards"]["Run"],data["Average Yards"]["Total"]],
+    ["TD Count",data["TD Count"]["Pass"],data["TD Count"]["Run"],data["TD Count"]["Total"]]];
   addJeanTable(sample_data2,svg,800,10,1180,150);
 //   var sample_data = [{type:"run",start:10,end:15},
 //                             {type:"run",start:15,end:14},
@@ -2210,8 +2163,8 @@ function addJeanTable(data,canvas,x1,y1,x2,y2){
 async function generateScorecards(filename, filter){
        const data = await d3.json(filename);
 
-       // console.log(data);
-       // console.log(data);
+
+       //console.log(data);
        var sortedData = tieredSort(data,["NumPlays"]);
 
        var svg;
@@ -2220,6 +2173,9 @@ async function generateScorecards(filename, filter){
        var startDex1;
        var startDex2;
        var currX = 10;
+
+
+
        d3.select("#mainDiv").selectAll('.scorecardContainer').remove()
        if(!(d3.select("#sankey1").property("checked"))){
            numCharts = numCharts-1
@@ -2238,6 +2194,13 @@ async function generateScorecards(filename, filter){
        }
        sep = (fixedWidth-30)/numCharts;
        for(let i = 0; i < sortedData.length; i++){
+
+           var metadata = {"col0":sortedData[i]["col0"],
+                          "col1":sortedData[i]["col1"],
+                          "col2":sortedData[i]["col2"],
+                          "sit0":sortedData[i]["sit0"],
+                          "sit1":sortedData[i]["sit1"],
+                          "sit2":sortedData[i]["sit2"]}
            var startDex1 = 0;
            currX = 10;
            d3.select("#mainDiv").append("div")
@@ -2260,11 +2223,11 @@ async function generateScorecards(filename, filter){
            //TODO DESIGN CHOICE: should the graphs on first load say graph 1 or bargraph
            if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
                //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
-               startDex1 = addBarGraph(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+               startDex1 = addBarGraph(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
                currX = currX+sep;
            }
            else if(d3.select("#graph1").text()=='Pie Chart'){
-             startDex1 = addPieChart(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0);
+             startDex1 = addPieChart(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
              currX = currX+sep;
            }
            if(d3.select("#sankey1").property("checked")){
@@ -2272,11 +2235,11 @@ async function generateScorecards(filename, filter){
                currX = currX+sep
            }
            if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
-               startDex2 = addBarGraph(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
+               startDex2 = addBarGraph(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
                currX = currX+sep
            }
            else if(d3.select("#graph2").text()=='Pie Chart'){
-             startDex2 = addPieChart(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1);
+             startDex2 = addPieChart(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
              currX = currX+sep;
            }
            if(d3.select("#sankey2").property("checked")){
@@ -2284,21 +2247,30 @@ async function generateScorecards(filename, filter){
                currX = currX+sep
            }
            if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
-               addBarGraph(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
+               addBarGraph(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
 
            }
            else if(d3.select("#graph3").text()=='Pie Chart'){
-             addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2);
+             addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
            }
            //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
            //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
+
+           var sctargetcols = [sortedData[i]["col0"],sortedData[i]["col1"],sortedData[i]["col2"]]
+
            var meta = {
              "Down":sortedData[i]["Down"],
              "DistSit":sortedData[i]["DistSit"],
-             "FieldZone":sortedData[i]["FieldZone"]
+             "FieldZone":sortedData[i]["FieldZone"],
+             "col0":sortedData[i]["col0"],
+              "col1":sortedData[i]["col1"],
+              "col2":sortedData[i]["col2"],
+              "sit0":sortedData[i]["sit0"],
+              "sit1":sortedData[i]["sit1"],
+              "sit2":sortedData[i]["sit2"]
            }
            // console.log(meta);
-           addHeader(svg, sortedData[i].datasets[5],meta);
+           addHeader(svg, sortedData[i].splits,meta);
        }
 }
 
