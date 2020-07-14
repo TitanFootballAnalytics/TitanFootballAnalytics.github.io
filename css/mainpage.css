@@ -3,14 +3,16 @@ body {margin: 0px;}
 
 input{border: 0px}
 
+.mainbackground{position: fixed;width: 100%;background: url(../Images/mainback.jpg)repeat fixed 100%;
+background-size: cover;height: 300%;background-position: bottom;}
 
 .shortbar {
   background-color: #1c1c1c;
   height: 10px;
   margin: 0px;
-  width: 60%;
+  width: 60%;}
 
-}
+  
 
 .nomargin{margin: 0px;}
 
@@ -30,9 +32,18 @@ input{border: 0px}
   border: 0px;
 }
 
-.reportrequest {border: 2px solid #1c1c1c;
-  padding: 10px;
-  margin-bottom: 10px;}
+.reportrequest {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  transition: all  1s;}
+
+.reportrequest:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  transition: all  1s;
+
+}
 
 
 .roundbutton {border-radius: 99px;
