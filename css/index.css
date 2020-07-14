@@ -1,5 +1,5 @@
 .mainbackground{position: fixed;width: 100%;background: url(../Images/mainback.jpg)repeat fixed 100%;
-background-size: cover;height: 300%;background-position: bottom;}
+background-size: cover;height: 100%;background-position: bottom;z-index: -99}
 
 .cube-opt{height: 150px;background-color: inherit;text-align: center;border: solid white 3px;transition: all 1s;background-color: rgba(0,0,0,.5)}
 .centered-nice{width: 16.66%;display:inline-block}
@@ -29,7 +29,7 @@ background-size: cover;height: 300%;background-position: bottom;}
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
-  
+
 
 
 }
