@@ -1,5 +1,9 @@
-var svg;
 const standardset = ["Down","Distance","FieldZone","Personnel","Formation","PlayType","FormationFam","Cover","CoverFam"];
+var currentMapping = {};
+const NO_MAPPING = 404;
+for(var i = 0; i< standardset.length;i++){
+	currentMapping[standardset[i]] = "";
+}
 document.getElementById("submitButton").addEventListener("click",submitHandler,false);
 createRecepticle(standardset);
 // d3.select("#mainDiv").append("svg")
@@ -104,18 +108,32 @@ function drop(ev) {
 
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
-	var sourceBoxD3 = d3.select("#"+data).style("background-color","red");
+	var sourceBoxD3;
+	try {
+   sourceBoxD3 = d3.select("#"+data);
+	}
+	catch(err) {
+  	//no need to handle error
+	}
+
+	if(sourceBoxD3 && sourceBoxD3._groups[0][0] != null){
+		sourceBoxD3.style("background-color","red").style("cursor","pointer");
+		var sourceBox = document.getElementById(data);
+		sourceBoxD3.attr("draggable","false");
+		// console.log(sourceBox)
+		var targetBoxD3 = d3.select(ev.target);
+		ev.target.removeEventListener('dragover', allowDrop);
+		ev.target.removeEventListener('drop', drop);
+		ev.target.parentNode.style.border = "none";
+		if(ev.target.parentNode.children[3])
+			ev.target.parentNode.removeChild(ev.target.parentNode.children[3]);
+		targetBoxD3.style("z-index","3")
+						 .style("background-color","green");
+		fitText(ev.target,sourceBoxD3._groups[0][0].labelTitan)
+		sourceBox.addEventListener('click', function() {undoSelect(ev.target,targetBoxD3,sourceBoxD3,sourceBox)}, false);
+	}
 	//console.log(info._groups[0][0].labelTitan);
-	var sourceBox = document.getElementById(data);
-	sourceBoxD3.attr("draggable","false");
-	// console.log(sourceBox)
-	var targetBoxD3 = d3.select(ev.target);
-	ev.target.removeEventListener('dragover', allowDrop);
-	ev.target.removeEventListener('drop', drop);
-	targetBoxD3.style("z-index","3")
-					 .style("background-color","green");
-	fitText(ev.target,sourceBoxD3._groups[0][0].labelTitan)
-	sourceBox.addEventListener('click', function() {undoSelect(ev.target,targetBoxD3,sourceBoxD3,sourceBox)}, false);
+
   // ev.target.appendChild(document.getElementById(data));
 }
 
@@ -124,7 +142,7 @@ function drop(ev) {
 // }
 
 
-
+//TODO: reenable fbox:active{grabbing}
 function undoSelect(target,targetD3,sourceD3,source){
 	 targetD3.node().removeChild(targetD3.node().firstChild);
 	 target.addEventListener('dragover', allowDrop, false);
@@ -136,13 +154,128 @@ function undoSelect(target,targetD3,sourceD3,source){
 	 var new_element = source.cloneNode(true);
 	 source.parentNode.replaceChild(new_element, source);
 	 d3.select(new_element)
-	 	 .attr("draggable","true");
+	 	 .attr("draggable","true")
+		 .style("cursor","grab");
 	 new_element.labelTitan = source.labelTitan;
 
 	 new_element.addEventListener('dragstart', drag, false);
 }
 
+function enableRelationship(event){
+	var unit = event.target.parentNode;
+	var tests = 2;
+	while(tests > 0){
+		tests--;
+		if(unit.className == "unit"){
+			//unit.parentNode.removeChild(unit);
+			break;
+		}
+		else{
+			unit = unit.parentNode;
+		}
+	}
+	// console.log("pong")
+	unit.style.border = "thick dashed rgb(180,30,30)";
+	unit.children[0].style.backgroundColor = "white";
+	var key = unit.children[0].children[0].children[0].textContent;
+	currentMapping[key] = "";
+	unit.children[1].children[0].style.fill = "white";
+	unit.children[2].style.backgroundColor = "white";
+	unit.children[2].addEventListener('dragover', allowDrop,false);
+	unit.children[2].addEventListener('drop', drop,false);
+	unit.children[3].style.backgroundColor = "red";
+	unit.children[3].children[0].className = "fa fa-trash";
+  unit.children[3].removeEventListener("click",enableRelationship,false);
+	unit.children[3].addEventListener("click",disableRelationship,false);
+}
+
+function disableRelationship(event){
+	// console.log("===================");
+	// console.log(event.target)
+	// console.log(event.target.parentNode.className);
+	// console.log("last delete");
+	// console.log("ping")
+	//Removes element from list VVVVV
+	var unit = event.target.parentNode;
+	var tests = 2;
+	while(tests > 0){
+		tests--;
+		if(unit.className == "unit"){
+			//unit.parentNode.removeChild(unit);
+			break;
+		}
+		else{
+			unit = unit.parentNode;
+		}
+	}
+	// console.log(unit);
+	unit.style.border = "thick dashed grey";
+	unit.children[0].style.backgroundColor = "grey";
+	var key = unit.children[0].children[0].children[0].textContent;
+	currentMapping[key] = NO_MAPPING;
+	unit.children[1].children[0].style.fill = "grey";
+	unit.children[2].style.backgroundColor = "grey";
+	unit.children[2].removeEventListener('dragover', allowDrop);
+	unit.children[2].removeEventListener('drop', drop);
+	unit.children[3].style.backgroundColor = "green";
+	unit.children[3].children[0].className = "fa fa-undo";
+  unit.children[3].removeEventListener("click",disableRelationship,false);
+	unit.children[3].addEventListener("click",enableRelationship,false);
+
+	// console.log(unit);
+
+}
+
+
+function verifyMapping(){
+	for (const [key, value] of Object.entries(currentMapping)) {
+  	if(value === ""){
+			return false;
+		}
+	}
+	return true;
+}
+
 function submitHandler(){
+	var mappingSelect = d3.selectAll(".unit");
+	var mapObjs = mappingSelect._groups[0];
+	var leftBox;
+	var rightBox;
+	var key;
+	var value;
+	console.log("=============================")
+	for(var i = 0; i < mapObjs.length;i++){
+		leftBox = mapObjs[i].children[0];
+		rightBox = mapObjs[i].children[2];
+		key = leftBox.children[0].children[0].textContent;
+		if(rightBox.children[0]===undefined){
+			// console.log("missing mapping for " + key);
+			if(mapObjs[i].children[3]===undefined){
+				mapObjs[i].style.border = "thick dashed rgb(180,30,30)";
+				var button = mapObjs[i].appendChild(document.createElement("button"));
+				var icon = button.appendChild(document.createElement("i"));
+				button.className = "btn default";
+				button.style.backgroundColor="rgb(255,0,0)";
+				icon.className = "fa fa-trash";
+				icon.style.color="rgb(255,255,255)";
+				// button.textContent = "Remove";
+				button.type = "submit";
+				button.addEventListener("click",disableRelationship,false);
+				// console.log(button);
+			}
+		}
+		else{
+			value = rightBox.children[0].children[0].textContent;
+			currentMapping[key] = value;
+			// console.log(currentMapping);
+
+
+		}
+	}
+
+	if(verifyMapping()){
+		console.log("Succesful Map!")
+	}
 
 }
 
@@ -220,6 +353,7 @@ $(document).ready(function() {
 		if(data !== null && data !== "" && data.length > 1) {
 			this.data = data;
 			generateHoldingCell(data[0]);
+
 			StatsProcessor(data);
 
 			$("#statOutPut").removeClass( "hidden" );
