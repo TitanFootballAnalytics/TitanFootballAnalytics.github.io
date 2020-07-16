@@ -97,24 +97,69 @@
       <option value="Quarter">
       <option value="Score Diffrence">
     </datalist>
+    <datalist id="chartoptions">
+      <option value="Bar Chart">
+      <option value="Pie Chart">
+    </datalist>
+    <datalist id="sankeyoptions">
+      <option value="include">
+      <option value="exclude">
+    </datalist>
 
     <br>
     <div class="row">
 
-      <div class="col-md-7 reportrequest col-md-offset-1">
+      <div id="test0" class="col-md-7 reportrequest col-md-offset-1">
         <label>Break down
-          <input class="reportcustominput" list="targetcolumns" name="myBrowser" />,
-          <input class="reportcustominput" list="targetcolumns" name="myBrowser" />,
-          <input class="reportcustominput" list="targetcolumns" name="myBrowser" /> by
-          <input class="reportcustominput" list="situations" name="myBrowser" />,
-          <input class="reportcustominput" list="situations" name="myBrowser" />,
-          <input class="reportcustominput" list="situations" name="myBrowser" />
+          <input class="reportcustominput" list="targetcolumns" name="targets" />,
+          <input class="reportcustominput" list="targetcolumns" name="targets" />,
+          <input class="reportcustominput" list="targetcolumns" name="targets" /> by
+          <input class="reportcustominput" list="situations" name="situations" />,
+          <input class="reportcustominput" list="situations" name="situations" />,
+          <input class="reportcustominput" list="situations" name="situations" />
           &nbsp;&nbsp;
         </label>
         <div style="float: right;"class="">
-          <button type="button" onclick="multiplyNode(document.querySelector('.reportrequest'), 2, true);" class="btn btn btn-primary">+</button>
+          <button type="button" onclick="multiplyNode(document.querySelector('.reportrequest'), 2, true);" class="btn btn-primary">+</button>
           <button id="xbutton" type="button" onclick="remove(document.getElementById('xbutton').parentElement.parentElement)" class="btn btn-danger">x</button>
         </div>
+        <div class="">
+
+        </div>
+
+        <label for="checkbox-toggle-1">Open Settings</label>
+        <input class="" id="checkbox-toggle-1" type="checkbox" onclick="opensetting(this)"/>
+        <div class="toggle-content">
+          <h5 id="t1"></h5>
+          <input type="radio" id="bart1" name="barpie1" value="Bar Chart">
+          <label for="bart1">Bar Chart</label>
+          <input type="radio" id="piet1" name="barpie1" value="Pie Chart">
+          <label for="piet1">Pie Chart</label><br>
+          <h5 id="t2"></h5>
+          <input type="radio" id="bart2" name="barpie2" value="Bar Chart">
+          <label for="bart2">Bar Chart</label>
+          <input type="radio" id="piet2" name="barpie2" value="Pie Chart">
+          <label for="piet2">Pie Chart</label><br>
+          <h5 id="t3"></h5>
+          <input type="radio" id="bart3" name="barpie3" value="Bar Chart">
+          <label for="bart3">Bar Chart</label>
+          <input type="radio" id="piet3" name="barpie3" value="Pie Chart">
+          <label for="piet3">Pie Chart</label><br>
+          <h5> Relationship Charts </h5>
+
+          <input id="sankey12" class="reportcheckbox" type="checkbox" name="sankeys"/>
+          <label id="sankey12text"></label>
+          <input id="sankey23" class="reportcheckbox" type="checkbox" name="sankeys"/>
+          <label id="sankey23text"></label>
+
+
+        </div>
+
+
+      </div>
+
+      <div class=" col-md-2 col-md-offset-5" align="center">
+          <input class="roundbutton submitcustom" value="Create Report" type="submit" list="" name="submitcustom" onclick="grabscrequestsingle('test0')" />
       </div>
 
     </div>

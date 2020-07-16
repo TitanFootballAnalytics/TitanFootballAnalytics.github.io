@@ -1884,7 +1884,7 @@ function addHeader(svg, data,metadata) {
 
     var columntitles = [metadata["sit0"],metadata["sit1"],metadata["sit2"],metadata["col0"], metadata["col1"], metadata["col2"]]
     var titles = [metadata[metadata["sit0"]], metadata[metadata["sit1"]], metadata[metadata["sit2"]], "", "", ""];
-
+    console.log(metadata)
 
 
 
@@ -2010,7 +2010,7 @@ function addHeader(svg, data,metadata) {
   var sample_data2 = [["","Pass","Run","Total"],
     ["Play Count",data["Play Count"]["Pass"],data["Play Count"]["Run"],data["Play Count"]["Total"]],
     ["Total Yards",data["Total Yards"]["Pass"],data["Total Yards"]["Run"],data["Total Yards"]["Total"]],
-    ["Average Yards",data["Average Yards"]["Pass"],data["Average Yards"]["Run"],data["Average Yards"]["Total"]],
+    ["Average Yards",roundnumber(data["Average Yards"]["Pass"],2),roundnumber(data["Average Yards"]["Run"],2),roundnumber(data["Average Yards"]["Total"],2)],
     ["TD Count",data["TD Count"]["Pass"],data["TD Count"]["Run"],data["TD Count"]["Total"]]];
   addJeanTable(sample_data2,svg,800,10,1180,150);
 //   var sample_data = [{type:"run",start:10,end:15},
@@ -2258,17 +2258,25 @@ async function generateScorecards(filename, filter){
 
            var sctargetcols = [sortedData[i]["col0"],sortedData[i]["col1"],sortedData[i]["col2"]]
 
+           var st0 = sortedData[i]["sit0"];
+           var st1 = sortedData[i]["sit1"];
+           var st2 = sortedData[i]["sit2"];
+           console.log(st0)
+
+
            var meta = {
-             "Down":sortedData[i]["Down"],
-             "DistSit":sortedData[i]["DistSit"],
-             "FieldZone":sortedData[i]["FieldZone"],
-             "col0":sortedData[i]["col0"],
+              "col0":sortedData[i]["col0"],
               "col1":sortedData[i]["col1"],
               "col2":sortedData[i]["col2"],
               "sit0":sortedData[i]["sit0"],
               "sit1":sortedData[i]["sit1"],
-              "sit2":sortedData[i]["sit2"]
-           }
+              "sit2":sortedData[i]["sit2"]}
+
+          meta[st0] = sortedData[i][sortedData[i]["sit0"]]
+          meta[st1] = sortedData[i][sortedData[i]["sit1"]]
+          meta[st2] = sortedData[i][sortedData[i]["sit2"]]
+
+
            // console.log(meta);
            addHeader(svg, sortedData[i].splits,meta);
        }
@@ -2306,3 +2314,14 @@ function MakeQuerablePromise(promise) {
     result.isRejected = function() { return isRejected; };
     return result;
 }
+
+function roundnumber(number,place){
+      var divis = place * 10;
+      var newnum = number * divis;
+      return Math.round(newnum)/divis
+
+}
+
+console.log(roundnumber(100.23145,2))
+console.log(roundnumber(100.23145,1))
+console.log(roundnumber(100.23145,3))
