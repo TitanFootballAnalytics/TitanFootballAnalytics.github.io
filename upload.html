@@ -14,58 +14,35 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src='https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js'></script>
+
 </head>
-<body>
-<html lang="en">
-
-    <body>
-        <div class="mainbackground">
-        </div>
-        <div id = "mainDiv">
-
-    			<section class="row">
-    				<div class="col-xs-12">
-
-    					<fieldset>
-    						<input  type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
-    					</fieldset>
-              <button class="btn default submitButton" id="submitButton">Submit</button>
-
-					<!-- <ul id="errorOutPut"  class="outPut hidden">
-						<li>Sorry there has been an error.</li>
-					</ul> -->
-
-					<!-- <ul id="statOutPut" class="outPut">
-						<li>Total number of integers: <span data-bind="text: countOfIntegers"></span></li>
-						<li>Mean value of all integers (to three decimal places): <span data-bind="text: meanOfIntegers">null</span></li>
-						<li>Highest number of integers in a single line: <span data-bind="text: highestLength">null</span></li>
-						<li>Most common integer: <span data-bind="text: commonInteger">null</span></li>
-					</ul> -->
-
-    				</div>
-    			</section>
-          <div id ="container">
-            <div id="wrapper">
-              <div id="lefthalf">
-              </div>
-              <div id="righthalf">
-                <span class="searchbar">
-                  <input class="search" type="text" placeholder="Search..">
-                  <button type="submit"><i class="fa fa-search"></i></button>
-                </span>
-                <div id="headerContainer" class="row">
-                </div>
-              </div>
+  <body>
+      <div class="mainbackground"></div>
+      <div id = "mainDiv">
+  			<section class="row">
+  				<div class="col-xs-12">
+  					<fieldset>
+  						<input  type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
+  					</fieldset>
+            <button class="btn default submitButton" id="submitButton">Submit</button>
+  				</div>
+  			</section>
+        <div id ="container">
+          <div id="wrapper">
+            <div id="lefthalf"></div>
+            <div id="righthalf">
+              <span class="searchbar">
+                <input class="search" type="text" placeholder="Search..">
+                <button type="submit"><i class="fa fa-search"></i></button>
+              </span>
+              <div id="headerContainer" class="row"></div>
             </div>
           </div>
-		    </div>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
-
-
-    </body>
-  <script src='https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js'></script><script  src="./csv_upload.js"></script>
-
+        </div>
+	    </div>
 </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+  <script  src="./js/csv_upload.js"></script>
 </html>
