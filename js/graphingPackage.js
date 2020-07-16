@@ -621,11 +621,6 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex,metadata) {
 
 function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,colorDex2) {
 
-  //bounding box
-  // canvas.append("path").attr("d", " M " + toString(x1, y1) +
-  //                           " H " + x2 +
-  //                           " V " + y2 +
-  //                           " H " + x1)
   function toString(x, y) {
     return "" + x + " " + y + "";
   }
@@ -633,32 +628,9 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   function convToRGB(hex){
     obj = d3.hsl(hex);
     rgb = obj.rgb();
-    // console.log(rgb);
     return {r:rgb.r,g:rgb.g,b:rgb.b};
   }
-  //create start locations for bezier rect
-  // old colors
-  // var colors = [{ r: 238, g: 32, b: 77 },
-  // { r: 252, g: 232, b: 131 },
-  // { r: 31, g: 117, b: 254 },
-  // { r: 255, g: 117, b: 56 },
-  // { r: 28, g: 172, b: 120 },
-  // { r: 146, g: 110, b: 174 }];
-  // var colors=[convToRGB("#00203FFF"),
-  //             //convToRGB("#ADEFD1FF"),
-  //             convToRGB("#FC766AFF"),
-  //             convToRGB("#5B84B1FF"),
-  //             convToRGB("#00A4CCFF"),
-  //             convToRGB("#ED2B33FF"),
-  //             convToRGB("#0E7A0D"),
-  //             convToRGB("#97BC62FF"),
-  //             convToRGB("#00539CFF"),
-  //             convToRGB("#EEA47FFF")
-  //           ];
-  // var color_start = Math.floor(Math.random() * (colors.length));
 
-
-  // console.log(colors);
   var inTotals = {};
   var outTotals = {};
   var total = 0;
@@ -670,27 +642,20 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
       colorDex1 = colorDex1 % getColorSize();
     }
     data[i].color = getColor(colorDex1);
-    // console.log(color_start)
-    // console.log(data[i].color)
+    //intotal population
     if(data[i].in in inTotals){
-      // console.log("second",data[i])
       inTotals[data[i].in] += data[i].count;
     }
     else{
-      // console.log("first",data[i])
       inTotals[data[i].in] = data[i].count;
     }
-
+    //outtotal population
     if(data[i].out in outTotals){
-      // console.log("second",data[i])
       outTotals[data[i].out] += data[i].count;
     }
     else{
-      // console.log("first",data[i])
       outTotals[data[i].out] = data[i].count;
     }
-
-
 
     data[i].start = total;
     data[i].id = i;
@@ -725,17 +690,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
 
   var gap = 10;
-  // var colors = [{ r: 238, g: 32, b: 77 },
-  // { r: 252, g: 232, b: 131 },
-  // { r: 31, g: 117, b: 254 },
-  // { r: 255, g: 117, b: 56 },
-  // { r: 28, g: 172, b: 120 },
-  // { r: 146, g: 110, b: 174 }];
 
-  // console.log(data)
-  // for(var i = 0;i<data.length;i++){
-  //   console.log(data[i])
-  // }
   //==second set of bars=================================================================
   var first = data[0].out;
   var vertstroke = 1;//in pixels
@@ -745,13 +700,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   data[0].end_color = color;
   if(barflag){
     for (var i = 1; i < data.length; i++) {
-      // console.log(data[i])
-      // console.log(i)
-      // console.log(first);
-      // console.log(data[i].out);
-      // console.log("----------");
       if (data[i].out != first) {
-        // console.log("gottem")
         canvas.append("path")
           .attr("class","sankeyrect"+uniqueID)
           .attr("count",data[i-1].outtotal)
@@ -775,7 +724,6 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     }
     end = data[data.length - 1].end + data[data.length - 1].count;
     data[data.length - 1].end_color = color;
-    // console.log(data[data.length-1])
     canvas.append("path")
       .attr("class","sankeyrect"+uniqueID)
       .attr("count",data[data.length-1].outtotal)
@@ -786,7 +734,6 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
         " H " + (x2))
       .attr("fill", "rgb(" + color.r + "," + color.g + "," + color.b + ")");
   }
-  // console.log("===================")
   //=========================================================================
 
   //reorder for aesthetic
@@ -806,15 +753,12 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   var start = data[0].start;
   var end = data[0].count + start;
   var color = data[0].color;
-  // console.log(data)
-  // console.log(color)
   if(barflag){
     for (var i = 0; i < data.length; i++) {
       if (data[i].in != first) {
         first = data[i].in;
         color = data[i].color;
       }
-      //console.log(data[i])
       canvas.append("path")
         .attr("class","sankeyrect"+uniqueID)
         .attr("count",data[i].intotal)
@@ -845,7 +789,6 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
     })
     .attr("fill", function (d, i) {
-      //console.log(d)
       var col = d.color;
       var ecol = d.end_color;
       canvas.insert("defs").html("<linearGradient id='"+uniqueID+"grad" + i + "' x1='0%' y1='0%' x2='100%' y2='0%'>" +
@@ -859,31 +802,10 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     .transition()
     .duration(1000)
     .delay(function (d, i) {
-      //console.log(d)
       return i * 300;
     })
     .attr("opacity",0.5)
-    //fade in sankey bars^^^^^
-    //TODO: show jean animation and ask for decision
-    //wipe in sankey barsvvvv
-    // x1-=(20+gap)
-    // var panel = convToRGB("#FFFFFF")
-    // // obj = d3.hsl(hex);
-    // // rgb = obj.rgb();
-    // console.log(panel)
-    // canvas.append("path")
-    //   .attr("d", " M " + toString(x1+20, y1) +
-    //     " H " + (x2-20) +
-    //     " V " + (y2+2) +
-    //     " H " + (x1+20))
-    //   .attr("fill", d3.hsl("#DDDDDD"))
-    //   .transition()
-    //   .duration(1500)
-    //   .delay(500)
-    //   .attr("d", " M " + toString(x2-20, y1) +
-    //     " H " + (x2-20) +
-    //     " V " + (y2+2) +
-    //     " H " + (x2-20))
+
 
 
     let rect = canvas.append("rect").attr("x",0)
@@ -896,29 +818,31 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     var adjust = 0;
     var mgap = 3;
     let label = canvas.append("text")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("fill", "black")
-      .text("")
+                      .attr("x", 0)
+                      .attr("y", 0)
+                      .attr("fill", "black")
+                      .text("")
     let label2 = canvas.append("text")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("fill", "black")
-      .text("")
+                       .attr("x", 0)
+                       .attr("y", 0)
+                       .attr("fill", "black")
+                       .text("")
     canvas.selectAll(".sankeyline"+uniqueID)
         .on("mouseover", function () {
           d3.select(this)
             .attr("opacity", 1)
-          label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1-adjust)).attr("y", (d3.mouse(this)[1] - 20+y1))
+          label.text("Count: " + d3.select(this).attr("count"))
+                                                .attr("x", (d3.mouse(this)[0] + 5+x1-adjust))
+                                                .attr("y", (d3.mouse(this)[1] - 20+y1));
           rwidth = label.node().getBBox().width + 5;
           rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
               .attr("y",d3.mouse(this)[1]-.5*rheight+y1-mgap)
               .attr("width",rwidth)
               .attr("height",rheight/2)
               .attr("fill","rgba(255,255,255,.9)")
-              rect.moveToFront();
-              label.moveToFront();
-              label2.moveToFront();
+          rect.moveToFront();
+          label.moveToFront();
+          label2.moveToFront();
         })
         .on("mouseout", function () {
           d3.select(this)
@@ -948,8 +872,12 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
 
         canvas.selectAll(".sankeyrect"+uniqueID)
             .on("mouseover", function () {
-              label.text("Count: " + d3.select(this).attr("count")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 5+y1))
-              label2.text("Name: "+ d3.select(this).attr("val")).attr("x", (d3.mouse(this)[0] + 5+x1)-adjust).attr("y", (d3.mouse(this)[1] - 20+y1))
+              label.text("Count: " + d3.select(this).attr("count"))
+                                                    .attr("x", (d3.mouse(this)[0] + 5+x1)-adjust)
+                                                    .attr("y", (d3.mouse(this)[1] - 5+y1));
+              label2.text("Name: "+ d3.select(this).attr("val"))
+                                                   .attr("x", (d3.mouse(this)[0] + 5+x1)-adjust)
+                                                   .attr("y", (d3.mouse(this)[1] - 20+y1));
               rwidth = Math.max(label2.node().getBBox().width + 5,label.node().getBBox().width + 5);
               rect.attr("x",d3.mouse(this)[0]+x1+mgap-adjust)
                   .attr("y",d3.mouse(this)[1]-rheight+y1-mgap)
@@ -984,26 +912,6 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
                   .attr("height",rheight)
                   .attr("fill","rgba(255,255,255,.9)")
             });
-
-  // let label = canvas.append("text")
-  //   .attr("x", 0)
-  //   .attr("y", 0)
-  //   .attr("fill", "black")
-  //   .text("")
-  // canvas.selectAll(".sankeyline"+uniqueID)
-  //   .on("mouseover", function () {
-  //     d3.select(this)
-  //       .attr("opacity", 1)
-  //     label.text("Count: " + d3.select(this).attr("count")).attr("x", d3.mouse(this)[0] + 5).attr("y", d3.mouse(this)[1] - 5)
-  //   })
-  //   .on("mouseout", function () {
-  //     d3.select(this)
-  //       .attr("opacity", 0.5)
-  //     label.text("")
-  //   })
-  //   .on("mousemove", function () {
-  //     label.attr("x", d3.mouse(this)[0] + 5).attr("y", d3.mouse(this)[1] - 5)
-  //   })
 }
 
 function addHeatChart(data,canvas,x1,y1,x2,y2){
@@ -1018,6 +926,7 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
     "<filter id='gaus' x='-40%' y='-40%' width='300%' height ='300%'>" +
       "<feGaussianBlur in='SourceGraphic' stdDeviation='5' />" +
     "</filter>");
+
     canvas.append("rect")
       .attr("x",x1)
       .attr("y",y1)
@@ -1040,7 +949,6 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
     else if(width>180){
       tWidth = 14;
     }
-    // console.log(tWidth)
 
     var dataTotal = 0;
     for(var ix = 0; ix < 3; ix++){
@@ -1048,11 +956,11 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         dataTotal += data[iy][ix];
       }
     }
-    // console.log(dataTotal);
+    var col;
+    var textAnchor;
     for(var ix = 0; ix < 3; ix++){
       for(var iy = 0; iy < data.length;iy++){
-        var col = convToRGB(0,"#00539CFF");
-        // console.log(col)
+        col = convToRGB(0,"#00539CFF");
 
 
         canvas.append("rect")
@@ -1064,7 +972,7 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
           .attr("stroke","white")
           .attr("stroke-width","5px");
 
-        var textAnchor = {
+        textAnchor = {
           x: x1+(ix+.5)*xunit,
           y: y1+(iy+.5)*yunit
         }
@@ -1107,15 +1015,12 @@ function addHeatChart(data,canvas,x1,y1,x2,y2){
         .attr("fill","Black")
         .attr("font-size",tWidth+"px")
         .text("0");
-        // ("d", " M " + toString(p1.x, p1.y) +
-        //   " L " + toString(newPoint(p1, pm, p).x, newPoint(p1, pm, p).y) +
-        //   " L " + toString(newPoint(p2, pm, p).x, newPoint(p2, pm, p).y) +
-        //   " L " + toString(p2.x, p2.y) +
-        //   " Z ")
+
     canvas.append("path")
       .attr("d"," M " + "" + (x1-(gap/2)) + " " + textAnchor.y + " H " + (x2 + (gap/2)))
       .attr("stroke","yellow")
-      .attr("stroke-width","5px")
+      .attr("stroke-width","5px");
+
     textAnchor.y -= yunit;
 
     canvas.append("text")
@@ -1218,17 +1123,16 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
     else if(width>180){
       tWidth = 10;
     }
-    // console.log(tWidth)
 
     var dataTotal = 0;
     for(var ix = 0; ix < 5; ix++){
       dataTotal += data[ix];
     }
 
+    var col;
+    var textAnchor;
     for(var ix = 0; ix < 5; ix++){
-      var col = convToRGB(0,"#00539CFF");
-      // console.log(col)
-
+      col = convToRGB(0,"#00539CFF");
 
       canvas.append("rect")
         .attr("x",x1+ix*xunit)
@@ -1239,7 +1143,7 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
         .attr("stroke","white")
         .attr("stroke-width","5px");
 
-      var textAnchor = {
+      textAnchor = {
         x: x1+(ix+.5)*xunit,
         y: (y2+y1)/2
       }
@@ -1317,9 +1221,6 @@ function addRunGapChart(data,canvas,x1,y1,x2,y2){
 
 function addFieldChart(data, metadata,canvas, x1, y1, x2) {
 
-  // let p1 = { x: 400.0, y: 400.0 };
-  // let p2 = { x: 880.0, y: 400.0 };
-  // let pm = { x: 640.0, y: -800.0 };
   let p1 = { x: x1, y: y1 };
   let p2 = { x: x2, y: y1 };
   let pm = { x: (x1+x2)/2, y: y1-(x2-x1) };
@@ -1342,11 +1243,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
     return { x: x, y: y };
   }
 
-  // console.log("d", " M " + toString(p1.x, p1.y) +
-    // " L " + toString(newPoint(p1, pm, p).x, newPoint(p1, pm, p).y) +
-    // " L " + toString(newPoint(p2, pm, p).x, newPoint(p2, pm, p).y) +
-    // " L " + toString(p2.x, p2.y) +
-    // " Z ")
   canvas.append("path")
     .attr("d", " M " + toString(p1.x, p1.y) +
       " L " + toString(newPoint(p1, pm, p).x, newPoint(p1, pm, p).y) +
@@ -1513,14 +1409,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
       color = "grey";
     }
 
-    // canvas.append("path")
-    //   .attr("d", " M " + toString(tp1.x + pad, tp1.y - 2 * pad) + //COMPLETE: add padding within function calls, not to output
-    //     " L " + toString(newPoint(tp1, pm, p).x + pad, newPoint(tp1, pm, p).y + 2 * pad) +
-    //     " L " + toString(newPoint(tp2, pm, p).x - pad, newPoint(tp2, pm, p).y + 2 * pad) +
-    //     " L " + toString(tp2.x - pad, tp2.y - 2 * pad) +
-    //     " Z ")
-    //   .attr("fill", color);
-
 
     var cp1 = { x: p1.x + (i - 1) * step, y: p1.y };
     var cp4 = { x: p1.x + (i) * step, y: p1.y };
@@ -1553,12 +1441,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
   var bottom = p1.y ;
   var stepsize = (bottom - base) / count;
 
-  // [{start:10,end:15,type:"pass"},
-  // {start:15,end:14,type:"run"},
-  // {start:14,end:22,type:"run"},
-  // {start:22,end:34,type:"pass"},
-  // {start:34,end:40,type:"pass"}]
-  // console.log("============")
   var zeroYDS = newPoint(p1, p2, 1 / 12);
   var frankyYDS = newPoint(p1, p2, 11 / 12);
   var halfYDS = newPoint(zeroYDS,frankyYDS,.5);
@@ -1585,7 +1467,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
 
     var dx = (halfYDS.x-((tp3.x+tp2.x)/2))/((halfYDS.x-zeroYDS.x)/4);
     dx = 1*Math.round(dx);
-    // console.log(dx);
     canvas.insert("defs").html(
       "<filter id='f2"+i+"' x='-40%' y='-40%' width='300%' height ='300%'>" +
         "<feDropShadow dx='"+dx+"' dy='2' stdDeviation='1'/>" +
@@ -1617,271 +1498,160 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
         " Z ")
       .attr("fill", "white")
 
-    // var p3 = newPoint(p1,pm,p);
-    // var p4 = newPoint(p2,pm,p);
-
 
 
   }
 
 
-  //create white field background
-
 
 }
 
-function mouseon(shape, index) {
-  shape.on("mouseover", function () {
-    var s = d3.select(this);
-    var new_op, new_st;
-    if (s.attr("fill-opacity") == 1) {
-      new_op = 1;
-      new_st = 4;
-    }
-    else {
-      new_op = 0.8;
-      new_st = 2;
-    }
-    shape.transition().duration(200)
-      .attr("fill-opacity", new_op)
-      .attr("stroke", "#1c1c1c")
-      .attr("stroke-width", new_st)
-  });
-}
 
-function mouseoff(shape, index) {
-  shape.on("mouseout", function () {
-    var s = d3.select(this);
-    var new_op, new_st;
-    if (s.attr("fill-opacity") == 1) {
-      new_op = 1;
-      new_st = 3;
-    }
-    else {
-      new_op = 0.6;
-      new_st = 1;
-    }
-    shape.transition().duration(200)
-      .attr("fill-opacity", new_op)
-      .attr("stroke", "#1c1c1c")
-      .attr("stroke-width", 1)
-  });
-}
-
-function mouseclick(shape, index) {
-  shape.on("mousedown", function () {
-    var s = d3.select(this);
-    var new_op, new_st;
-    if (s.attr("fill-opacity") == 0.8) {
-      new_op = 1;
-      new_st = 4;
-    }
-    else {
-      new_op = 0.6;
-      new_st = 2;
-    }
-    shape.transition().duration(200)
-      .attr("fill-opacity", new_op)
-      .attr("stroke", "#1c1c1c")
-      .attr("stroke-width", new_st)
-  });
-}
 
 function addHeader(svg, data,metadata) {
-  let label = svg.append("text")
-    .attr("class", "rectLabel")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("fill", "black")
-    .text("")
 
-  // data.forEach(function (stat) {
-  //     console.log(stat.Category);
-  // })
+  var radius = 50;
 
-  // function addTableInfo(canvas, w, h, text_size) {
-  //   var wd = svg.attr("width")
-  //   var coordinates = [[wd - w, 0], [wd - w * 2, 0], [wd - w, h], [wd - w * 2, h], [wd - w, h * 2], [wd - w * 2, h * 2], [wd - w, h * 3], [wd - w * 2, h * 3]]
-  //   coordinates.forEach(function (coordinate, index) {
-  //     let rec = canvas.append("rect")
-  //       .attr("x", coordinate[0])
-  //       .attr("y", coordinate[1])
-  //       .attr("width", w)
-  //       .attr("height", h)
-  //       .attr("fill", "white")
-  //       .attr("stroke", "black")
-  //       .attr("stroke-width", 2)
-  //
-  //     if (coordinate[0] == wd - w) {
-  //       let txt = canvas.append("text")
-  //         .attr("x", coordinate[0] + text_size / 2)
-  //         .attr("y", coordinate[1] + h / 2)
-  //         .attr("fill", "#00203FFF")
-  //         .attr("stroke", "#00203FFF")
-  //         .text(data[Math.floor(index/2)].Value)
-  //         .attr("text-anchor", "left")
-  //         .attr("font-size", text_size + "px")
-  //     }
-  //     else {
-  //       let txt2 = canvas.append("text")
-  //         .attr("x", coordinate[0] + text_size / 2)
-  //         .attr("y", coordinate[1] + h / 2)
-  //         .attr("fill", "#00203FFF")
-  //         .attr("stroke", "#00203FFF")
-  //         .text(data[Math.floor(index/2)].Category)
-  //         .attr("text-anchor", "left")
-  //         .attr("font-size", text_size + "px")
-  //     }
-  //   })
-  // }
+  svg.append("image")
+        .attr("x", radius / 2 - 15)
+        .attr("y", radius / 2 - 15)
+        .attr("href", "./images/TitanLogoB.png")
+        .attr("height", radius * 2)
+        .attr("width", radius * 2)
+        .attr("class","logos")
+  svg.append("text")
+     .text("TITAN ANALYTICS")
+     .attr("x", 10)
+     .attr("y", 130)
+     .attr("fill", "#00203FFF")
+     .attr("text-anchor", "left")
+     .style("font", "bold 15px sans-serif")
+     .style("font-weight", "bold")
 
-  function addLogo(canvas, radius) {
-    let im = canvas.append("image")
-      .attr("x", radius / 2 - 15)
-      .attr("y", radius / 2 - 15)
-      .attr("href", "TitanLogoB.png")
-      .attr("height", radius * 2)
-      .attr("width", radius * 2)
-      .attr("class","logos")
-    let txt = canvas.select("text.rectLabel")
-    txt.text("TITAN ANALYTICS")
-      .attr("x", 10)
-      .attr("y", 130)
-      .attr("fill", "#00203FFF")
-      .attr("text-anchor", "left")
-      .style("font", "bold 15px sans-serif")
-      .style("font-weight", "bold")
-  }
 
-  //EDIT HERE JEAN
-  function addParallelograms(canvas, t, h, w, separation, rad) {
-    var shapes_top = [];
-    var shapes_bottom = [];
-    let bottom = t + rad * 2;
-    let xcur = rad * 2 + 20;
+  var canvas = svg;
+  var t = 10;
+  var h = 47;
+  var w = 100;
+  var separation = 6;
+  var rad = radius;
 
-    var columntitles = [metadata["sit0"],metadata["sit1"],metadata["sit2"],metadata["col0"], metadata["col1"], metadata["col2"]]
-    var titles = [metadata[metadata["sit0"]], metadata[metadata["sit1"]], metadata[metadata["sit2"]], "", "", ""];
-    console.log(metadata)
+  var shapes_top = [];
+  var shapes_bottom = [];
+  let bottom = t + rad * 2;
+  let xcur = rad * 2 + 20;
+
+  var columntitles = [metadata["sit0"],metadata["sit1"],metadata["sit2"],metadata["col0"], metadata["col1"], metadata["col2"]]
+  var titles = [metadata[metadata["sit0"]], metadata[metadata["sit1"]], metadata[metadata["sit2"]], "", "", ""];
 
 
 
-    // Code needs help merging HERE
-    // console.log(titles)
 
+  for (var i = 0; i < 6; i++) {
+    if (i == 0) {
+      shapes_top.push(canvas.append("path")
+        .attr("d", "M " + (rad + 42) + " " + t + " A " + rad + " " + rad + " 0 0 1 " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
+        .attr("fill", "#FC766AFF")
+        .attr("fill-opacity", 0.6)
+        .attr("stroke", "maroon")
+        .attr("stroke-width", 1)
+        .attr("id", "parallel" + i))
+      canvas.append("text")
+        .attr("x", xcur + separation)
+        .attr("y", ((h + t + t) / 2)+15)
+        .attr("fill", "#00203FFF")
+        .style("font", "bold sans-serif")
+        .style("font-weight", "bold")
+        .text(titles[i])
+        .attr("text-anchor", "left")
+      canvas.append("text")
+        .attr("x", xcur + separation)
+        .attr("y", ((h + t + t) / 2))
+        .attr("fill", "#00203FFF")
+        .style("font", "bold sans-serif")
+        .style("font-weight", "normal")
+        .text(columntitles[i])
+        .attr("text-anchor", "left")
+    }
+    else {
+      if(i > 2) {
+      shapes_top.push(canvas.append("path")
+        .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
+        .attr("fill", "#58d0db")
+        .attr("fill-opacity", 0.6)
+        .attr("stroke", "blue")
+        .attr("stroke-width", 1)
+        .attr("id", "parallel" + i))
+      }
 
-
-    for (var i = 0; i < 6; i++) {
-      if (i == 0) {
+      if(i <= 2) {
         shapes_top.push(canvas.append("path")
-          .attr("d", "M " + (rad + 42) + " " + t + " A " + rad + " " + rad + " 0 0 1 " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
+          .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
           .attr("fill", "#FC766AFF")
           .attr("fill-opacity", 0.6)
           .attr("stroke", "maroon")
           .attr("stroke-width", 1)
           .attr("id", "parallel" + i))
-        canvas.append("text")
-          .attr("x", xcur + separation)
-          .attr("y", ((h + t + t) / 2)+15)
-          .attr("fill", "#00203FFF")
-          .style("font", "bold sans-serif")
-          .style("font-weight", "bold")
-          .text(titles[i])
-          .attr("text-anchor", "left")
-        canvas.append("text")
-          .attr("x", xcur + separation)
-          .attr("y", ((h + t + t) / 2))
-          .attr("fill", "#00203FFF")
-          .style("font", "bold sans-serif")
-          .style("font-weight", "normal")
-          .text(columntitles[i])
-          .attr("text-anchor", "left")
+
       }
-      else {
-        if(i > 2) {
-        shapes_top.push(canvas.append("path")
-          .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
-          .attr("fill", "#58d0db")
-          .attr("fill-opacity", 0.6)
-          .attr("stroke", "blue")
-          .attr("stroke-width", 1)
-          .attr("id", "parallel" + i))
-        }
-
-        if(i <= 2) {
-          shapes_top.push(canvas.append("path")
-            .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
-            .attr("fill", "#FC766AFF")
-            .attr("fill-opacity", 0.6)
-            .attr("stroke", "maroon")
-            .attr("stroke-width", 1)
-            .attr("id", "parallel" + i))
-
-        }
-        canvas.append("text")
-          .attr("x", xcur + separation)
-          .attr("y", ((h + t + t) / 2)+15)
-          .attr("fill", "#00203FFF")
-          .style("font", "bold sans-serif")
-          .style("font-weight", "bold")
-          .text(titles[i])
-          .attr("text-anchor", "left")
-        canvas.append("text")
-          .attr("x", xcur + separation)
-          .attr("y", ((h + t + t) / 2))
-          .attr("fill", "#00203FFF")
-          .style("font", "bold sans-serif")
-          .style("font-weight", "normal")
-          .text(columntitles[i])
-          .attr("text-anchor", "left")
-      }
-      xcur = xcur + w + separation;
-
+      canvas.append("text")
+        .attr("x", xcur + separation)
+        .attr("y", ((h + t + t) / 2)+15)
+        .attr("fill", "#00203FFF")
+        .style("font", "bold sans-serif")
+        .style("font-weight", "bold")
+        .text(titles[i])
+        .attr("text-anchor", "left")
+      canvas.append("text")
+        .attr("x", xcur + separation)
+        .attr("y", ((h + t + t) / 2))
+        .attr("fill", "#00203FFF")
+        .style("font", "bold sans-serif")
+        .style("font-weight", "normal")
+        .text(columntitles[i])
+        .attr("text-anchor", "left")
     }
-    xcur = rad * 2 + 20;
-    // for (i; i < 9; i++) {
-    //   if (i == 6) {
-    //     shapes_bottom.push(canvas.append("path")
-    //       .attr("d", "M " + (rad + 42) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
-    //       .attr("fill", "#FC766AFF")
-    //       .attr("fill-opacity", 0.6)
-    //       .attr("stroke", "maroon")
-    //       .attr("stroke-width", 1)
-    //       .attr("id", "parallel" + i))
-    //     canvas.append("text")
-    //       .attr("x", xcur + separation)
-    //       .attr("y", (bottom + (t + h + separation)) / 2)
-    //       .attr("fill", "#00203FFF")
-    //       .text(1)
-    //       .attr("text-anchor", "left")
-    //   }
-    //   else {
-    //     shapes_bottom.push(canvas.append("path")
-    //       .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
-    //       .attr("fill", "#FC766AFF")
-    //       .attr("fill-opacity", 0.6)
-    //       .attr("stroke", "maroon")
-    //       .attr("stroke-width", 1)
-    //       .attr("id", "parallel" + i))
-    //     canvas.append("text")
-    //       .attr("x", xcur + separation)
-    //       .attr("y", (bottom + (t + h + separation)) / 2)
-    //       .attr("fill", "#00203FFF")
-    //       .text(1)
-    //       .attr("text-anchor", "left")
-    //   }
-    //   xcur = xcur + w + separation;
-    // }
+    xcur = xcur + w + separation;
 
-    var shapes = shapes_top.concat(shapes_bottom);
-    // console.log(shapes);
-    shapes.forEach(mouseon);
-    shapes.forEach(mouseoff);
-    shapes.forEach(mouseclick);
   }
+  xcur = rad * 2 + 20;
+  //Bottom 3 parallels
+  // for (i; i < 9; i++) {
+  //   if (i == 6) {
+  //     shapes_bottom.push(canvas.append("path")
+  //       .attr("d", "M " + (rad + 42) + " " + bottom + " A " + rad + " " + rad + " 0 0 0 " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
+  //       .attr("fill", "#FC766AFF")
+  //       .attr("fill-opacity", 0.6)
+  //       .attr("stroke", "maroon")
+  //       .attr("stroke-width", 1)
+  //       .attr("id", "parallel" + i))
+  //     canvas.append("text")
+  //       .attr("x", xcur + separation)
+  //       .attr("y", (bottom + (t + h + separation)) / 2)
+  //       .attr("fill", "#00203FFF")
+  //       .text(1)
+  //       .attr("text-anchor", "left")
+  //   }
+  //   else {
+  //     shapes_bottom.push(canvas.append("path")
+  //       .attr("d", "M " + (xcur - 20) + " " + bottom + " L " + xcur + " " + (h + t + separation) + " L " + (xcur + w) + " " + (h + t + separation) + " L " + (xcur + w - 20) + " " + bottom + " z")
+  //       .attr("fill", "#FC766AFF")
+  //       .attr("fill-opacity", 0.6)
+  //       .attr("stroke", "maroon")
+  //       .attr("stroke-width", 1)
+  //       .attr("id", "parallel" + i))
+  //     canvas.append("text")
+  //       .attr("x", xcur + separation)
+  //       .attr("y", (bottom + (t + h + separation)) / 2)
+  //       .attr("fill", "#00203FFF")
+  //       .text(1)
+  //       .attr("text-anchor", "left")
+  //   }
+  //   xcur = xcur + w + separation;
+  // }
 
-  //addTableInfo(svg, 140, 35, 16);
-  // addHeatChart(sample_data2,svg,800,10,1180,150);
+
+
 
 
 
@@ -1891,26 +1661,11 @@ function addHeader(svg, data,metadata) {
     ["Average Yards",roundnumber(data["Average Yards"]["Pass"],2),roundnumber(data["Average Yards"]["Run"],2),roundnumber(data["Average Yards"]["Total"],2)],
     ["TD Count",data["TD Count"]["Pass"],data["TD Count"]["Run"],data["TD Count"]["Total"]]];
   addJeanTable(sample_data2,svg,800,10,1180,150);
-//   var sample_data = [{type:"run",start:10,end:15},
-//                             {type:"run",start:15,end:14},
-//                             {type:"pass",start:14,end:20},
-//                             {type:"pass",start:20,end:40},
-//                             {type:"run",start:40,end:43},
-//                             {type:"pass",start:43,end:62},
-//                             {type:"pass",start:62,end:73},
-//                             {type:"run",start:73,end:80}
-//                           ]
-// var metadata = {team1:"Cornell",team2:"Penn",gameClock:"17:00",score:"42-24",outcome:"Field goal attempt"}
-//                 addFieldChart(sample_data, metadata,svg, 800, 150, 1180)
 
 
-  addLogo(svg, 50);
-  var ht = 47;
-  var wid = 100;
-  var separation = 6;
-  var tp = 10;
-  var radius = 50;
-  addParallelograms(svg, tp, ht, wid, separation, radius);
+
+
+
 }
 
 function addJeanTable(data,canvas,x1,y1,x2,y2){
@@ -1921,97 +1676,70 @@ function addJeanTable(data,canvas,x1,y1,x2,y2){
   var xunit = ((x2-x1)*(3/5))/3;
 
 
-    var tWidth = 12;
-    var width = x2-x1;
-    if(width > 320){
-      tWidth = 15;
-    }
-    else if(width>250){
-      tWidth = 16;
-    }
-    else if(width>200){
-      tWidth = 15;
-    }
-    else if(width>180){
-      tWidth = 14;
-    }
-    // console.log(tWidth)
+  var tWidth = 12;
+  var width = x2-x1;
+  if(width > 320){
+    tWidth = 15;
+  }
+  else if(width>250){
+    tWidth = 16;
+  }
+  else if(width>200){
+    tWidth = 15;
+  }
+  else if(width>180){
+    tWidth = 14;
+  }
 
 
-    for(var ix = 0; ix < 4; ix++){
-      for(var iy = 0; iy < data.length;iy++){
-        var col = convToRGB(0,"#00539CFF");
-        // console.log(col)
+  for(var ix = 0; ix < 4; ix++){
+    for(var iy = 0; iy < data.length;iy++){
+      var col = convToRGB(0,"#00539CFF");
 
-        if(ix == 0){
+      if(ix == 0){
 
-          if(iy > 0){
-            var elem = canvas.append("rect")
-              .attr("x",x1+ix*xunit)
-              .attr("y",y1+iy*yunit)
-              .attr("width",xunit2)
-              .attr("height",yunit)
-              .attr("fill","lightgrey")
-              .attr("stroke","#1c1c1c")
-              .attr("stroke-width","2px");
+        if(iy > 0){
+          var elem = canvas.append("rect")
+            .attr("x",x1+ix*xunit)
+            .attr("y",y1+iy*yunit)
+            .attr("width",xunit2)
+            .attr("height",yunit)
+            .attr("fill","lightgrey")
+            .attr("stroke","#1c1c1c")
+            .attr("stroke-width","2px");
 
 
-            var textAnchor = {
-              x: x1+(ix+.5)*xunit2,
-              y: y1+(iy+.5)*yunit
-            }
-
-            canvas.append("text")
-              .attr("text-anchor", "middle")
-              .attr("alignment-baseline","middle")
-              .attr("x", textAnchor.x)
-              .attr("y", textAnchor.y)
-              .attr("fill", "#1c1c1c")
-              .attr("letter-spacing",.2)
-              .text(data[iy][ix])
-              .style("font-weight", "bold")
-              .attr("font-size", tWidth + "px");
+          var textAnchor = {
+            x: x1+(ix+.5)*xunit2,
+            y: y1+(iy+.5)*yunit
           }
 
-
+          canvas.append("text")
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline","middle")
+            .attr("x", textAnchor.x)
+            .attr("y", textAnchor.y)
+            .attr("fill", "#1c1c1c")
+            .attr("letter-spacing",.2)
+            .text(data[iy][ix])
+            .style("font-weight", "bold")
+            .attr("font-size", tWidth + "px");
         }
-        else {
 
-          if(iy == 0){
 
-            var colheadcolors = ["deepskyblue","crimson","limegreen"]
+      }
+      else {
 
-            canvas.append("rect")
-              .attr("x",x1+xunit2+((ix-1)*xunit))
-              .attr("y",y1+iy*yunit)
-              .attr("width",xunit)
-              .attr("height",yunit)
-              .attr("fill",colheadcolors[ix-1])
-              .attr("stroke","#1c1c1c")
-              .attr("stroke-width","2px");
+        if(iy == 0){
 
-            var textAnchor = {
-              x: x1+(xunit2*.5)+((ix+.5)*xunit),
-              y: y1+(iy+.5)*yunit
-            }
+          var colheadcolors = ["deepskyblue","crimson","limegreen"]
 
-            canvas.append("text")
-              .attr("text-anchor", "middle")
-              .attr("alignment-baseline","middle")
-              .attr("x", textAnchor.x)
-              .attr("y", textAnchor.y)
-              .attr("fill", "#1c1c1c")
-              .attr("letter-spacing",.2)
-              .text(data[iy][ix])
-              .style("font-weight", "bold")
-              .attr("font-size", tWidth + "px");
-          }
-          else {canvas.append("rect")
+          canvas.append("rect")
             .attr("x",x1+xunit2+((ix-1)*xunit))
             .attr("y",y1+iy*yunit)
             .attr("width",xunit)
             .attr("height",yunit)
-            .attr("fill","white")
+            .attr("fill",colheadcolors[ix-1])
             .attr("stroke","#1c1c1c")
             .attr("stroke-width","2px");
 
@@ -2028,22 +1756,46 @@ function addJeanTable(data,canvas,x1,y1,x2,y2){
             .attr("fill", "#1c1c1c")
             .attr("letter-spacing",.2)
             .text(data[iy][ix])
-            .attr("font-size", tWidth + "px");}
+            .style("font-weight", "bold")
+            .attr("font-size", tWidth + "px");
+        }
+        else {canvas.append("rect")
+          .attr("x",x1+xunit2+((ix-1)*xunit))
+          .attr("y",y1+iy*yunit)
+          .attr("width",xunit)
+          .attr("height",yunit)
+          .attr("fill","white")
+          .attr("stroke","#1c1c1c")
+          .attr("stroke-width","2px");
 
-
-
+        var textAnchor = {
+          x: x1+(xunit2*.5)+((ix+.5)*xunit),
+          y: y1+(iy+.5)*yunit
         }
 
+        canvas.append("text")
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline","middle")
+          .attr("x", textAnchor.x)
+          .attr("y", textAnchor.y)
+          .attr("fill", "#1c1c1c")
+          .attr("letter-spacing",.2)
+          .text(data[iy][ix])
+          .attr("font-size", tWidth + "px");}
+
+
+
       }
+
     }
+  }
 }
 
 async function generateScorecards(filename, filter){
        const data = await d3.json(filename);
 
 
-       //console.log(data);
-       var sortedData = tieredSort(data,["NumPlays"]);
+       var sortedData = tieredSort(data,filter);
 
        var svg;
        var sep;
@@ -2098,7 +1850,6 @@ async function generateScorecards(filename, filter){
            svg = d3.select(("#scoreCard"+i));
 
 
-           //TODO DESIGN CHOICE: should the graphs on first load say graph 1 or bargraph
            if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
                //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
                startDex1 = addBarGraph(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
@@ -2131,16 +1882,12 @@ async function generateScorecards(filename, filter){
            else if(d3.select("#graph3").text()=='Pie Chart'){
              addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
            }
-           //addSankey(1, data.scorecards[i].datasets[3], svg, 2, 10 + sep , svg.attr("height")*0.40, 10+sep*2, svg.attr("height")*0.90,true,0,startDex1);
-           //addSankey(2, data.scorecards[i].datasets[4], svg, 2, 10 + sep*3 , svg.attr("height")*0.40, 10+sep*4, svg.attr("height")*0.90,true,startDex1,startDex2);
 
            var sctargetcols = [sortedData[i]["col0"],sortedData[i]["col1"],sortedData[i]["col2"]]
 
            var st0 = sortedData[i]["sit0"];
            var st1 = sortedData[i]["sit1"];
            var st2 = sortedData[i]["sit2"];
-           console.log(st0)
-
 
            var meta = {
               "col0":sortedData[i]["col0"],
@@ -2150,12 +1897,10 @@ async function generateScorecards(filename, filter){
               "sit1":sortedData[i]["sit1"],
               "sit2":sortedData[i]["sit2"]}
 
-          meta[st0] = sortedData[i][sortedData[i]["sit0"]]
-          meta[st1] = sortedData[i][sortedData[i]["sit1"]]
-          meta[st2] = sortedData[i][sortedData[i]["sit2"]]
+           meta[st0] = sortedData[i][sortedData[i]["sit0"]]
+           meta[st1] = sortedData[i][sortedData[i]["sit1"]]
+           meta[st2] = sortedData[i][sortedData[i]["sit2"]]
 
-
-           // console.log(meta);
            addHeader(svg, sortedData[i].splits,meta);
        }
 }
@@ -2164,42 +1909,17 @@ function emptyScoreCards(svg){
     d3.select("#mainDiv").selectAll('.scorecardContainer').remove();
 }
 
-function MakeQuerablePromise(promise) {
-    // Don't modify any promise that has been already modified.
-    if (promise.isResolved) return promise;
-
-    // Set initial state
-    var isPending = true;
-    var isRejected = false;
-    var isFulfilled = false;
-
-    // Observe the promise, saving the fulfillment in a closure scope.
-    var result = promise.then(
-        function(v) {
-            isFulfilled = true;
-            isPending = false;
-            return v;
-        },
-        function(e) {
-            isRejected = true;
-            isPending = false;
-            throw e;
-        }
-    );
-
-    result.isFulfilled = function() { return isFulfilled; };
-    result.isPending = function() { return isPending; };
-    result.isRejected = function() { return isRejected; };
-    return result;
-}
 
 function roundnumber(number,place){
       var divis = place * 10;
       var newnum = number * divis;
-      return Math.round(newnum)/divis
+      return Math.round(newnum)/divis;
 
 }
 
-console.log(roundnumber(100.23145,2))
-console.log(roundnumber(100.23145,1))
-console.log(roundnumber(100.23145,3))
+// console.log(roundnumber(100.23145,-1))
+// console.log(roundnumber(100.23145,0))
+// console.log(roundnumber(100.23145,1))
+// console.log(roundnumber(100.23145,2))
+// console.log(roundnumber(100.23145,3))
+// console.log(roundnumber(100.23145,4))

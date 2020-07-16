@@ -47,7 +47,7 @@ var sorted = tieredSort(array,["y","x"]);
 //   return false;
 // });
 
-console.log(sorted);
+// console.log(sorted);
 
 var sorted2 = bubbleSort(sorted,function(fst,snd){
   if(snd['x']<fst['x']){
@@ -61,4 +61,4 @@ var sorted2 = bubbleSort(sorted,function(fst,snd){
   return false;
 });
 
-console.log(sorted2);
+// console.log(sorted2);

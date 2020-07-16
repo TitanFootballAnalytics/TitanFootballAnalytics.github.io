@@ -14,9 +14,9 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/topojson.v2.min.js"></script>
-  <script src="graphingPackage.js"></script>
-  <script src="sortingPackage.js"></script>
-  <script src="navBar.js"></script>
+  <script src="./js/graphingPackage.js"></script>
+  <script src="./js/sortingPackage.js"></script>
+  <script src="./js/navBar.js"></script>
 
   <style>
 
@@ -97,7 +97,7 @@
         const height = fixedHeight - margin.top - margin.bottom;
         const width = fixedWidth - margin.left - margin.right;
 
-        generateScorecards("scoreCardAutomation.json",[])
+        generateScorecards("scoreCardAutomation.json",["NumPlays"])
         setupNavClicks();
 
 
