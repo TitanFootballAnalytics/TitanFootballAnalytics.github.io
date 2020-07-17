@@ -1,12 +1,14 @@
 
 
 async function generateScorecards(filename){
+
+    var colorScale = d3.scaleLinear().domain([.5, 1]).range(["orange", "#15b347"]);
+
     const data = await d3.json(filename);
-    //console.log(data);
     d3.select("#tendancychart")
       .append("svg")
-      .attr("width",500)
-      .attr("height",500)
+      .attr("width",1500)
+      .attr("height",10000)
       .attr("id","chartbase");
 
     svg = d3.select(("#chartbase"));
@@ -15,28 +17,48 @@ async function generateScorecards(filename){
     var tcol = data["target"];
     var values = data["target_vals"];
     var datapoints = data["tendencies"];
+
     var onedatapoint;
+    var tempx = 10; var tempy = 10;
 
     for (var i = 0; i < datapoints.length; i++) {
       onedatapoint = {}
       onedatapoint["info"] = datapoints[i];
+
       onedatapoint["sitcol"] = sitcol;
       onedatapoint["target"] = tcol;
       onedatapoint["tvalues"] = values;
 
+
+
+
+      if((datapoints[i]["PlayCount"])> 10){
+        maketendchart(svg,tempx,tempy,"test"+i,onedatapoint)
+      }
+      if((tempx+450) < 1000){
+      tempx = tempx + 450;}
+      else{
+        tempx = 10;
+        tempy = tempy + 220;
+      }
+
+
+
     }
-    maketendchart(svg,10,10,"test0",onedatapoint)
+
+
 
 
     function maketendchart(canvas,x1,y1,id,chartdata) {
 
-      var mainchartheight = 300;
+      var mainchartheight = 200;
       var mainchartwidth = 400;
 
       var max = 0;
       var max_item = "";
       var running_count = 0;
       var temp_title; var temp_count;
+      var playcount = chartdata["info"]["PlayCount"];
 
       var values = chartdata["tvalues"];
       var tcol = chartdata["target"];
@@ -48,7 +70,7 @@ async function generateScorecards(filename){
         running_count = running_count + temp_count;
         if(temp_count > max){
           max = temp_count;
-          max_item = temp_title;
+          max_item = values[i]
         }
       }
 
@@ -58,59 +80,101 @@ async function generateScorecards(filename){
             .attr("width",mainchartwidth)
             .attr("height",mainchartheight)
             .attr("fill","#1c1c1c")
-            .attr("stroke","#1c1c1c")
-            .attr("stroke-width","2px")
             .attr("id","chart1");
       canvas.append("rect")
             .attr("x",x1+(mainchartwidth/2))
             .attr("y",y1)
             .attr("width",mainchartwidth/2)
-            .attr("height",300)
-            .attr("fill","grey");
+            .attr("height",200)
+            .attr("fill","#424141");
       canvas.append("text")
-            .attr("x",20)
-            .attr("y",50)
+            .attr("x",10+x1)
+            .attr("y",40+y1)
             .attr("fill","white")
-            .text("ON")
+            .text("WHEN")
             .style("font-size",30)
             .style("font-weight","bold");
       canvas.append("rect")
-            .attr("x",20)
-            .attr("y",54)
-            .attr("width",60)
+            .attr("x",10+x1)
+            .attr("y",44+y1)
+            .attr("width",100)
             .attr("height",8)
             .attr("fill","white");
+
       var coltitle;var colvalue;
-      var startx = 20;var starty = 100;
+      var startx = 10+x1;var starty = 90+y1;
       for (var i = 0; i < sitcol.length; i++) {
 
         coltitle = sitcol[i];
         colvalue = chartdata["info"][sitcol[i]];
-
-        console.log(renderedTextSize(colvalue,"sans-serif",15))
+        if(colvalue != null){
 
         canvas.append("text")
               .attr("x",startx)
+              .attr("y",starty)
+              .attr("fill","white")
+              .text(coltitle+" is ")
+              .style("font-size",15)
+              .style("font-weight","normal");
+
+        texthw = renderedTextSize(coltitle+" is ","sans-serif",15);
+
+        canvas.append("text")
+              .attr("x",startx+texthw.width+5)
               .attr("y",starty)
               .attr("fill","white")
               .text(colvalue)
               .style("font-size",15)
               .style("font-weight","bold");
 
-        texthw = renderedTextSize(colvalue,"sans-serif",15);
-
-        canvas.append("text")
-              .attr("x",startx+texthw.width+5)
-              .attr("y",starty)
-              .attr("fill","white")
-              .text(": "+coltitle)
-              .style("font-size",15)
-              .style("font-weight","normal");
-
-        starty = starty + texthw.height + 20;
+        starty = starty + texthw.height + 20;}
       }
 
+
+      texthw = renderedTextSize("Expect "+max_item,"sans-serif",30);
       canvas.append("text")
+            .attr("x",((200-texthw.width)/2)+200+x1)
+            .attr("y",40+y1)
+            .text("Expect "+max_item)
+            .style("font","san-serif")
+            .style("font-size",30)
+            .style("font-weight","bold")
+            .attr("fill","white");
+
+      texthw = renderedTextSize("For "+tcol,"sans-serif",12);
+      canvas.append("text")
+            .attr("x",((200-texthw.width)/2)+200+x1)
+            .attr("y",60+y1)
+            .text("For "+tcol)
+            .style("font","san-serif")
+            .style("font-size",12)
+            .style("font-weight","normal")
+            .attr("fill","white");
+
+      var tend = (Math.round((max/running_count)*100))+"%";
+
+      texthw = renderedTextSize(tend,"sans-serif",80);
+
+      canvas.append("text")
+            .attr("x",((200-texthw.width)/2)+200+x1)
+            .attr("y",140+y1)
+            .text(tend)
+            .style("font","san-serif")
+            .style("font-size",80)
+            .style("font-weight","bold")
+            .attr("fill",colorScale(max/running_count));
+
+
+
+      texthw = renderedTextSize("Play Count: "+playcount,"sans-serif",20);
+      canvas.append("text")
+            .attr("x",((200-texthw.width)/2)+200+x1)
+            .attr("y",190+y1)
+            .text("Play Count: "+playcount)
+            .style("font","san-serif")
+            .style("font-size",20)
+            .style("font-weight","normal")
+            .attr("fill","lightgrey");
 
 
 
