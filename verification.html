@@ -14,15 +14,15 @@
   <h2>Login</h2>
     <form>
       <div class="user-box">
-        <input type="text" name="" required="">
-        <label>Username</label>
+        <input id="VERIFICATIONEMAIL" type="text" name="" required="">
+        <label>Enter Email</label>
       </div>
       <div class="user-box">
-        <input type="password" name="" required="">
-        <label>Password</label>
+        <input id="VERFICATIONCODE" name="" required="">
+        <label>Enter Verification Code</label>
       </div>
       <div class="center" align="center">
-        <a href="general.html">
+        <a id="VERIFICATIONSUBMIT">
           <span></span>
           <span></span>
           <span></span>
@@ -41,5 +41,9 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="js/jquery.easing.min.js"></script>
+    <script src="js/aws-cognito-sdk.min.js"></script>
+    <script src="js/amazon-cognito-identity.min.js"></script>
+    <script src="js/cognito-config.js"></script>
+    <script src="js/authenticate.js"></script>
 </body>
 </html>
