@@ -2164,6 +2164,8 @@ function emptyScoreCards(svg){
     d3.select("#mainDiv").selectAll('.scorecardContainer').remove();
 }
 
+
+
 function MakeQuerablePromise(promise) {
     // Don't modify any promise that has been already modified.
     if (promise.isResolved) return promise;

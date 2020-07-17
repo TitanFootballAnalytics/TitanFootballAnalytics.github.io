@@ -3,8 +3,8 @@ body {margin: 0px;}
 
 input{border: 0px}
 
-.mainbackground{position: fixed;width: 100%;background: url(../Images/mainback.jpg)repeat fixed 100%;
-background-size: cover;height: 300%;background-position: bottom;}
+.mainbackground{width: 100%;background: url(../Images/mainback.jpg)repeat fixed 100%;
+background-size: cover;height: 300%;background-position: bottom;min-height: 100vh;}
 
 .shortbar {
   background-color: #1c1c1c;
