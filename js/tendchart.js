@@ -122,7 +122,7 @@ async function generateScorecards(filename){
         canvas.append("text")
               .attr("x",startx+texthw.width+5)
               .attr("y",starty)
-              .attr("fill","white")
+              .attr("fill","gold")
               .text(colvalue)
               .style("font-size",15)
               .style("font-weight","bold");
