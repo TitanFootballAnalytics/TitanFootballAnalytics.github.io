@@ -287,6 +287,7 @@ function submitHandler(){
 
 	if(verifyMapping()){
 		console.log("Succesful Map!")
+		console.log(currentMapping);
 	}
 	else if(firstToScroll){
 		console.log("hit")
