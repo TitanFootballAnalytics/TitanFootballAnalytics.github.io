@@ -134,9 +134,10 @@ var Auth = window.auth || {};
         var password = $('#SIGNINPASSWORD').val();
         event.preventDefault();
         signin(email, password,
-            function signinSuccess() {
+            function signinSuccess(result) {
+                console.log(result);
                 console.log('Successfully Logged In');
-                window.location.href = '/general.html';
+                // window.location.href = '/general.html';
             },
             function signinError(err) {
                 alert(err);
