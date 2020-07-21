@@ -70,7 +70,7 @@ function setupNavClicks(){
     d3.select("#sortoption4")
         .on("click",function(){
             d3.select("#sort").text("Sort");
-            generateScorecards("scoreCardAutomation.json",[]);
+            generateScorecards("scoreCardAutomation.json",["NumPlays"]);
         })
         .on("mouseover",function(){
             d3.select(this).style("background","rgb(220,220,220)");

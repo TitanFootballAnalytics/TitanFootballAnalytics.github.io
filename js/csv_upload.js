@@ -1,4 +1,5 @@
-const standardset = ["Down","Distance","FieldZone","Personnel","Formation","PlayType","FormationFam","Cover","CoverFam"];
+// const standardset = ["Down","Distance","FieldZone","Personnel","Formation","PlayType","FormationFam","Cover","CoverFam"];
+const standardset = ["GameID",	"PosTeam",	"DefTeam",	"HomeTeam",	"AwayTeam",	"Down",	"Dist",	"DistStr",	"Qtr",	"Fieldpos100",	"YdsGained",	"Turnover", "Rush", "Pass", "SpecialTeams", "Interception", "Fumble", "Sack", "Touchdown", "Safety", "DriveNum", "PlayType", "ScoreDiff", "Completion", "TimeUnder", "DDstr", "Hash", "OffPers", "Motion", "Back", "Form"]
 var currentMapping = {};
 const NO_MAPPING = 404;
 for(var i = 0; i< standardset.length;i++){
@@ -243,6 +244,7 @@ function submitHandler(){
 	var rightBox;
 	var key;
 	var value;
+	var firstToScroll = null;
 	console.log("=============================")
 	for(var i = 0; i < mapObjs.length;i++){
 		leftBox = mapObjs[i].children[0];
@@ -250,8 +252,12 @@ function submitHandler(){
 		key = leftBox.children[0].children[0].textContent;
 		if(rightBox.children[0]===undefined){
 			// console.log("missing mapping for " + key);
+
 			if(mapObjs[i].children[3]===undefined){
 				mapObjs[i].style.border = "thick dashed rgb(180,30,30)";
+				if(firstToScroll === null){
+					firstToScroll = mapObjs[i];
+				}
 				var button = mapObjs[i].appendChild(document.createElement("button"));
 				var icon = button.appendChild(document.createElement("i"));
 				button.className = "btn default";
@@ -262,6 +268,12 @@ function submitHandler(){
 				button.type = "submit";
 				button.addEventListener("click",disableRelationship,false);
 				// console.log(button);
+			}
+			else{
+				if(firstToScroll === null && mapObjs[i].children[2].style.backgroundColor != "grey"){
+					console.log("set",mapObjs[i])
+					firstToScroll = mapObjs[i];
+				}
 			}
 		}
 		else{
@@ -275,6 +287,15 @@ function submitHandler(){
 
 	if(verifyMapping()){
 		console.log("Succesful Map!")
+	}
+	else if(firstToScroll){
+		console.log("hit")
+
+		// console.log()
+		alert("Unsuccesful mapping (Missing some collumn, please disable collumns you cannot match with)")
+		$([document.documentElement, document.body]).animate({
+        scrollTop: $("#"+firstToScroll.id).offset().top
+    }, 2000);
 	}
 
 }
