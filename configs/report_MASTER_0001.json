@@ -1,0 +1,16 @@
+
+
+[
+  {"Targetcolumns" : ["PERS","FORM_FAM"],
+       "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
+       "Charts" : ["Bar","Bar"],
+       "Sankey" : ["Yes","No"]
+     },
+  {"Targetcolumns" : ["PERS","FORM_FAM","PLAY_TYPE"],
+       "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
+       "Charts" : ["Bar","Pie","Bar"],
+       "Sankey" : ["No","No"]
+      }
+
+
+]

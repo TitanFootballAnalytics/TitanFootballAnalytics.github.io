@@ -4,13 +4,11 @@ function convToRGB(i,hex){
   return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
 }
 
-
 d3.selection.prototype.moveToFront = function() {
    return this.each(function(){
      this.parentNode.appendChild(this);
    });
  };
-
 
 d3.selection.prototype.moveToBack = function() {
   return this.each(function() {
@@ -20,7 +18,6 @@ d3.selection.prototype.moveToBack = function() {
       }
   });
 };
-
 
 function colorPallete(canvas){
 
@@ -1506,8 +1503,6 @@ function addFieldChart(data, metadata,canvas, x1, y1, x2) {
 
 }
 
-
-
 function addHeader(svg, data,metadata) {
 
   var radius = 50;
@@ -1794,6 +1789,12 @@ function addJeanTable(data,canvas,x1,y1,x2,y2){
 async function generateScorecards(filename, filter){
        const data = await d3.json(filename);
 
+       var configfilename = "configs/report_MASTER_0001.json"
+
+       const configfile = await d3.json(configfilename);
+       console.log(configfile)
+       console.log(data)
+
 
        var sortedData = tieredSort(data,filter);
 
@@ -1806,31 +1807,53 @@ async function generateScorecards(filename, filter){
 
 
 
-       d3.select("#mainDiv").selectAll('.scorecardContainer').remove()
-       if(!(d3.select("#sankey1").property("checked"))){
-           numCharts = numCharts-1
-       }
-       if(!(d3.select("#sankey2").property("checked"))){
-           numCharts = numCharts-1
-       }
-       if((d3.select("#graph1").text()=='None')){
-           numCharts = numCharts-1
-       }
-       if((d3.select("#graph2").text()=='None')){
-           numCharts = numCharts-1
-       }
-       if((d3.select("#graph3").text()=='None')){
-           numCharts = numCharts-1
-       }
+
+
+       // d3.select("#mainDiv").selectAll('.scorecardContainer').remove()
+       // if(!(d3.select("#sankey1").property("checked"))){
+       //     numCharts = numCharts-1
+       // }
+       // if(!(d3.select("#sankey2").property("checked"))){
+       //     numCharts = numCharts-1
+       // }
+       // if((d3.select("#graph1").text()=='None')){
+       //     numCharts = numCharts-1
+       // }
+       // if((d3.select("#graph2").text()=='None')){
+       //     numCharts = numCharts-1
+       // }
+       // if((d3.select("#graph3").text()=='None')){
+       //     numCharts = numCharts-1
+       // }
+
+
+
        sep = (fixedWidth-30)/numCharts;
+       var configselection;
+       var barchartcount;
+       var sankeychartcount = 0;
+
        for(let i = 0; i < sortedData.length; i++){
 
-           var metadata = {"col0":sortedData[i]["col0"],
+         // Call new metadata in json of which config to refrence
+          configselection = configfile[0];
+          sankeychartcount = 0;
+          console.log(configselection)
+
+          barchartcount = configselection["Targetcolumns"].length;
+          for (var j = 0; j < configselection["Sankey"].length; j++) {
+            if(configselection["Sankey"][j] == "Yes"){sankeychartcount++;}
+          }
+          console.log(sankeychartcount+barchartcount)
+          sep = (fixedWidth-30)/(sankeychartcount+barchartcount);
+
+          var metadata = {"col0":sortedData[i]["col0"],
                           "col1":sortedData[i]["col1"],
                           "col2":sortedData[i]["col2"],
                           "sit0":sortedData[i]["sit0"],
                           "sit1":sortedData[i]["sit1"],
-                          "sit2":sortedData[i]["sit2"]}
+                          "sit2":sortedData[i]["sit2"]};
+
            var startDex1 = 0;
            currX = 10;
            d3.select("#mainDiv").append("div")
@@ -1839,49 +1862,64 @@ async function generateScorecards(filename, filter){
                .style("width",fixedWidth)
                .style("margin-top","100px")
                .attr("id","div" + i)
-           d3.select("#div"+i)
-               .append("svg")
-                   .attr("width",fixedWidth)
-                   .attr("height",fixedHeight)
-                   .attr("class","scorecard centered-basic")
-                   // .style("animation-delay",i*.2+"s")
-                   .attr("id","scoreCard"+i)
+           d3.select("#div"+i).append("svg")
+               .attr("width",fixedWidth)
+               .attr("height",fixedHeight)
+               .attr("class","scorecard centered-basic")
+               // .style("animation-delay",i*.2+"s")
+               .attr("id","scoreCard"+i)
 
            svg = d3.select(("#scoreCard"+i));
 
 
-           if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
-               //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
-               startDex1 = addBarGraph(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
-               currX = currX+sep;
+           for (var k = 0; k < configselection["Charts"].length; k++) {
+              if(configselection["Charts"][k] == "Bar"){
+                startDex1 = addBarGraph(sortedData[i].datasets[k], k, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
+                currX = currX+sep;
+              }
+              if(configselection["Charts"][k] == "Pie"){
+                startDex1 = addPieChart(sortedData[i].datasets[k], k, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
+                currX = currX+sep;
+              }
+              if(configselection["Sankey"][k] == "Yes"){
+                addSankey(""+i+"_"+(k+1), sortedData[i].datasets[k+3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
+                currX = currX+sep
+              }
            }
-           else if(d3.select("#graph1").text()=='Pie Chart'){
-             startDex1 = addPieChart(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
-             currX = currX+sep;
-           }
-           if(d3.select("#sankey1").property("checked")){
-               addSankey(""+i+"_"+1, sortedData[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
-               currX = currX+sep
-           }
-           if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
-               startDex2 = addBarGraph(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
-               currX = currX+sep
-           }
-           else if(d3.select("#graph2").text()=='Pie Chart'){
-             startDex2 = addPieChart(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
-             currX = currX+sep;
-           }
-           if(d3.select("#sankey2").property("checked")){
-               addSankey(""+i+"_"+2, sortedData[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
-               currX = currX+sep
-           }
-           if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
-               addBarGraph(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
 
-           }
-           else if(d3.select("#graph3").text()=='Pie Chart'){
-             addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
-           }
+
+           // if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
+           //     //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
+           //     startDex1 = addBarGraph(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
+           //     currX = currX+sep;
+           // }
+           // else if(d3.select("#graph1").text()=='Pie Chart'){
+           //   startDex1 = addPieChart(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
+           //   currX = currX+sep;
+           // }
+           // if(d3.select("#sankey1").property("checked")){
+           //     addSankey(""+i+"_"+1, sortedData[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
+           //     currX = currX+sep
+           // }
+           // if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
+           //     startDex2 = addBarGraph(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
+           //     currX = currX+sep
+           // }
+           // else if(d3.select("#graph2").text()=='Pie Chart'){
+           //   startDex2 = addPieChart(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
+           //   currX = currX+sep;
+           // }
+           // if(d3.select("#sankey2").property("checked")){
+           //     addSankey(""+i+"_"+2, sortedData[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
+           //     currX = currX+sep
+           // }
+           // if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
+           //     addBarGraph(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
+           //
+           // }
+           // else if(d3.select("#graph3").text()=='Pie Chart'){
+           //   addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
+           // }
 
            var sctargetcols = [sortedData[i]["col0"],sortedData[i]["col1"],sortedData[i]["col2"]]
 
@@ -1889,19 +1927,11 @@ async function generateScorecards(filename, filter){
            var st1 = sortedData[i]["sit1"];
            var st2 = sortedData[i]["sit2"];
 
-           var meta = {
-              "col0":sortedData[i]["col0"],
-              "col1":sortedData[i]["col1"],
-              "col2":sortedData[i]["col2"],
-              "sit0":sortedData[i]["sit0"],
-              "sit1":sortedData[i]["sit1"],
-              "sit2":sortedData[i]["sit2"]}
+           metadata[st0] = sortedData[i][sortedData[i]["sit0"]]
+           metadata[st1] = sortedData[i][sortedData[i]["sit1"]]
+           metadata[st2] = sortedData[i][sortedData[i]["sit2"]]
 
-           meta[st0] = sortedData[i][sortedData[i]["sit0"]]
-           meta[st1] = sortedData[i][sortedData[i]["sit1"]]
-           meta[st2] = sortedData[i][sortedData[i]["sit2"]]
-
-           addHeader(svg, sortedData[i].splits,meta);
+           addHeader(svg, sortedData[i].splits,metadata);
        }
 }
 
@@ -1909,17 +1939,9 @@ function emptyScoreCards(svg){
     d3.select("#mainDiv").selectAll('.scorecardContainer').remove();
 }
 
-
 function roundnumber(number,place){
       var divis = place * 10;
       var newnum = number * divis;
       return Math.round(newnum)/divis;
 
 }
-
-// console.log(roundnumber(100.23145,-1))
-// console.log(roundnumber(100.23145,0))
-// console.log(roundnumber(100.23145,1))
-// console.log(roundnumber(100.23145,2))
-// console.log(roundnumber(100.23145,3))
-// console.log(roundnumber(100.23145,4))
