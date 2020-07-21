@@ -3,8 +3,8 @@ body {margin: 0px;}
 
 input{border: 0px}
 
-.mainbackground{position: fixed;width: 100%;background: url(../Images/mainback.jpg)repeat fixed 100%;
-background-size: cover;height: 300%;background-position: bottom;}
+.mainbackground{width: 100%;background: url(../Images/mainback.jpg)repeat fixed 100%;
+background-size: cover;height: 300%;background-position: bottom;min-height: 100vh;}
 
 .shortbar {
   background-color: #1c1c1c;
@@ -28,7 +28,7 @@ background-size: cover;height: 300%;background-position: bottom;}
   border: 0px;
   border-bottom: 2px solid #1c1c1c;
   background-color: transparent;
-  width: 100px;
+  width:100px;
   text-align: center;
 }
 
@@ -66,7 +66,6 @@ background-size: cover;height: 300%;background-position: bottom;}
 
 /*  Show the toggle content by using the general sibling selector */
 input[type=checkbox]:checked ~ label {
-    background-color: white;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }

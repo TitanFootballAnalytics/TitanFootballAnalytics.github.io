@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/mainpage.css" >
     <link rel="stylesheet" href="css/general.css" >
+
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
     <title>Titan Analytics</title>
@@ -53,7 +54,8 @@
 
   <div class ="container-fluid mainbackground">
 
-    <div class="row" id="actionstitle">
+
+    <!-- <div class="row" id="actionstitle">
       <div class="col-md-3 col-md-offset-1" align="left">
         <h1 class="general title"> Actions <hr class="shortbar"></h1>
       </div>
@@ -76,34 +78,57 @@
         </a>
         <h5 style="margin-top: 3px;font-weight: 600;">Browse Reports</h5>
       </div>
-    </div>
+    </div> -->
+
+
+
 
     <datalist id="targetcolumns">
-      <option value="Personnel">
-      <option value="Formation">
-      <option value="Play Type">
-      <option value="Pass/Run">
-      <option value="Air Yards">
+      <option value='PERS'>
+      <option value='MOTION'>
+      <option value='BACK'>
+      <option value='FORM'>
+      <option value='FORM_FAM'>
+      <option value='R/P'>
+      <option value='PLAY_TYPE'>
+      <option value='PASS_RESULT'>
+      <option value='SER_END'>
+      <option value='DEF_PERS'>
+      <option value='FRONT'>
+      <option value='FRONT_ADJ'>
+      <option value='BOX'>
+      <option value='DL Count'>
+      <option value='LB Count'>
+      <option value='LB_ALIGN'>
+      <option value='COVER'>
+      <option value='COV_FAM'>
+      <option value='MAN-ZONE'>
+      <option value='STUNTS'>
+      <option value='BLITZ'>
+      <option value='SITUATION'>
     </datalist>
     <datalist id="situations">
-      <option value="Down">
-      <option value="Distance">
-      <option value="Field Zone">
-      <option value="Quarter">
-      <option value="Score Diffrence">
+      <option value='DownSit'>
+      <option value='DistSit'>
+      <option value='DDSit'>
+      <option value='Fieldzone'>
+      <option value='SER'>
+      <option value='S#'>
+      <option value='Game'>
+      <option value='HASH'>
     </datalist>
     <datalist id="chartoptions">
       <option value="Bar Chart">
       <option value="Pie Chart">
     </datalist>
     <datalist id="sankeyoptions">
-      <option value="include">
-      <option value="exclude">
+      <option value="include"></option>
+      <option value="exclude"></option>
     </datalist>
 
     <br>
     <div class="row">
-      <div id="test0" class="col-md-7 reportrequest col-md-offset-1">
+      <div id="test0" class="col-md-8 reportrequest col-md-offset-1">
         <label>Break down
           <input class="reportcustominput" list="targetcolumns" name="targets" />,
           <input class="reportcustominput" list="targetcolumns" name="targets" />,
@@ -113,44 +138,50 @@
           <input class="reportcustominput" list="situations" name="situations" />
           &nbsp;&nbsp;
         </label>
-        <div style="float: right;"class="">
+        <div style="float: right;align-content:center;"class="" >
           <button type="button" onclick="multiplyNode(document.querySelector('.reportrequest'), 2, true);" class="btn btn-primary">+</button>
-          <button id="xbutton" type="button" onclick="remove(document.getElementById('xbutton').parentElement.parentElement)" class="btn btn-danger">x</button>
+          <button id="xbutton" type="button" onclick="remove(this.parentElement.parentElement)" class="btn btn-danger">x</button>
+
         </div>
-        <label for="checkbox-toggle-1">Open Settings</label>
-        <input class="" id="checkbox-toggle-1" type="checkbox" onclick="opensetting(this)"/>
+
+          <label for="checkbox-toggle-1">Open Settings</label>
+          <input class="" id="checkbox-toggle-1" type="checkbox" onclick="opensetting(this)"/><br>
+
         <div class="toggle-content">
           <h5 id="t1"></h5>
-          <input type="radio" id="bart1" name="barpie1" value="Bar Chart">
+          <input type="radio" id="bart1" name="barpie1" value="Bar Chart" >
           <label for="bart1">Bar Chart</label>
           <input type="radio" id="piet1" name="barpie1" value="Pie Chart">
           <label for="piet1">Pie Chart</label><br>
           <h5 id="t2"></h5>
-          <input type="radio" id="bart2" name="barpie2" value="Bar Chart">
+          <input type="radio" id="bart2" name="barpie2" value="Bar Chart" >
           <label for="bart2">Bar Chart</label>
           <input type="radio" id="piet2" name="barpie2" value="Pie Chart">
           <label for="piet2">Pie Chart</label><br>
           <h5 id="t3"></h5>
-          <input type="radio" id="bart3" name="barpie3" value="Bar Chart">
+          <input type="radio" id="bart3" name="barpie3" value="Bar Chart" >
           <label for="bart3">Bar Chart</label>
           <input type="radio" id="piet3" name="barpie3" value="Pie Chart">
           <label for="piet3">Pie Chart</label><br>
-          <h5> Relationship Charts </h5>
-          <input id="sankey12" class="reportcheckbox" type="checkbox" name="sankeys"/>
-          <label id="sankey12text"></label>
-          <input id="sankey23" class="reportcheckbox" type="checkbox" name="sankeys"/>
-          <label id="sankey23text"></label>
+          <h5> <b>Relationship Charts</b> </h5>
+          <input id="sankey12" class="reportcheckbox" type="checkbox" name="sankeys" />
+          <label><h5 id="sankey12text"> Relationship Charts </h5></label><br>
+          <input id="sankey23" class="reportcheckbox" type="checkbox" name="sankeys" />
+          <label><h5 id="sankey23text"> Relationship Charts </h5></label>
         </div>
       </div>
       <div class=" col-md-2 col-md-offset-5" align="center">
-          <input class="roundbutton submitcustom" value="Create Report" type="submit" list="" name="submitcustom" onclick="grabscrequestsingle('test0')" />
+          <input class="roundbutton submitcustom" value="Create Report" type="submit" list="" name="submitcustom" onclick="submitscrequests()" />
       </div>
     </div>
   </div>
 <!-- javascript -->
     <script src="js/cstmzation.js" crossorigin="anonymous"></script>
+    <script src="js/raphael.min.js" crossorigin="anonymous"></script>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="js/jquery.easing.min.js"></script>
+    <script src="js/tendchart.js"></script>
 </body>
 </html>
