@@ -4,10 +4,15 @@ async function generateScorecards(filename){
 
     var colorScale = d3.scaleLinear().domain([.5, 1]).range(["orange", "#15b347"]);
 
+
+    console.log(window.screen.width)
+
+    var maxwidth = window.screen.width;
+
     const data = await d3.json(filename);
     d3.select("#tendancychart")
       .append("svg")
-      .attr("width",1500)
+      .attr("width",maxwidth-200)
       .attr("height",10000)
       .attr("id","chartbase");
 
@@ -35,7 +40,7 @@ async function generateScorecards(filename){
       if((datapoints[i]["PlayCount"])> 10){
         maketendchart(svg,tempx,tempy,"test"+i,onedatapoint)
       }
-      if((tempx+450) < 1000){
+      if((tempx+450+400) < (maxwidth-200)){
       tempx = tempx + 450;}
       else{
         tempx = 10;
