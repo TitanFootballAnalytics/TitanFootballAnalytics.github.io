@@ -1510,7 +1510,7 @@ function addHeader(svg, data,metadata) {
   svg.append("image")
         .attr("x", radius / 2 - 15)
         .attr("y", radius / 2 - 15)
-        .attr("href", "/images/TitanLogoB.png")
+        .attr("href", "/Images/TitanLogoB.png")
         .attr("height", radius * 2)
         .attr("width", radius * 2)
         .attr("class","logos")
