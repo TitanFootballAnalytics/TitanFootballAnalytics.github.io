@@ -25,7 +25,7 @@ var Auth = window.auth || {};
     var cognitoUser = userPool.getCurrentUser();
     console.log(cognitoUser)
     if (cognitoUser != null) {
-      window.location.href = '/general.html';
+
     	cognitoUser.getSession(function(err, session) {
     		if (err) {
     			alert(err.message || JSON.stringify(err));
@@ -33,7 +33,6 @@ var Auth = window.auth || {};
           return;
     		}
     		console.log('session validity: ' + session.isValid());
-
 
     		// NOTE: getSession must be called to authenticate user before calling getUserAttributes
     		cognitoUser.getUserAttributes(function(err, attributes) {
@@ -50,8 +49,8 @@ var Auth = window.auth || {};
     			Logins: {
     				// Change the key below according to the specific region your user pool is in.
     				[`${loginUrl}`]: session
-    					.getIdToken()
-    					.getJwtToken(),
+                          					.getIdToken()
+                          					.getJwtToken(),
     			}
     		});
         console.log(AWS.config.credentials);
@@ -72,6 +71,11 @@ var Auth = window.auth || {};
     		// Instantiate aws sdk service objects now that the credentials have been updated.
     		// example: var s3 = new AWS.S3();
     	});
+
+
+      window.location.href = '/general.html';
+
+
     }
 
     //user is not logged in if here
