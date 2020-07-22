@@ -1,6 +1,5 @@
 var Auth = window.auth || {};
 (function scopeWrapper($) {
-    var signinUrl = '/index.html';
     var poolData = {
         UserPoolId: _config.cognito.userPoolId,
         ClientId: _config.cognito.userPoolClientId
@@ -22,57 +21,70 @@ var Auth = window.auth || {};
         AWSCognito.config.region = _config.cognito.region;
     }
 
-    Auth.signOut = function signOut() {
-        userPool.getCurrentUser().signOut();
-    };
+    //Check if user is already logged inspect
+    var cognitoUser = userPool.getCurrentUser();
+    console.log(cognitoUser)
+    if (cognitoUser != null) {
+      window.location.href = '/general.html';
+    	cognitoUser.getSession(function(err, session) {
+    		if (err) {
+    			alert(err.message || JSON.stringify(err));
 
-    Auth.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
-
-        var cognitoUser = userPool.getCurrentUser();
-
-        if (cognitoUser) {
-            console.log("user detected");
-            cognitoUser.getSession(function sessionCallback(err, session) {
-                if (err) {
-                    reject(err);
-                } else if (!session.isValid()) {
-                    resolve(null);
-                } else {
-                    resolve(session.getIdToken().getJwtToken());
-                }
-            });
-        } else {
-            console.log("user not detected");
-            resolve(null);
-        }
-    });
+          return;
+    		}
+    		console.log('session validity: ' + session.isValid());
 
 
-    /*
-     * Cognito User Pool functions
-     */
+    		// NOTE: getSession must be called to authenticate user before calling getUserAttributes
+    		cognitoUser.getUserAttributes(function(err, attributes) {
+    			if (err) {
+    				alert(err);
+    			} else {
+    				console.log(attributes)
+    			}
+    		});
+        var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+        AWS.config.region = _config.cognito.region;
+    		AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    			IdentityPoolId: _config.identity.identityPoolId, // your identity pool id here
+    			Logins: {
+    				// Change the key below according to the specific region your user pool is in.
+    				[`${loginUrl}`]: session
+    					.getIdToken()
+    					.getJwtToken(),
+    			}
+    		});
+        console.log(AWS.config.credentials);
 
-    function register(email, password, onSuccess, onFailure) {
-        var dataEmail = {
-            Name: 'email',
-            Value: email
-        };
-        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+        AWS.config.credentials.refresh(error => {
+    			if (error) {
+    				console.error(error);
+    			} else {
+    				// Instantiate aws sdk service objects now that the credentials have been updated.
+    				// example: var s3 = new AWS.S3();
+            console.log(AWS.config.credentials);
+    				console.log('Successfully logged!');
+            alert("logged in user detected");
 
-        userPool.signUp(toUsername(email), password, [attributeEmail], null,
-            function signUpCallback(err, result) {
-                if (!err) {
-                    onSuccess(result);
-                } else {
-                    onFailure(err);
-                }
-            }
-        );
+    			}
+    		});
+
+    		// Instantiate aws sdk service objects now that the credentials have been updated.
+    		// example: var s3 = new AWS.S3();
+    	});
     }
+
+    //user is not logged in if here
+
+
+
+
+
+
 
     function signin(email, password, onSuccess, onFailure) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-            Username: toUsername(email),
+            Email: email,
             Password: password
         });
 
@@ -83,108 +95,39 @@ var Auth = window.auth || {};
         });
     }
 
-    function verify(email, code, onSuccess, onFailure) {
-        createCognitoUser(email).confirmRegistration(code, true, function confirmCallback(err, result) {
-            if (!err) {
-                onSuccess(result);
-            } else {
-                onFailure(err);
-            }
-        });
-    }
 
     function createCognitoUser(email) {
         return new AmazonCognitoIdentity.CognitoUser({
-            Username: toUsername(email),
+            Username: email,
+            Email: email,
             Pool: userPool
         });
     }
 
-    function toUsername(email) {
-        return email.replace('@', '-at-');
-    }
 
-    /*
-     *  Event Handlers
-     */
-    $(function onDocReady() {
-        // $('#signinForm').submit(handleSignin);
-        try{
-          document.getElementById('REGISTERSUBMIT').addEventListener("click",handleRegister,false);
-        }
-        catch{
-          console.log("not registerpage");
-        }
-        try{
-          document.getElementById('VERIFICATIONSUBMIT').addEventListener("click",handleVerify,false);
-        }
-        catch{
-          console.log("not verfication page");
-        }
-        try{
-          document.getElementById('SIGNINSUBMIT').addEventListener("click",handleSignin,false);
-        }
-        catch{
-          console.log("not sign in page");
-        }
-    });
+
+
+
+    document.getElementById('SIGNINSUBMIT').addEventListener("click",handleSignin,false);
+
 
     function handleSignin(event) {
         var email = $('#SIGNINUSERNAME').val();
         var password = $('#SIGNINPASSWORD').val();
         event.preventDefault();
         signin(email, password,
-            function signinSuccess(result) {
-                console.log(result);
+            (result) => {
+                var accessToken = result.getAccessToken().getJwtToken();
+                console.log(accessToken);
+                alert("sign in success!");
                 console.log('Successfully Logged In');
-                // window.location.href = '/general.html';
+                window.location.href = '/general.html';
             },
-            function signinError(err) {
+            (err) => {
                 alert(err);
             }
         );
     }
 
-    function handleRegister(event) {
-        var email = $('#REGISTEREMAIL').val();
-        var password = $('#REGISTERPASSWORD').val();
-        var password2 = $('#CONFIRMPASSWORD').val();
 
-        var onSuccess = function registerSuccess(result) {
-            var cognitoUser = result.user;
-            console.log('user name is ' + cognitoUser.getUsername());
-            var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
-            if (confirmation) {
-                window.location.href = 'verification.html';
-            }
-        };
-        var onFailure = function registerFailure(err) {
-            alert(err);
-        };
-        event.preventDefault();
-
-        if (password === password2) {
-            register(email, password, onSuccess, onFailure);
-        } else {
-            alert('Passwords do not match');
-        }
-    }
-
-    function handleVerify(event) {
-        var email = $('#VERIFICATIONEMAIL').val();
-            console.log(email)
-        var code = $('#VERFICATIONCODE').val();
-        event.preventDefault();
-        verify(email, code,
-            function verifySuccess(result) {
-                console.log('call result: ' + result);
-                console.log('Successfully verified');
-                alert('Verification successful. You will now be redirected to the login page.');
-                window.location.href = signinUrl;
-            },
-            function verifyError(err) {
-                alert(err);
-            }
-        );
-    }
 }(jQuery));

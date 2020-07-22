@@ -23,26 +23,7 @@ var Auth = window.auth || {};
     }
 
 
-    // Auth.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
-    //
-    //     var cognitoUser = userPool.getCurrentUser();
-    //     console.log(cognitoUser)
-    //     if (cognitoUser) {
-    //         console.log("user detected");
-    //         cognitoUser.getSession(function sessionCallback(err, session) {
-    //             if (err) {
-    //                 reject(err);
-    //             } else if (!session.isValid()) {
-    //                 resolve(null);
-    //             } else {
-    //                 resolve(session.getIdToken().getJwtToken());
-    //             }
-    //         });
-    //     } else {
-    //         console.log("user not detected");
-    //         resolve(null);
-    //     }
-    // });
+
 
 
     /*
@@ -51,9 +32,7 @@ var Auth = window.auth || {};
 
 
 
-    function toUsername(email) {
-        return email.replace('@', '-at-');
-    }
+
 
     /*
      *  Event Handlers
@@ -69,9 +48,10 @@ var Auth = window.auth || {};
 
         var onSuccess = (result) => {
             var cognitoUser = result.user;
-            console.log('user name is ' + cognitoUser.getUsername());
+            console.log(cognitoUser);
             var confirmation = 'Registration successful. Please check your email inbox or spam folder for your verification code.';
             alert(confirmation);
+            window.location.href = "/verification.html";
         };
         var onFailure = (err) => {alert(err);};
         event.preventDefault();
@@ -88,9 +68,26 @@ var Auth = window.auth || {};
             Name: 'email',
             Value: email
         };
-        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+        var dataName = {
+            Name: 'name',
+            Value: "Jon Doe"
+        };
+        var dataGender = {
+            Name: 'gender',
+            Value: "Male"
+        };
 
-        userPool.signUp(toUsername(email), password, [attributeEmail], null,
+        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+        var attributeName = new AmazonCognitoIdentity.CognitoUserAttribute(dataName);
+        var attributeGender = new AmazonCognitoIdentity.CognitoUserAttribute(dataGender);
+
+        var attributeList = [];
+        attributeList.push(attributeEmail);
+        attributeList.push(attributeName);
+        attributeList.push(attributeGender);
+
+
+        userPool.signUp(email, password, attributeList, null,
             (err, result) =>  {
                 if (!err) {
                     onSuccess(result);

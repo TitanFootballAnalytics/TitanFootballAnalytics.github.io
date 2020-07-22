@@ -11,7 +11,6 @@ var Auth = window.auth || {};
     if (!(_config.cognito.userPoolId &&
           _config.cognito.userPoolClientId &&
           _config.cognito.region)) {
-        // $('#noCognitoMessage').show();
         return;
     }
 
@@ -22,52 +21,7 @@ var Auth = window.auth || {};
         AWSCognito.config.region = _config.cognito.region;
     }
 
-    // Auth.signOut = function signOut() {
-    //     userPool.getCurrentUser().signOut();
-    // };
 
-    // Auth.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
-    //
-    //     var cognitoUser = userPool.getCurrentUser();
-    //
-    //     if (cognitoUser) {
-    //         console.log("user detected");
-    //         cognitoUser.getSession(function sessionCallback(err, session) {
-    //             if (err) {
-    //                 reject(err);
-    //             } else if (!session.isValid()) {
-    //                 resolve(null);
-    //             } else {
-    //                 resolve(session.getIdToken().getJwtToken());
-    //             }
-    //         });
-    //     } else {
-    //         console.log("user not detected");
-    //         resolve(null);
-    //     }
-    // });
-
-
-    /*
-     * Cognito User Pool functions
-     */
-
-
-
-
-
-
-
-    function createCognitoUser(email) {
-        return new AmazonCognitoIdentity.CognitoUser({
-            Username: toUsername(email),
-            Pool: userPool
-        });
-    }
-
-    function toUsername(email) {
-        return email.replace('@', '-at-');
-    }
 
     /*
      *  Event Handlers
@@ -76,25 +30,19 @@ var Auth = window.auth || {};
 
 
     function handleVerify(event) {
-
-
         var email = $('#VERIFICATIONEMAIL').val();
-        console.log(email)
         var code = $('#VERFICATIONCODE').val();
         event.preventDefault();
-
         var userData = {
-	         Username: email,
+           Username: email,
+	         Email: email  ,
 	         Pool: userPool,
         };
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
-
         function verifySuccess(result) {
-            console.log('call result: ' + result);
-            console.log('Successfully verified');
             alert('Verification successful. You will now be redirected to the login page.');
-            // window.location.href = signinUrl;
+            window.location.href = signinUrl;
         }
 
         function verifyError(err) {
@@ -109,8 +57,7 @@ var Auth = window.auth || {};
             // });
             alert(err);
         }
-        console.log(cognitoUser);
-        cognitoUser.confirmRegistration(code, true, function confirmCallback(err, result) {
+        cognitoUser.confirmRegistration(code, true, (err, result) => {
             if (!err) {
                 verifySuccess(result);
             } else {
