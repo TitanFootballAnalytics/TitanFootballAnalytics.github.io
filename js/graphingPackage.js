@@ -1656,6 +1656,56 @@ function addHeader(svg, data,metadata) {
     ["Average Yards",roundnumber(data["Average Yards"]["Pass"],2),roundnumber(data["Average Yards"]["Run"],2),roundnumber(data["Average Yards"]["Total"],2)],
     ["TD Count",data["TD Count"]["Pass"],data["TD Count"]["Run"],data["TD Count"]["Total"]]];
   addJeanTable(sample_data2,svg,800,10,1180,150);
+  //console.log(metadata.tendacy)
+  var startsubx = 450;
+  var startsuby = 80;
+  var deltay = 18;
+  if(metadata.tendacy.length > 0){
+    for (var i = 0; i < metadata.tendacy.length; i++) {
+
+
+
+
+      canvas.append("text")
+        .attr("x", startsubx)
+        .attr("y", startsuby+(deltay*i))
+        .attr("fill", "#00203FFF")
+        .style("font", "normal sans-serif")
+        .style("font-size",15)
+        .style("font-weight", "normal")
+        .text(metadata.tendacy[i].category.split(" is ")[0]+" is")
+
+      texthw = renderedTextSize(metadata.tendacy[i].category.split(" is ")[0]+" is","sans-serif",15);
+
+      canvas.append("text")
+        .attr("x", startsubx+texthw.width+5)
+        .attr("y", startsuby+(deltay*i))
+        .attr("fill", "#00203FFF")
+        .style("font", "normal sans-serif")
+        .style("font-size",15)
+        .style("font-weight", "bold")
+        .text(metadata.tendacy[i].category.split(" is ")[1])
+
+
+      console.log(metadata.tendacy[i].category.split(" is "));
+      texthw = renderedTextSize(metadata.tendacy[i].category.split(" is ")[0]+" is "+metadata.tendacy[i].category.split(" is ")[1],"sans-serif",15);
+      var colorScale = d3.scaleLinear().domain([50, 100]).range(["red", "#15b347"]);
+
+      canvas.append("text")
+        .attr("x", startsubx+texthw.width+10)
+        .attr("y", startsuby+(deltay*i))
+        .attr("fill", colorScale(Math.round(metadata.tendacy[i].tend*100)))
+        .style("font", "bold sans-serif")
+        .style("font-weight", "bold")
+        .style("font-size",15)
+        .text(Math.round(metadata.tendacy[i].tend*100)+"%")
+
+
+    }
+
+
+  }
+
 
 
 
@@ -1786,14 +1836,47 @@ function addJeanTable(data,canvas,x1,y1,x2,y2){
   }
 }
 
+function findmaxtend(data,targetcolumns){
+    var numofplays = data.NumPlays * -1;
+    // console.log(targetcolumns)
+    var tempvalue; var tempvalstr;
+    var maxtend = 0;var temptend;
+    var maxstr;
+    var maxdic = [];
+    for (var i = 0; i < data.datasets.length; i++) {
+        for (var k = 0; k < data.datasets[i].length; k++) {
+
+            if(i > 2){
+              tempvalue = data.datasets[i][k].count;
+              tempvalstr = targetcolumns[i-3]+" to "+targetcolumns[i-2]+" : "+data.datasets[i][k].in+" to "+data.datasets[i][k].out;
+
+            }
+            else{
+              tempvalue = data.datasets[i][k].val;
+              tempvalstr = targetcolumns[i]+" is "+data.datasets[i][k].category;
+            }
+            temptend = tempvalue / numofplays;
+            if(temptend > maxtend){
+              maxstr = tempvalstr;
+              maxtend = temptend;
+            }
+            if(temptend > .65){
+              maxdic.push({"category":tempvalstr,"tend":temptend})
+            }
+
+        }
+     }
+    return maxdic
+
+
+}
+
 async function generateScorecards(filename, filter){
        const data = await d3.json(filename);
 
        var configfilename = "configs/report_MASTER_0001.json"
 
        const configfile = await d3.json(configfilename);
-       console.log(configfile)
-       console.log(data)
 
 
        var sortedData = tieredSort(data,filter);
@@ -1805,11 +1888,8 @@ async function generateScorecards(filename, filter){
        var startDex2;
        var currX = 10;
 
+       d3.select("#mainDiv").selectAll('.scorecardContainer').remove();
 
-
-
-
-       // d3.select("#mainDiv").selectAll('.scorecardContainer').remove()
        // if(!(d3.select("#sankey1").property("checked"))){
        //     numCharts = numCharts-1
        // }
@@ -1826,8 +1906,6 @@ async function generateScorecards(filename, filter){
        //     numCharts = numCharts-1
        // }
 
-
-
        sep = (fixedWidth-30)/numCharts;
        var configselection;
        var barchartcount;
@@ -1838,13 +1916,11 @@ async function generateScorecards(filename, filter){
          // Call new metadata in json of which config to refrence
           configselection = configfile[0];
           sankeychartcount = 0;
-          console.log(configselection)
 
           barchartcount = configselection["Targetcolumns"].length;
           for (var j = 0; j < configselection["Sankey"].length; j++) {
             if(configselection["Sankey"][j] == "Yes"){sankeychartcount++;}
           }
-          console.log(sankeychartcount+barchartcount)
           sep = (fixedWidth-30)/(sankeychartcount+barchartcount);
 
           var metadata = {"col0":sortedData[i]["col0"],
@@ -1866,23 +1942,32 @@ async function generateScorecards(filename, filter){
                .attr("width",fixedWidth)
                .attr("height",fixedHeight)
                .attr("class","scorecard centered-basic")
-               // .style("animation-delay",i*.2+"s")
+              // .style("animation-delay",i*.2+"s")
                .attr("id","scoreCard"+i)
 
            svg = d3.select(("#scoreCard"+i));
 
+           var sctargetcols = [sortedData[i]["col0"],sortedData[i]["col1"],sortedData[i]["col2"]]
+
+
+           var besttend = findmaxtend(sortedData[i],sctargetcols);
+
+           var dexlist = [0];
+           var tempdex;
 
            for (var k = 0; k < configselection["Charts"].length; k++) {
               if(configselection["Charts"][k] == "Bar"){
-                startDex1 = addBarGraph(sortedData[i].datasets[k], k, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
+                tempdex = addBarGraph(sortedData[i].datasets[k], k, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,dexlist[dexlist.length-1],metadata);
+                dexlist.push(tempdex);
                 currX = currX+sep;
               }
               if(configselection["Charts"][k] == "Pie"){
-                startDex1 = addPieChart(sortedData[i].datasets[k], k, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
+                tempdex = addPieChart(sortedData[i].datasets[k], k, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,dexlist[dexlist.length-1],metadata);
+                dexlist.push(tempdex);
                 currX = currX+sep;
               }
               if(configselection["Sankey"][k] == "Yes"){
-                addSankey(""+i+"_"+(k+1), sortedData[i].datasets[k+3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
+                addSankey(""+i+"_"+(k+1), sortedData[i].datasets[k+3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,dexlist[k],dexlist[k+1]);
                 currX = currX+sep
               }
            }
@@ -1921,7 +2006,6 @@ async function generateScorecards(filename, filter){
            //   addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
            // }
 
-           var sctargetcols = [sortedData[i]["col0"],sortedData[i]["col1"],sortedData[i]["col2"]]
 
            var st0 = sortedData[i]["sit0"];
            var st1 = sortedData[i]["sit1"];
@@ -1930,6 +2014,8 @@ async function generateScorecards(filename, filter){
            metadata[st0] = sortedData[i][sortedData[i]["sit0"]]
            metadata[st1] = sortedData[i][sortedData[i]["sit1"]]
            metadata[st2] = sortedData[i][sortedData[i]["sit2"]]
+           metadata["tendacy"] = besttend;
+
 
            addHeader(svg, sortedData[i].splits,metadata);
        }
@@ -1944,4 +2030,18 @@ function roundnumber(number,place){
       var newnum = number * divis;
       return Math.round(newnum)/divis;
 
+}
+
+function renderedTextSize(string, font, fontSize) {
+    var paper = Raphael(0, 0, 0, 0)
+    paper.canvas.style.visibility = 'hidden'
+    var el = paper.text(0, 0, string)
+    el.attr('font-family', font)
+    el.attr('font-size', fontSize)
+    var bBox = el.getBBox()
+    paper.remove()
+    return {
+        width: bBox.width,
+        height: bBox.height
+    }
 }
