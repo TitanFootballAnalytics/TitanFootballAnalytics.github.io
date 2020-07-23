@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/mainpage.css" >
+    <link rel="stylesheet" href="css/navbar.css" >
     <link rel="stylesheet" href="css/general.css" >
 
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
@@ -33,20 +34,32 @@
       </div>
       <div id="navbar6" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">Account</a></li>
+          <li class=""><a href="index.html">Home</a></li>
           <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="upload.html">Upload Data</a></li>
+              <li><a href="#">Manage Data</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Data Help</li>
+              <li><a href="#">Instruction Guide</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
+          </li>
+          <li class="dropdown active">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Browse Reports</a></li>
               <li><a href="#">Edit Reports</a></li>
-              <li><a href="#">Upload Data</a></li>
-              <li><a href="#">Manage Data</a></li>
+              <li><a href="general.html">Create Report</a></li>
               <li class="divider"></li>
               <li class="dropdown-header">Report Help</li>
               <li><a href="#">Instruction Guide</a></li>
               <li><a href="#">Contact Us</a></li>
             </ul>
           </li>
+          <li><a href="#">Account</a></li>
+          <li><a href="#">Contact Us</a></li>
         </ul>
       </div>
     </div>
@@ -55,81 +68,11 @@
   <div class ="container-fluid mainbackground">
 
 
-    <!-- <div class="row" id="actionstitle">
-      <div class="col-md-3 col-md-offset-1" align="left">
-        <h1 class="general title"> Actions <hr class="shortbar"></h1>
-      </div>
-    </div>
-
-    <div class="row" id="actionsbuttons">
-      <div class="col-md-2 col-md-offset-1" align="center">
-        <a href="">
-          <div class="roundbutton">
-              <i class="fas fa-file-upload fa-4x white"></i>
-          </div>
-        </a>
-        <h5 style="margin-top: 3px;font-weight: 600;">Upload Data</h5>
-      </div>
-      <div class="col-md-2" align="center">
-        <a href="">
-          <div class="roundbutton">
-              <i class="fas fa-columns fa-4x white"></i>
-          </div>
-        </a>
-        <h5 style="margin-top: 3px;font-weight: 600;">Browse Reports</h5>
-      </div>
-    </div> -->
-
-
-
-
-    <datalist id="targetcolumns">
-      <option value='PERS'>
-      <option value='MOTION'>
-      <option value='BACK'>
-      <option value='FORM'>
-      <option value='FORM_FAM'>
-      <option value='R/P'>
-      <option value='PLAY_TYPE'>
-      <option value='PASS_RESULT'>
-      <option value='SER_END'>
-      <option value='DEF_PERS'>
-      <option value='FRONT'>
-      <option value='FRONT_ADJ'>
-      <option value='BOX'>
-      <option value='DL Count'>
-      <option value='LB Count'>
-      <option value='LB_ALIGN'>
-      <option value='COVER'>
-      <option value='COV_FAM'>
-      <option value='MAN-ZONE'>
-      <option value='STUNTS'>
-      <option value='BLITZ'>
-      <option value='SITUATION'>
-    </datalist>
-    <datalist id="situations">
-      <option value='DownSit'>
-      <option value='DistSit'>
-      <option value='DDSit'>
-      <option value='Fieldzone'>
-      <option value='SER'>
-      <option value='S#'>
-      <option value='Game'>
-      <option value='HASH'>
-    </datalist>
-    <datalist id="chartoptions">
-      <option value="Bar Chart">
-      <option value="Pie Chart">
-    </datalist>
-    <datalist id="sankeyoptions">
-      <option value="include"></option>
-      <option value="exclude"></option>
-    </datalist>
-
     <br>
     <div class="row">
 
       <div id="test0" class="col-md-8 reportrequest col-md-offset-1">
+
         <label>Break down
           <select class="reportcustominput" id="target1"></select> ,
           <select class="reportcustominput" id="target2"></select> ,
@@ -142,9 +85,9 @@
           <button type="button" onclick="multiplyNode(document.getElementById('test1'), 2, true);" class="btn btn-primary">+</button>
 
         </div>
-
-          <label for="checkbox-toggle-1">Open Settings</label>
-          <input class="" id="checkbox-toggle-1" type="checkbox" onclick="opensetting(this)"/><br>
+        <br>
+        <label for="checkbox-toggle-1">Open Settings</label>
+        <input class="" id="checkbox-toggle-1" type="checkbox" onclick="opensetting(this)"/>
 
         <div class="toggle-content">
           <h5 id="t1"></h5>
@@ -185,8 +128,9 @@
 
         </div>
 
-          <label for="checkbox-toggle-1">Open Settings</label>
-          <input class="" id="checkbox-toggle-1" type="checkbox" onclick="opensetting(this)"/><br>
+        <br>
+        <label for="checkbox-toggle-1">Open Settings</label>
+        <input class="" id="checkbox-toggle-1" type="checkbox" onclick="opensetting(this)"/>
 
         <div class="toggle-content">
           <h5 id="t1"></h5>
