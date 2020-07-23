@@ -68,17 +68,17 @@ function createRecepticle(){
 								   "V 60 " +
 								   "H 13 ")
 				 .attr("stroke","Black")
-				 .attr("stroke-width",6)
+				 .attr("stroke-width",2)
 				 .attr("fill","white");
 			 svg.append("path")
 				 .attr("d","M 5 20 H 14")
 				 .attr("stroke","Black")
-				 .attr("stroke-width",6)
+				 .attr("stroke-width",2)
 				 .attr("fill","white");
 		  svg.append("path")
 				 .attr("d","M 5 60 H 14")
 				 .attr("stroke","Black")
-				 .attr("stroke-width",6)
+				 .attr("stroke-width",2)
 				 .attr("fill","white");
 			rBox = unit.appendChild(document.createElement('div'));
 			rBox.className = "rBox";
@@ -129,7 +129,7 @@ function drop(ev) {
 		if(ev.target.parentNode.children[3])
 			ev.target.parentNode.removeChild(ev.target.parentNode.children[3]);
 		targetBoxD3.style("z-index","3")
-						 .style("background-color","green");
+						 .style("background-color","limegreen");
 		fitText(ev.target,sourceBoxD3._groups[0][0].labelTitan)
 		sourceBox.addEventListener('click', function() {undoSelect(ev.target,targetBoxD3,sourceBoxD3,sourceBox)}, false);
 	}
