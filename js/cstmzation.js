@@ -36,8 +36,6 @@ function addselectoptions(){
        }
      }
   }
-
-
 }
 
 
@@ -61,23 +59,41 @@ async function setscorecardrequests(reportid) {
     var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json";
     const configfile = await d3.json(configfilename);
 
+    var tempscorecardrequest;
+    var selectors;var node;var textnode;var inputs;
+
+    multiplyNode(document.getElementById("test1"),configfile.length-1,true);
+
     for (var i = 0; i < configfile.length; i++) {
-      for (var k = 0; k < array.length; k++) {
 
+        tempscorecardrequest = document.getElementById("test"+i);
+        selectors = tempscorecardrequest.getElementsByTagName("select");
+        inputs = tempscorecardrequest.getElementsByTagName("input");
 
-
-
-        array[k]
-      }
-
-
-      console.log(configfile[i])
+        for (var k = 0; k < configfile[i]["Targetcolumns"].length; k++) {
+          node = document.createElement("option");
+          node.value = configfile[i]["Targetcolumns"][k];
+          textnode = document.createTextNode(configfile[i]["Targetcolumns"][k]);
+          node.appendChild(textnode);
+          selectors[k].appendChild(node);
+        }
+        for (var k = 0; k < configfile[i]["Situationcols"].length; k++) {
+          node = document.createElement("option");
+          node.value = configfile[i]["Situationcols"][k];
+          textnode = document.createTextNode(configfile[i]["Situationcols"][k]);
+          node.appendChild(textnode);
+          selectors[k+3].appendChild(node);
+        }
+        for (var k = 0; k < configfile[i]["Charts"].length; k++) {
+          if(configfile[i]["Charts"][k] == "Bar"){inputs[(k*2)+1].checked = true;}
+          if(configfile[i]["Charts"][k] == "Pie"){inputs[(k*2)+2].checked = true;}
+        }
+        for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
+          if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
+          if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
+        }
     }
-
-
-
-
-
+    addselectoptions()
 }
 
 

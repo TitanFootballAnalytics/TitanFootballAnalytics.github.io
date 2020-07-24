@@ -10,7 +10,12 @@
        "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
        "Charts" : ["Bar","Pie","Bar"],
        "Sankey" : ["No","No"]
-      }
+     },
+    {"Targetcolumns" : ["PERS","efjknl","jhkdfthiju"],
+         "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
+         "Charts" : ["Bar","Pie","Bar"],
+         "Sankey" : ["No","No"]
+        }
 
 
 ]
