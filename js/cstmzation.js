@@ -3,35 +3,81 @@
 var targetlist = ["","FORM","PERS","PLAY TYPE"];
 var situationlist = ["","DOWN","DIST","FIELD ZONE"];
 
+
+
 // ADD USER ID AND REPORT ID HERE
-var userid = "MASTER";
-var reportid = "0001";
+var teamid = "MASTER";
 
+checkifnewreport()
 
+function addselectoptions(){
 
-var selectors = document.getElementsByTagName("select");
-var node;var textnode;var tempid;
+  var selectors = document.getElementsByTagName("select");
+  var node;var textnode;var tempid;
 
-for (var i = 0; i < selectors.length; i++) {
-   tempid = selectors[i].id;
-   if(tempid.includes("target")){
-     for (var k = 0; k < targetlist.length; k++) {
-       node = document.createElement("option");
-       node.value = targetlist[k]
-       textnode = document.createTextNode(targetlist[k]);
-       node.appendChild(textnode);
-       selectors[i].appendChild(node);
+  for (var i = 0; i < selectors.length; i++) {
+     tempid = selectors[i].id;
+     if(tempid.includes("target")){
+       for (var k = 0; k < targetlist.length; k++) {
+         node = document.createElement("option");
+         node.value = targetlist[k]
+         textnode = document.createTextNode(targetlist[k]);
+         node.appendChild(textnode);
+         selectors[i].appendChild(node);
+       }
      }
-   }
-   if(tempid.includes("situation")){
-     for (var k = 0; k < situationlist.length; k++) {
-       node = document.createElement("option");
-       node.value = situationlist[k]
-       textnode = document.createTextNode(situationlist[k]);
-       node.appendChild(textnode);
-       selectors[i].appendChild(node);
+     if(tempid.includes("situation")){
+       for (var k = 0; k < situationlist.length; k++) {
+         node = document.createElement("option");
+         node.value = situationlist[k]
+         textnode = document.createTextNode(situationlist[k]);
+         node.appendChild(textnode);
+         selectors[i].appendChild(node);
+       }
      }
-   }
+  }
+
+
+}
+
+
+
+function checkifnewreport(){
+  var reportid = getUrlParam("reportid","empty");
+  if(reportid != "empty"){
+    console.log(reportid)
+    setscorecardrequests(reportid);
+  }
+  else {
+    addselectoptions()
+  }
+
+
+
+}
+
+async function setscorecardrequests(reportid) {
+
+    var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json";
+    const configfile = await d3.json(configfilename);
+
+    for (var i = 0; i < configfile.length; i++) {
+      for (var k = 0; k < array.length; k++) {
+
+
+
+
+        array[k]
+      }
+
+
+      console.log(configfile[i])
+    }
+
+
+
+
+
 }
 
 
@@ -61,17 +107,11 @@ function weirdidmapper(num){
 }
 
 function remove(el) {
-
   var reportrequestscounts = document.getElementsByClassName("reportrequest");
   if(el.id != "test1"){
-
     var element = el;
     element.remove();
-
   }
-
-
-
 }
 
 

@@ -1,4 +1,7 @@
-
+body {
+      background-size: cover;
+      background-position: center;
+      background-image: url("../Images/mainback.jpg");}
 
 .login-box {
   position: absolute;
@@ -11,6 +14,17 @@
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 0px;
+}
+
+.login-box input[type=radio]:checked {
+      background-color: orange;
+
+}
+
+.login-box select {
+  background-color: transparent;
+  border: 0px solid white;
+  color: white;
 }
 
 .login-box h2 {

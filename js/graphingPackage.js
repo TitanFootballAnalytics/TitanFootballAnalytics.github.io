@@ -4,6 +4,26 @@ function convToRGB(i,hex){
   return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
 }
 
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+function getUrlParam(parameter, defaultvalue){
+    var urlparameter = defaultvalue;
+    if(window.location.href.indexOf(parameter) > -1){
+        urlparameter = getUrlVars()[parameter];
+        }
+    return urlparameter;
+}
+
+
+
+
 d3.selection.prototype.moveToFront = function() {
    return this.each(function(){
      this.parentNode.appendChild(this);
@@ -631,6 +651,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
   var inTotals = {};
   var outTotals = {};
   var total = 0;
+
   var val = data[0].in;
   for (var i = 0; i < data.length; i++) {
     if (data[i].in != val) {
@@ -1687,7 +1708,6 @@ function addHeader(svg, data,metadata) {
         .text(metadata.tendacy[i].category.split(" is ")[1])
 
 
-      console.log(metadata.tendacy[i].category.split(" is "));
       texthw = renderedTextSize(metadata.tendacy[i].category.split(" is ")[0]+" is "+metadata.tendacy[i].category.split(" is ")[1],"sans-serif",15);
       var colorScale = d3.scaleLinear().domain([50, 100]).range(["red", "#15b347"]);
 
@@ -1874,7 +1894,11 @@ function findmaxtend(data,targetcolumns){
 async function generateScorecards(filename, filter){
        const data = await d3.json(filename);
 
-       var configfilename = "configs/report_MASTER_0001.json"
+
+       var teamid = "MASTER";
+
+       //userid=MASTER&reportid=0001
+       var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json"
 
        const configfile = await d3.json(configfilename);
 
@@ -1967,7 +1991,7 @@ async function generateScorecards(filename, filter){
                 currX = currX+sep;
               }
               if(configselection["Sankey"][k] == "Yes"){
-                addSankey(""+i+"_"+(k+1), sortedData[i].datasets[k+3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,dexlist[k],dexlist[k+1]);
+                addSankey(""+i+"_"+(k+1), sortedData[i].datasets[k+configselection["Charts"].length], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,dexlist[k],dexlist[k+1]);
                 currX = currX+sep
               }
            }

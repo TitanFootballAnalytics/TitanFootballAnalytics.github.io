@@ -1,10 +1,10 @@
 
 
 [
-  {"Targetcolumns" : ["form_fam","play_type"],
-       "Situationcols" : ["down_sit"],
-       "Charts" : ["Bar","Bar"],
-       "Sankey" : ["Yes","No"]
+  {"Targetcolumns" : ["PERS","FORM_FAM","PLAY_TYPE"],
+       "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
+       "Charts" : ["Bar","Bar","Bar"],
+       "Sankey" : ["Yes","Yes"]
      },
   {"Targetcolumns" : ["PERS","FORM_FAM","PLAY_TYPE"],
        "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
