@@ -311,7 +311,7 @@ function generateHoldingCell(data){
 	for(var i = 0; i < data.length;i++){
 
 		box = parent.appendChild(document.createElement('div'));
-		box.className = "col-md-12 fBox";
+		box.className = "col-md-3 fBox";
 		box.draggable = "true";
 		box.id = "coachHeader"+i;
 		box.labelTitan = data[i];
@@ -365,6 +365,7 @@ $(document).ready(function() {
 		var reader = new FileReader();
 		reader.readAsText(file);
 		reader.onload = function(event) {
+			console.log(event)
 			//Jquery.csv
 			createArray($.csv.toArrays(event.target.result));
 		};

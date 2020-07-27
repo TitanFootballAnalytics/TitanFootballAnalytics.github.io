@@ -140,8 +140,14 @@ body{
   min-height: 100vh;
   margin-left: -30px;
   display:table-cell;
-  padding-top:50px;
+  margin-top:-100px;
 }
+
+#righthalf ::-webkit-scrollbar {width: 10px;}
+
+#righthalf ::-webkit-scrollbar-track {background: rgba(0,0,0,.1);}
+
+#righthalf ::-webkit-scrollbar-thumb {background: #1c1c1c;border-radius: 99px;}
 
 #headerContainer{
   margin-top:10px;
