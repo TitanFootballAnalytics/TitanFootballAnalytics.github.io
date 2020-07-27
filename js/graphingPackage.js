@@ -1677,7 +1677,7 @@ function addHeader(svg, data,metadata) {
     ["Average Yards",roundnumber(data["Average Yards"]["Pass"],2),roundnumber(data["Average Yards"]["Run"],2),roundnumber(data["Average Yards"]["Total"],2)],
     ["TD Count",data["TD Count"]["Pass"],data["TD Count"]["Run"],data["TD Count"]["Total"]]];
   addJeanTable(sample_data2,svg,800,10,1180,150);
-  //console.log(metadata.tendacy)
+
   var startsubx = 450;
   var startsuby = 80;
   var deltay = 18;
@@ -1898,8 +1898,6 @@ function cleandata(data){
       for (var j = 0; j < data[i].datasets[k].length; j++) {
 
         if(data[i].datasets[k][j].val === undefined){
-          console.log(data[i].datasets[k][j])
-          console.log(data[i].datasets[k][j].count)
           data[i].datasets[k][j].count = Number(data[i].datasets[k][j].count)
         }
         if(data[i].datasets[k][j].count === undefined){
@@ -1917,18 +1915,19 @@ function cleandata(data){
 }
 
 async function generateScorecards(filename, filter){
-       var data = await d3.json(filename);
 
+       var reportid = getUrlParam("reportid","empty");
 
-       data = cleandata(data);
-       console.log(data)
-
-
+       // Grab teamid here using userid
        var teamid = "MASTER";
 
-       //userid=MASTER&reportid=0001
-       var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json"
+       // SDK call here
+       var data = await d3.json("Sample Data/report_"+teamid+"_"+reportid+".json");
+       data = cleandata(data);
 
+       // config file naming convention
+       var configfilename = "configs/report_"+teamid+"_"+reportid+".json"
+       // SDK call here
        const configfile = await d3.json(configfilename);
 
 

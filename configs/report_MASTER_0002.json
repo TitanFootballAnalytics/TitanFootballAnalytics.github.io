@@ -3,8 +3,8 @@
 [
   { "Targetcolumns" : ["FORM_FAM","PLAY_TYPE"],
        "Situationcols" : ["DOWN"],
-       "Charts" : ["Bar","Bar"],
-       "Sankey" : ["Yes","No"]
+       "Charts" : ["Pie","Pie"],
+       "Sankey" : ["No","No"]
      }
 
 
