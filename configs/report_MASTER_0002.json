@@ -1,21 +1,11 @@
 
 
 [
-  { "Targetcolumns" : ["PERS","FORM_FAM","PLAY_TYPE"],
-       "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
-       "Charts" : ["Bar","Bar","Bar"],
-       "Sankey" : ["Yes","Yes"]
-     },
-  {"Targetcolumns" : ["PERS","FORM_FAM","PLAY_TYPE"],
-       "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
-       "Charts" : ["Bar","Pie","Bar"],
-       "Sankey" : ["No","No"]
-     },
-    {"Targetcolumns" : ["PERS","efjknl","jhkdfthiju"],
-         "Situationcols" : ["DOWN","DISTANCE","FIELDZONE"],
-         "Charts" : ["Bar","Pie","Bar"],
-         "Sankey" : ["No","No"]
-        }
+  { "Targetcolumns" : ["FORM_FAM","PLAY_TYPE"],
+       "Situationcols" : ["DOWN"],
+       "Charts" : ["Bar","Bar"],
+       "Sankey" : ["Yes","No"]
+     }
 
 
 ]

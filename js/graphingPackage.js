@@ -1891,8 +1891,37 @@ function findmaxtend(data,targetcolumns){
 
 }
 
+function cleandata(data){
+
+  for (var i = 0; i < data.length; i++) {
+    for (var k = 0; k < data[i].datasets.length; k++) {
+      for (var j = 0; j < data[i].datasets[k].length; j++) {
+
+        if(data[i].datasets[k][j].val === undefined){
+          console.log(data[i].datasets[k][j])
+          console.log(data[i].datasets[k][j].count)
+          data[i].datasets[k][j].count = Number(data[i].datasets[k][j].count)
+        }
+        if(data[i].datasets[k][j].count === undefined){
+          data[i].datasets[k][j].val = Number(data[i].datasets[k][j].val)
+        }
+
+      }
+    }
+  }
+
+
+
+  return data;
+
+}
+
 async function generateScorecards(filename, filter){
-       const data = await d3.json(filename);
+       var data = await d3.json(filename);
+
+
+       data = cleandata(data);
+       console.log(data)
 
 
        var teamid = "MASTER";
