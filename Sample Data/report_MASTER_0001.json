@@ -90,7 +90,7 @@
                     "val": "2"
                 },
                 {
-                    "category": "BOOT",
+                    "category": "TRIO ON",
                     "val": "1"
                 },
                 {
@@ -142,7 +142,7 @@
                     "val": "1"
                 },
                 {
-                    "category": "Q TRUCK",
+                    "category": "PROP",
                     "val": "1"
                 },
                 {
@@ -328,8 +328,8 @@
                     "count": "1"
                 },
                 {
-                    "in": "OPEN",
-                    "out": "BLING",
+                    "in": "DICE",
+                    "out": "RACE",
                     "count": "2"
                 },
                 {

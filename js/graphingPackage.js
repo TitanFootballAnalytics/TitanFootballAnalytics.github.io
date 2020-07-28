@@ -1678,10 +1678,11 @@ function addHeader(svg, data,metadata) {
 
 
   var sample_data2 = [["","Pass","Run","Total"],
-    ["Play Count",data["Play Count"]["Pass"],data["Play Count"]["Run"],data["Play Count"]["Total"]],
-    ["Total Yards",data["Total Yards"]["Pass"],data["Total Yards"]["Run"],data["Total Yards"]["Total"]],
-    ["Average Yards",roundnumber(data["Average Yards"]["Pass"],2),roundnumber(data["Average Yards"]["Run"],2),roundnumber(data["Average Yards"]["Total"],2)],
-    ["TD Count",data["TD Count"]["Pass"],data["TD Count"]["Run"],data["TD Count"]["Total"]]];
+    ["Play Count",data["Play Count"]["pass"],data["Play Count"]["run"],data["Play Count"]["Total"]],
+    ["Total Yards",data["Total Yards"]["pass"],data["Total Yards"]["run"],data["Total Yards"]["Total"]],
+    ["Average Yards",roundnumber(data["Average Yards"]["pass"],2),roundnumber(data["Average Yards"]["run"],2),roundnumber(data["Average Yards"]["Total"],2)],
+    ["TD Count",data["TD Count"]["pass"],data["TD Count"]["run"],data["TD Count"]["Total"]]];
+  console.log(data)
   addJeanTable(sample_data2,svg,800,10,1180,150);
 
   var startsubx = 450;
@@ -1740,6 +1741,8 @@ function addHeader(svg, data,metadata) {
 }
 
 function addJeanTable(data,canvas,x1,y1,x2,y2){
+
+  console.log(data)
 
 
   var yunit = (y2-y1)/5;
@@ -1899,7 +1902,23 @@ function findmaxtend(data,targetcolumns){
 
 function cleandata(data){
 
+
+  console.log(data)
+
+
+
   for (var i = 0; i < data.length; i++) {
+
+    for (var key in data[i].splits) {
+      for (var subkey in data[i].splits[key]) {
+
+        data[i].splits[key][subkey] = Number(data[i].splits[key][subkey])
+
+      }
+
+    }
+
+
     for (var k = 0; k < data[i].datasets.length; k++) {
       for (var j = 0; j < data[i].datasets[k].length; j++) {
 
