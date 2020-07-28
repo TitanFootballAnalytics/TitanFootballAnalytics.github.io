@@ -3,35 +3,97 @@
 var targetlist = ["","FORM","PERS","PLAY TYPE"];
 var situationlist = ["","DOWN","DIST","FIELD ZONE"];
 
+
+
 // ADD USER ID AND REPORT ID HERE
-var userid = "MASTER";
-var reportid = "0001";
+var teamid = "MASTER";
 
+checkifnewreport()
 
+function addselectoptions(){
 
-var selectors = document.getElementsByTagName("select");
-var node;var textnode;var tempid;
+  var selectors = document.getElementsByTagName("select");
+  var node;var textnode;var tempid;
 
-for (var i = 0; i < selectors.length; i++) {
-   tempid = selectors[i].id;
-   if(tempid.includes("target")){
-     for (var k = 0; k < targetlist.length; k++) {
-       node = document.createElement("option");
-       node.value = targetlist[k]
-       textnode = document.createTextNode(targetlist[k]);
-       node.appendChild(textnode);
-       selectors[i].appendChild(node);
+  for (var i = 0; i < selectors.length; i++) {
+     tempid = selectors[i].id;
+     if(tempid.includes("target")){
+       for (var k = 0; k < targetlist.length; k++) {
+         node = document.createElement("option");
+         node.value = targetlist[k]
+         textnode = document.createTextNode(targetlist[k]);
+         node.appendChild(textnode);
+         selectors[i].appendChild(node);
+       }
      }
-   }
-   if(tempid.includes("situation")){
-     for (var k = 0; k < situationlist.length; k++) {
-       node = document.createElement("option");
-       node.value = situationlist[k]
-       textnode = document.createTextNode(situationlist[k]);
-       node.appendChild(textnode);
-       selectors[i].appendChild(node);
+     if(tempid.includes("situation")){
+       for (var k = 0; k < situationlist.length; k++) {
+         node = document.createElement("option");
+         node.value = situationlist[k]
+         textnode = document.createTextNode(situationlist[k]);
+         node.appendChild(textnode);
+         selectors[i].appendChild(node);
+       }
      }
-   }
+  }
+}
+
+
+
+function checkifnewreport(){
+  var reportid = getUrlParam("reportid","empty");
+  if(reportid != "empty"){
+    console.log(reportid)
+    setscorecardrequests(reportid);
+  }
+  else {
+    addselectoptions()
+  }
+
+
+
+}
+
+async function setscorecardrequests(reportid) {
+
+    var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json";
+    const configfile = await d3.json(configfilename);
+
+    var tempscorecardrequest;
+    var selectors;var node;var textnode;var inputs;
+
+    multiplyNode(document.getElementById("test1"),configfile.length-1,true);
+
+    for (var i = 0; i < configfile.length; i++) {
+
+        tempscorecardrequest = document.getElementById("test"+i);
+        selectors = tempscorecardrequest.getElementsByTagName("select");
+        inputs = tempscorecardrequest.getElementsByTagName("input");
+
+        for (var k = 0; k < configfile[i]["Targetcolumns"].length; k++) {
+          node = document.createElement("option");
+          node.value = configfile[i]["Targetcolumns"][k];
+          textnode = document.createTextNode(configfile[i]["Targetcolumns"][k]);
+          node.appendChild(textnode);
+          selectors[k].appendChild(node);
+        }
+        for (var k = 0; k < configfile[i]["Situationcols"].length; k++) {
+          node = document.createElement("option");
+          node.value = configfile[i]["Situationcols"][k];
+          textnode = document.createTextNode(configfile[i]["Situationcols"][k]);
+          node.appendChild(textnode);
+          selectors[k+3].appendChild(node);
+        }
+        for (var k = 0; k < configfile[i]["Charts"].length; k++) {
+          if(configfile[i]["Charts"][k] == "Bar"){inputs[(k*2)+1].checked = true;}
+          if(configfile[i]["Charts"][k] == "Pie"){inputs[(k*2)+2].checked = true;}
+        }
+        for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
+          if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
+          if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
+        }
+    }
+    addselectoptions()
 }
 
 
@@ -61,17 +123,11 @@ function weirdidmapper(num){
 }
 
 function remove(el) {
-
   var reportrequestscounts = document.getElementsByClassName("reportrequest");
   if(el.id != "test1"){
-
     var element = el;
     element.remove();
-
   }
-
-
-
 }
 
 

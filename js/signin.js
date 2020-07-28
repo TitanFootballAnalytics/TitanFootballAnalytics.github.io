@@ -73,7 +73,7 @@ var Auth = window.auth || {};
     	});
 
 
-      window.location.href = '/general.html';
+      window.location.href = '/customization.html';
 
 
     }
@@ -125,7 +125,7 @@ var Auth = window.auth || {};
                 console.log(accessToken);
                 alert("sign in success!");
                 console.log('Successfully Logged In');
-                window.location.href = '/general.html';
+                window.location.href = '/customization.html';
             },
             (err) => {
                 alert(err);

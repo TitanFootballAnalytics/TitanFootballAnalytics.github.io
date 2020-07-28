@@ -1,6 +1,9 @@
 body{
   overflow-x: hidden;
 }
+
+
+
 .unit{
   width: 500px;
   height: 100px;
@@ -40,11 +43,15 @@ body{
   float:left;
   margin-left: 0px;
   border: thick solid #1c1c1c;
-  border-width: 6px;
+  border-width: 0px;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-left: solid crimson 7px;
 }
 
 .rBox{
@@ -52,14 +59,17 @@ body{
   width: 150px;
   float:right;
   margin-right: 20px;
-  border: thick dashed #1c1c1c;
-  border-width: 6px;
+  border: thick dashed grey;
+  border-width: 2px;
   background-color: white;
   margin-left: -40px;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all .2s;
 }
+
+.rBox:hover {border-color: #1c1c1c;transition: all .2s;}
 
 .arrow{
   /* position:absolute;
@@ -68,6 +78,8 @@ body{
   margin-left:-20px
 
 }
+
+.shadow {box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);}
 
 .search{
   padding:5px;
@@ -85,8 +97,13 @@ body{
 
 .submitButton{
   float:right;
-  margin-right:30px;
+  margin-right:50px;
   position:fixed;
+  left: 50px;
+  background-color: #1c1c1c;
+  color: white;
+  padding: 10px;
+
 }
 
 #righthalf button {
@@ -111,7 +128,7 @@ body{
 #lefthalf{
   /* background-color: red; */
   display:table-cell;
-  width: 50vw;
+  width: 45vw;
 
 }
 
@@ -123,13 +140,19 @@ body{
   min-height: 100vh;
   margin-left: -30px;
   display:table-cell;
-  padding-top:50px;
+  margin-top:-100px;
 }
+
+#righthalf ::-webkit-scrollbar {width: 10px;}
+
+#righthalf ::-webkit-scrollbar-track {background: rgba(0,0,0,.1);}
+
+#righthalf ::-webkit-scrollbar-thumb {background: #1c1c1c;border-radius: 99px;}
 
 #headerContainer{
   margin-top:10px;
   height: 85vh;
   overflow-y: scroll;
   border: thick dashed #1c1c1c;
-  border-width: 6px;
+  border-width: 2px;
 }

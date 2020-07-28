@@ -14,21 +14,24 @@ background-size: cover;height: 300%;background-position: bottom;min-height: 100v
 
 
 
+  .data-holder {width: 100%;background-color: white;height: 70vh;padding: 5px;}
+
+  .data-holder hr {width: 90%;height: 4px;background-color: #1c1c1c;margin-top: 4px;}
+  .data-holder h3 {padding: 0px;margin-left: 5%;margin-top:5px;margin-bottom: 2px;font-weight: 900;}
+
+  .data-holder input {margin-left: 5%;}
+
 
 
 
 .nomargin{margin: 0px;}
 
-.example6 .navbar-brand{
-  background: url("../Images/MainLogoWhite.png") center / 50% no-repeat;
-  width: 200px;
-}
 
 .reportcustominput {
   border: 0px;
   border-bottom: 2px solid #1c1c1c;
   background-color: transparent;
-  width:100px;
+  width:120px;
   text-align: center;
 }
 
@@ -65,12 +68,12 @@ background-size: cover;height: 300%;background-position: bottom;min-height: 100v
 .toggle-content{display: none;}
 
 /*  Show the toggle content by using the general sibling selector */
-input[type=checkbox]:checked ~ label {
+.reportrequest input[type=checkbox]:checked ~ label {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
 
-input[type=checkbox]:checked ~ .toggle-content {
+.reportrequest input[type=checkbox]:checked ~ .toggle-content {
     display: block;
     min-height: 100px;
     background-color: lightgrey;

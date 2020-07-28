@@ -1,0 +1,11 @@
+
+
+[
+  { "Targetcolumns" : ["FORM_FAM","PLAY_TYPE"],
+       "Situationcols" : ["DOWN"],
+       "Charts" : ["Pie","Pie"],
+       "Sankey" : ["No","No"]
+     }
+
+
+]

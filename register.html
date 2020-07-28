@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/login.css" >
+    <link rel="stylesheet" href="css/general.css" >
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
     <title>Titan Analytics</title>
 </head>
 
 <body>
 
   <div class="login-box font2">
-  <h2>Login</h2>
+  <h2>Register Now</h2>
     <form id="registrationForm">
       <div class="user-box">
         <input id="REGISTEREMAIL" type="text" name="" required="">
-        <label>Username</label>
+        <label>Email / Username</label>
+      </div>
+      <div class="user-box">
+        <input id="TEAMCODE" type="text" name="" required="">
+        <label>Team Code</label>
       </div>
       <div class="user-box">
         <input id="REGISTERPASSWORD" type="password" name="" required="">
@@ -24,6 +30,16 @@
       <div class="user-box">
         <input id="CONFIRMPASSWORD" type="password" name="" required="">
         <label>Confirm Password</label>
+      </div>
+
+
+      <div class="" style="color: white;">
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">Male</label><br>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label><br>
+        <input type="radio" id="other" name="gender" value="other">
+        <label for="other">Other</label>
       </div>
       <div class="center" align="center">
         <a id="REGISTERSUBMIT">

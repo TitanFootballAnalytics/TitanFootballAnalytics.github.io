@@ -6,10 +6,15 @@
 
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/styles/default.min.css">
   <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/index.css" >
+  <link rel="stylesheet" href="css/scorecards.css" >
+  <link rel="stylesheet" href="css/navbar.css" >
   <link rel="stylesheet" href="css/general.css" >
   <link rel="stylesheet" href="css/loadingbar.css" >
-  <link rel="stylesheet" href="css/header.css" >
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -47,7 +52,7 @@
 <body>
     <div class = "container-fluid mainbackground", id = "backgroundDiv">
     </div>
-    <div class='nav' style='position:fixed;width:100%'>
+    <!-- <div class='nav' style='position:fixed;width:100%'>
       <ul>
         <li><a href='#' id = "graph1">Graph 1</a>
             <ul>
@@ -88,7 +93,50 @@
             </ul>
         </li>
       </ul>
-    </div>
+    </div> -->
+    <nav  style="margin:0px;" class="navbar navbar-inverse navbar-static-top example6">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar6">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand text-hide" href="index.html">Titan Analytics</a>
+        </div>
+        <div id="navbar6" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class=""><a href="index.html">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="upload.html">Upload Data</a></li>
+                <li><a href="#">Manage Data</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Data Help</li>
+                <li><a href="#">Instruction Guide</a></li>
+                <li><a href="#">Contact Us</a></li>
+              </ul>
+            </li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="reportbrowse.html">Browse Reports</a></li>
+                <li><a href="#">Edit Reports</a></li>
+                <li><a href="customization.html">Create Report</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Report Help</li>
+                <li><a href="#">Instruction Guide</a></li>
+                <li><a href="#">Contact Us</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Account</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <div class = "container-fluid", id = "mainDiv">
     </div>
   <script>
