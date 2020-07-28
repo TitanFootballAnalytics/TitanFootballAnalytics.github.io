@@ -4,7 +4,6 @@ function convToRGB(i,hex){
   return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
 }
 
-
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -20,9 +19,6 @@ function getUrlParam(parameter, defaultvalue){
         }
     return urlparameter;
 }
-
-
-
 
 d3.selection.prototype.moveToFront = function() {
    return this.each(function(){
@@ -1678,11 +1674,12 @@ function addHeader(svg, data,metadata) {
 
 
   var sample_data2 = [["","Pass","Run","Total"],
-    ["Play Count",data["Play Count"]["pass"],data["Play Count"]["run"],data["Play Count"]["Total"]],
-    ["Total Yards",data["Total Yards"]["pass"],data["Total Yards"]["run"],data["Total Yards"]["Total"]],
-    ["Average Yards",roundnumber(data["Average Yards"]["pass"],2),roundnumber(data["Average Yards"]["run"],2),roundnumber(data["Average Yards"]["Total"],2)],
-    ["TD Count",data["TD Count"]["pass"],data["TD Count"]["run"],data["TD Count"]["Total"]]];
-  console.log(data)
+    ["Play Count",data["Play Count"]["pass"],data["Play Count"]["run"],data["Play Count"]["total"]],
+    ["Total Yards",data["Total Yards"]["pass"],data["Total Yards"]["run"],data["Total Yards"]["total"]],
+    ["Average Yards",roundnumber(data["Average Yards"]["pass"],2),roundnumber(data["Average Yards"]["run"],2),roundnumber(data["Average Yards"]["total"],2)],
+    ["TD Count",data["TD Count"]["pass"],data["TD Count"]["run"],data["TD Count"]["total"]]];
+
+
   addJeanTable(sample_data2,svg,800,10,1180,150);
 
   var startsubx = 450;
@@ -1742,7 +1739,6 @@ function addHeader(svg, data,metadata) {
 
 function addJeanTable(data,canvas,x1,y1,x2,y2){
 
-  console.log(data)
 
 
   var yunit = (y2-y1)/5;
@@ -1901,11 +1897,6 @@ function findmaxtend(data,targetcolumns){
 }
 
 function cleandata(data){
-
-
-  console.log(data)
-
-
 
   for (var i = 0; i < data.length; i++) {
 
