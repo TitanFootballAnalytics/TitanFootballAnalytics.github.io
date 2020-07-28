@@ -1,164 +1,144 @@
 [
     {
-        "NumPlays": 46,
+        "NumPlays": 81,
         "col0": "form_fam",
         "col1": "play_type",
         "sit0": "down_sit",
-        "down_sit": "3rd",
+        "down_sit": "1st",
         "datasets": [
             [
                 {
-                    "category": "DICE",
-                    "val": "21"
-                },
-                {
                     "category": "DEUCE",
-                    "val": "19"
-                },
-                {
-                    "category": "DUO ON",
-                    "val": "18"
-                },
-                {
-                    "category": "EMPTY",
-                    "val": "11"
-                },
-                {
-                    "category": "THICK",
-                    "val": "1"
-                },
-                {
-                    "category": "PRO",
-                    "val": "7"
-                },
-                {
-                    "category": "TRIO ON",
-                    "val": "5"
-                },
-                {
-                    "category": "UNB",
-                    "val": "1"
-                },
-                {
-                    "category": "TRUNK SQZ",
-                    "val": "3"
-                },
-                {
-                    "category": "OPEN",
-                    "val": "4"
-                },
-                {
-                    "category": "TREY",
-                    "val": "12"
-                },
-                {
-                    "category": "DING",
-                    "val": "17"
-                },
-                {
-                    "category": "TWINS",
                     "val": "2"
                 },
                 {
-                    "category": "DICE OFF",
-                    "val": "1"
+                    "category": "DICE",
+                    "val": "14"
                 },
                 {
-                    "category": "TREY ON",
-                    "val": "23"
-                },
-                {
-                    "category": "RT",
-                    "val": "5"
-                },
-                {
-                    "category": "TRIO",
-                    "val": "9"
+                    "category": "DING",
+                    "val": "8"
                 },
                 {
                     "category": "DUO",
-                    "val": "9"
+                    "val": "5"
+                },
+                {
+                    "category": "DUO ON",
+                    "val": "6"
                 },
                 {
                     "category": "DUO STKS",
                     "val": "1"
                 },
                 {
-                    "category": "TRIPS",
-                    "val": "19"
+                    "category": "EMPTY",
+                    "val": "5"
                 },
                 {
-                    "category": "WING",
+                    "category": "OPEN",
                     "val": "3"
                 },
                 {
-                    "category": "DEUCE STKS",
+                    "category": "PRO",
+                    "val": "7"
+                },
+                {
+                    "category": "RT",
+                    "val": "1"
+                },
+                {
+                    "category": "THICK",
+                    "val": "1"
+                },
+                {
+                    "category": "TREY",
+                    "val": "4"
+                },
+                {
+                    "category": "TREY ON",
+                    "val": "10"
+                },
+                {
+                    "category": "TRIO",
+                    "val": "3"
+                },
+                {
+                    "category": "TRIO ON",
+                    "val": "3"
+                },
+                {
+                    "category": "TRIPS",
+                    "val": "4"
+                },
+                {
+                    "category": "TRUNK SQZ",
+                    "val": "2"
+                },
+                {
+                    "category": "TWINS",
+                    "val": "1"
+                },
+                {
+                    "category": "WING",
                     "val": "1"
                 }
             ],
             [
                 {
-                    "category": "PA",
-                    "val": "24"
-                },
-                {
-                    "category": "INSIDE ZONE",
-                    "val": "18"
+                    "category": "BLING",
+                    "val": "2"
                 },
                 {
                     "category": "BOOT",
                     "val": "1"
                 },
                 {
-                    "category": "BLING",
-                    "val": "3"
-                },
-                {
-                    "category": "OUTSIDE ZONE",
-                    "val": "6"
-                },
-                {
-                    "category": "BUCK",
-                    "val": "5"
-                },
-                {
-                    "category": "RPO",
-                    "val": "8"
-                },
-                {
-                    "category": "SCREEN",
-                    "val": "7"
-                },
-                {
-                    "category": "HITCH",
+                    "category": "BUBBLE",
                     "val": "1"
                 },
                 {
-                    "category": "QUICK",
-                    "val": "20"
-                },
-                {
-                    "category": "DBP",
-                    "val": "41"
-                },
-                {
-                    "category": "TRUCK",
-                    "val": "6"
-                },
-                {
-                    "category": "NAKED",
-                    "val": "9"
-                },
-                {
-                    "category": "LOCK",
+                    "category": "BUCK",
                     "val": "4"
                 },
                 {
-                    "category": "SHOVEL",
-                    "val": "6"
+                    "category": "DBP",
+                    "val": "7"
                 },
                 {
-                    "category": "TOSS",
+                    "category": "DECIDE",
+                    "val": "1"
+                },
+                {
+                    "category": "INSIDE ZONE",
+                    "val": "8"
+                },
+                {
+                    "category": "ISO",
+                    "val": "1"
+                },
+                {
+                    "category": "LOCK",
+                    "val": "3"
+                },
+                {
+                    "category": "NAKED",
+                    "val": "4"
+                },
+                {
+                    "category": "OUTSIDE ZONE",
+                    "val": "4"
+                },
+                {
+                    "category": "PA",
+                    "val": "11"
+                },
+                {
+                    "category": "POWER",
+                    "val": "2"
+                },
+                {
+                    "category": "PROP",
                     "val": "1"
                 },
                 {
@@ -166,225 +146,71 @@
                     "val": "1"
                 },
                 {
-                    "category": "ISO",
-                    "val": "3"
+                    "category": "QUICK",
+                    "val": "7"
                 },
                 {
                     "category": "RACE",
-                    "val": "4"
-                },
-                {
-                    "category": "PROP",
-                    "val": "2"
-                },
-                {
-                    "category": "SMOKE",
                     "val": "1"
                 },
                 {
-                    "category": "POWER",
+                    "category": "READ",
+                    "val": "2"
+                },
+                {
+                    "category": "RPO",
                     "val": "3"
+                },
+                {
+                    "category": "SCREEN",
+                    "val": "2"
+                },
+                {
+                    "category": "SHOVEL",
+                    "val": "3"
+                },
+                {
+                    "category": "SKETCH",
+                    "val": "1"
                 },
                 {
                     "category": "TRAP",
                     "val": "2"
                 },
                 {
-                    "category": "READ",
-                    "val": "6"
-                },
-                {
-                    "category": "SKETCH",
-                    "val": "3"
-                },
-                {
                     "category": "TRICK",
                     "val": "5"
                 },
                 {
-                    "category": "BUBBLE",
-                    "val": "1"
-                },
-                {
-                    "category": "DECIDE",
-                    "val": "1"
+                    "category": "TRUCK",
+                    "val": "4"
                 }
             ],
             [
                 {
                     "in": "DEUCE",
-                    "out": "BLING",
-                    "count": "1"
+                    "out": "SCREEN",
+                    "count": "2"
                 },
                 {
-                    "in": "TREY",
+                    "in": "DICE",
                     "out": "PA",
-                    "count": "6"
-                },
-                {
-                    "in": "DING",
-                    "out": "LOCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "DBP",
-                    "count": "13"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "POWER",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "READ",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "READ",
-                    "count": "1"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "QUICK",
-                    "count": "3"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "BUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRUNK SQZ",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "DBP",
-                    "count": "3"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "DECIDE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "WING",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "QUICK",
                     "count": "2"
                 },
                 {
                     "in": "DICE",
-                    "out": "TRUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "TRUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIO ON",
                     "out": "INSIDE ZONE",
                     "count": "3"
                 },
                 {
                     "in": "DICE",
-                    "out": "NAKED",
-                    "count": "4"
+                    "out": "BUCK",
+                    "count": "1"
                 },
                 {
                     "in": "DICE",
-                    "out": "PA",
-                    "count": "3"
-                },
-                {
-                    "in": "DING",
-                    "out": "BUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "DBP",
-                    "count": "5"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "TRAP",
-                    "count": "1"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "DBP",
+                    "out": "NAKED",
                     "count": "2"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "SHOVEL",
-                    "count": "1"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "BLING",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO",
-                    "out": "TRAP",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "THICK",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "PA",
-                    "count": "1"
                 },
                 {
                     "in": "DICE",
@@ -392,74 +218,94 @@
                     "count": "2"
                 },
                 {
-                    "in": "TREY",
-                    "out": "RPO",
+                    "in": "DICE",
+                    "out": "TRUCK",
                     "count": "2"
                 },
                 {
-                    "in": "UNB",
-                    "out": "RACE",
+                    "in": "DICE",
+                    "out": "Q TRUCK",
                     "count": "1"
                 },
                 {
-                    "in": "TWINS",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "WING",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "QUICK",
-                    "count": "2"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "SCREEN",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE OFF",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "POWER",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIPS",
+                    "in": "DICE",
                     "out": "QUICK",
                     "count": "1"
                 },
                 {
-                    "in": "RT",
-                    "out": "ISO",
+                    "in": "DING",
+                    "out": "LOCK",
                     "count": "3"
                 },
                 {
                     "in": "DING",
+                    "out": "BUCK",
+                    "count": "2"
+                },
+                {
+                    "in": "DING",
+                    "out": "PA",
+                    "count": "1"
+                },
+                {
+                    "in": "DING",
+                    "out": "TRUCK",
+                    "count": "2"
+                },
+                {
+                    "in": "DUO",
+                    "out": "RACE",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO",
+                    "out": "TRAP",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO",
+                    "out": "PA",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO",
                     "out": "PROP",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO",
+                    "out": "OUTSIDE ZONE",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "BUBBLE",
                     "count": "1"
                 },
                 {
                     "in": "DUO ON",
                     "out": "QUICK",
-                    "count": "6"
+                    "count": "1"
                 },
                 {
-                    "in": "TREY ON",
-                    "out": "INSIDE ZONE",
-                    "count": "6"
+                    "in": "DUO ON",
+                    "out": "POWER",
+                    "count": "1"
                 },
                 {
-                    "in": "RT",
-                    "out": "PA",
-                    "count": "2"
+                    "in": "DUO ON",
+                    "out": "READ",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "TRAP",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "TRICK",
+                    "count": "1"
                 },
                 {
                     "in": "DUO STKS",
@@ -467,73 +313,33 @@
                     "count": "1"
                 },
                 {
-                    "in": "DING",
-                    "out": "DBP",
+                    "in": "EMPTY",
+                    "out": "SHOVEL",
                     "count": "3"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "RPO",
-                    "count": "4"
                 },
                 {
                     "in": "EMPTY",
-                    "out": "SHOVEL",
-                    "count": "5"
+                    "out": "NAKED",
+                    "count": "1"
                 },
                 {
-                    "in": "TREY ON",
+                    "in": "EMPTY",
                     "out": "QUICK",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY",
-                    "out": "OUTSIDE ZONE",
                     "count": "1"
                 },
                 {
-                    "in": "TRIPS",
-                    "out": "SKETCH",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY",
-                    "out": "LOCK",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "TRICK",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "RPO",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "INSIDE ZONE",
+                    "in": "OPEN",
+                    "out": "BLING",
                     "count": "2"
                 },
                 {
-                    "in": "TREY",
-                    "out": "INSIDE ZONE",
+                    "in": "OPEN",
+                    "out": "DECIDE",
                     "count": "1"
                 },
                 {
-                    "in": "DICE",
-                    "out": "INSIDE ZONE",
-                    "count": "4"
-                },
-                {
-                    "in": "TRUNK SQZ",
-                    "out": "TRICK",
+                    "in": "PRO",
+                    "out": "PA",
                     "count": "2"
                 },
                 {
@@ -542,108 +348,88 @@
                     "count": "1"
                 },
                 {
-                    "in": "TRIO",
-                    "out": "QUICK",
+                    "in": "PRO",
+                    "out": "BUCK",
                     "count": "1"
                 },
                 {
                     "in": "PRO",
-                    "out": "PA",
+                    "out": "QUICK",
                     "count": "2"
                 },
                 {
-                    "in": "TREY ON",
-                    "out": "TOSS",
+                    "in": "PRO",
+                    "out": "POWER",
                     "count": "1"
                 },
                 {
-                    "in": "WING",
+                    "in": "RT",
+                    "out": "ISO",
+                    "count": "1"
+                },
+                {
+                    "in": "THICK",
                     "out": "PA",
                     "count": "1"
                 },
                 {
-                    "in": "DICE",
-                    "out": "Q TRUCK",
+                    "in": "TREY",
+                    "out": "RPO",
+                    "count": "2"
+                },
+                {
+                    "in": "TREY",
+                    "out": "PA",
                     "count": "1"
                 },
                 {
-                    "in": "TREY ON",
-                    "out": "HITCH",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "DBP",
-                    "count": "7"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "DBP",
-                    "count": "5"
-                },
-                {
-                    "in": "DUO",
-                    "out": "RACE",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
+                    "in": "TREY",
                     "out": "OUTSIDE ZONE",
                     "count": "1"
                 },
                 {
-                    "in": "DUO",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO",
-                    "out": "PROP",
+                    "in": "TREY ON",
+                    "out": "READ",
                     "count": "1"
                 },
                 {
                     "in": "TREY ON",
-                    "out": "SMOKE",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "RACE",
+                    "out": "DBP",
                     "count": "2"
                 },
                 {
-                    "in": "EMPTY",
-                    "out": "NAKED",
-                    "count": "1"
+                    "in": "TREY ON",
+                    "out": "INSIDE ZONE",
+                    "count": "4"
                 },
                 {
-                    "in": "DUO",
+                    "in": "TREY ON",
                     "out": "RPO",
                     "count": "1"
                 },
                 {
-                    "in": "DEUCE",
-                    "out": "SCREEN",
-                    "count": "6"
+                    "in": "TREY ON",
+                    "out": "QUICK",
+                    "count": "2"
                 },
                 {
-                    "in": "DING",
-                    "out": "NAKED",
+                    "in": "TRIO",
+                    "out": "PA",
                     "count": "1"
                 },
                 {
-                    "in": "DING",
-                    "out": "PA",
+                    "in": "TRIO",
+                    "out": "DBP",
                     "count": "2"
                 },
                 {
-                    "in": "TREY ON",
-                    "out": "READ",
-                    "count": "2"
+                    "in": "TRIO ON",
+                    "out": "INSIDE ZONE",
+                    "count": "1"
                 },
                 {
-                    "in": "DUO ON",
-                    "out": "BUBBLE",
+                    "in": "TRIO ON",
+                    "out": "OUTSIDE ZONE",
                     "count": "1"
                 },
                 {
@@ -652,37 +438,357 @@
                     "count": "1"
                 },
                 {
-                    "in": "DEUCE STKS",
-                    "out": "QUICK",
+                    "in": "TRIPS",
+                    "out": "SKETCH",
                     "count": "1"
                 },
                 {
-                    "in": "DICE",
-                    "out": "BUCK",
+                    "in": "TRIPS",
+                    "out": "DBP",
+                    "count": "3"
+                },
+                {
+                    "in": "TRUNK SQZ",
+                    "out": "TRICK",
+                    "count": "2"
+                },
+                {
+                    "in": "TWINS",
+                    "out": "PA",
+                    "count": "1"
+                },
+                {
+                    "in": "WING",
+                    "out": "PA",
                     "count": "1"
                 }
             ]
         ],
         "splits": {
             "Play Count": {
-                "run": "66",
-                "pass": "126",
-                "Total": "192"
+                "run": "37",
+                "pass": "44",
+                "total": "81"
             },
             "Total Yards": {
-                "run": "131.0",
-                "pass": "749.0",
-                "Total": "880.0"
+                "run": "36.0",
+                "pass": "451.0",
+                "total": "487.0"
             },
             "Average Yards": {
-                "run": "1.9848484848484849",
-                "pass": "6.139344262295082",
-                "Total": "4.583333333333333"
+                "run": "0.972972972972973",
+                "pass": "10.488372093023257",
+                "total": "6.012345679012346"
             },
             "TD Count": {
-                "run": "1",
-                "pass": "4",
-                "Total": "5"
+                "run": "0",
+                "pass": "1",
+                "total": "1"
+            }
+        }
+    },
+    {
+        "NumPlays": 46,
+        "col0": "form_fam",
+        "col1": "play_type",
+        "sit0": "down_sit",
+        "down_sit": "3rd",
+        "datasets": [
+            [
+                {
+                    "category": "DEUCE",
+                    "val": "9"
+                },
+                {
+                    "category": "DEUCE STKS",
+                    "val": "1"
+                },
+                {
+                    "category": "DING",
+                    "val": "3"
+                },
+                {
+                    "category": "DUO",
+                    "val": "1"
+                },
+                {
+                    "category": "DUO ON",
+                    "val": "3"
+                },
+                {
+                    "category": "EMPTY",
+                    "val": "2"
+                },
+                {
+                    "category": "RT",
+                    "val": "1"
+                },
+                {
+                    "category": "TREY",
+                    "val": "3"
+                },
+                {
+                    "category": "TREY ON",
+                    "val": "4"
+                },
+                {
+                    "category": "TRIO",
+                    "val": "3"
+                },
+                {
+                    "category": "TRIO ON",
+                    "val": "1"
+                },
+                {
+                    "category": "TRIPS",
+                    "val": "12"
+                },
+                {
+                    "category": "TRUNK SQZ",
+                    "val": "1"
+                },
+                {
+                    "category": "UNB",
+                    "val": "1"
+                },
+                {
+                    "category": "WING",
+                    "val": "1"
+                }
+            ],
+            [
+                {
+                    "category": "DBP",
+                    "val": "20"
+                },
+                {
+                    "category": "INSIDE ZONE",
+                    "val": "4"
+                },
+                {
+                    "category": "ISO",
+                    "val": "1"
+                },
+                {
+                    "category": "NAKED",
+                    "val": "2"
+                },
+                {
+                    "category": "PA",
+                    "val": "2"
+                },
+                {
+                    "category": "QUICK",
+                    "val": "6"
+                },
+                {
+                    "category": "RACE",
+                    "val": "1"
+                },
+                {
+                    "category": "READ",
+                    "val": "2"
+                },
+                {
+                    "category": "RPO",
+                    "val": "2"
+                },
+                {
+                    "category": "SCREEN",
+                    "val": "2"
+                },
+                {
+                    "category": "SHOVEL",
+                    "val": "2"
+                },
+                {
+                    "category": "SKETCH",
+                    "val": "2"
+                }
+            ],
+            [
+                {
+                    "in": "DEUCE",
+                    "out": "QUICK",
+                    "count": "1"
+                },
+                {
+                    "in": "DEUCE",
+                    "out": "SCREEN",
+                    "count": "1"
+                },
+                {
+                    "in": "DEUCE",
+                    "out": "DBP",
+                    "count": "6"
+                },
+                {
+                    "in": "DEUCE",
+                    "out": "INSIDE ZONE",
+                    "count": "1"
+                },
+                {
+                    "in": "DEUCE STKS",
+                    "out": "QUICK",
+                    "count": "1"
+                },
+                {
+                    "in": "DING",
+                    "out": "RPO",
+                    "count": "1"
+                },
+                {
+                    "in": "DING",
+                    "out": "PA",
+                    "count": "1"
+                },
+                {
+                    "in": "DING",
+                    "out": "NAKED",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO",
+                    "out": "INSIDE ZONE",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "QUICK",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "DBP",
+                    "count": "2"
+                },
+                {
+                    "in": "EMPTY",
+                    "out": "SHOVEL",
+                    "count": "1"
+                },
+                {
+                    "in": "EMPTY",
+                    "out": "QUICK",
+                    "count": "1"
+                },
+                {
+                    "in": "RT",
+                    "out": "ISO",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY",
+                    "out": "DBP",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY",
+                    "out": "INSIDE ZONE",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY",
+                    "out": "PA",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY ON",
+                    "out": "DBP",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY ON",
+                    "out": "READ",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY ON",
+                    "out": "RPO",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY ON",
+                    "out": "QUICK",
+                    "count": "1"
+                },
+                {
+                    "in": "TRIO",
+                    "out": "DBP",
+                    "count": "2"
+                },
+                {
+                    "in": "TRIO",
+                    "out": "SHOVEL",
+                    "count": "1"
+                },
+                {
+                    "in": "TRIO ON",
+                    "out": "INSIDE ZONE",
+                    "count": "1"
+                },
+                {
+                    "in": "TRIPS",
+                    "out": "SKETCH",
+                    "count": "2"
+                },
+                {
+                    "in": "TRIPS",
+                    "out": "DBP",
+                    "count": "7"
+                },
+                {
+                    "in": "TRIPS",
+                    "out": "READ",
+                    "count": "1"
+                },
+                {
+                    "in": "TRIPS",
+                    "out": "SCREEN",
+                    "count": "1"
+                },
+                {
+                    "in": "TRIPS",
+                    "out": "QUICK",
+                    "count": "1"
+                },
+                {
+                    "in": "TRUNK SQZ",
+                    "out": "DBP",
+                    "count": "1"
+                },
+                {
+                    "in": "UNB",
+                    "out": "RACE",
+                    "count": "1"
+                },
+                {
+                    "in": "WING",
+                    "out": "NAKED",
+                    "count": "1"
+                }
+            ]
+        ],
+        "splits": {
+            "Play Count": {
+                "run": "9",
+                "pass": "37",
+                "total": "46"
+            },
+            "Total Yards": {
+                "run": "19.0",
+                "pass": "80.0",
+                "total": "99.0"
+            },
+            "Average Yards": {
+                "run": "2.1111111111111107",
+                "pass": "2.2857142857142856",
+                "total": "2.152173913043478"
+            },
+            "TD Count": {
+                "run": "0",
+                "pass": "3",
+                "total": "3"
             }
         }
     },
@@ -695,681 +801,88 @@
         "datasets": [
             [
                 {
-                    "category": "TRIO ON",
-                    "val": "5"
-                },
-                {
-                    "category": "UNB",
-                    "val": "1"
-                },
-                {
-                    "category": "TRUNK SQZ",
-                    "val": "3"
-                },
-                {
-                    "category": "DICE",
-                    "val": "21"
-                },
-                {
-                    "category": "DEUCE",
-                    "val": "19"
-                },
-                {
                     "category": "DUO ON",
-                    "val": "18"
+                    "val": "1"
                 },
                 {
                     "category": "EMPTY",
-                    "val": "11"
-                },
-                {
-                    "category": "THICK",
-                    "val": "1"
-                },
-                {
-                    "category": "PRO",
-                    "val": "7"
-                },
-                {
-                    "category": "OPEN",
-                    "val": "4"
-                },
-                {
-                    "category": "TREY",
-                    "val": "12"
-                },
-                {
-                    "category": "DING",
-                    "val": "17"
-                },
-                {
-                    "category": "TWINS",
-                    "val": "2"
-                },
-                {
-                    "category": "DICE OFF",
                     "val": "1"
                 },
                 {
                     "category": "TREY ON",
-                    "val": "23"
-                },
-                {
-                    "category": "RT",
-                    "val": "5"
+                    "val": "1"
                 },
                 {
                     "category": "TRIO",
-                    "val": "9"
-                },
-                {
-                    "category": "DUO",
-                    "val": "9"
-                },
-                {
-                    "category": "DUO STKS",
                     "val": "1"
                 },
                 {
                     "category": "TRIPS",
-                    "val": "19"
-                },
-                {
-                    "category": "WING",
-                    "val": "3"
-                },
-                {
-                    "category": "DEUCE STKS",
-                    "val": "1"
+                    "val": "2"
                 }
             ],
             [
                 {
-                    "category": "BLING",
-                    "val": "3"
-                },
-                {
-                    "category": "OUTSIDE ZONE",
-                    "val": "6"
-                },
-                {
-                    "category": "BUCK",
-                    "val": "5"
-                },
-                {
-                    "category": "RPO",
-                    "val": "8"
-                },
-                {
-                    "category": "SCREEN",
-                    "val": "7"
-                },
-                {
-                    "category": "HITCH",
-                    "val": "1"
+                    "category": "DBP",
+                    "val": "4"
                 },
                 {
                     "category": "QUICK",
-                    "val": "20"
-                },
-                {
-                    "category": "DBP",
-                    "val": "41"
-                },
-                {
-                    "category": "TRUCK",
-                    "val": "6"
-                },
-                {
-                    "category": "NAKED",
-                    "val": "9"
-                },
-                {
-                    "category": "LOCK",
-                    "val": "4"
+                    "val": "1"
                 },
                 {
                     "category": "SHOVEL",
-                    "val": "6"
-                },
-                {
-                    "category": "TOSS",
-                    "val": "1"
-                },
-                {
-                    "category": "PA",
-                    "val": "24"
-                },
-                {
-                    "category": "INSIDE ZONE",
-                    "val": "18"
-                },
-                {
-                    "category": "BOOT",
-                    "val": "1"
-                },
-                {
-                    "category": "Q TRUCK",
-                    "val": "1"
-                },
-                {
-                    "category": "ISO",
-                    "val": "3"
-                },
-                {
-                    "category": "RACE",
-                    "val": "4"
-                },
-                {
-                    "category": "PROP",
-                    "val": "2"
-                },
-                {
-                    "category": "SMOKE",
-                    "val": "1"
-                },
-                {
-                    "category": "POWER",
-                    "val": "3"
-                },
-                {
-                    "category": "TRAP",
-                    "val": "2"
-                },
-                {
-                    "category": "READ",
-                    "val": "6"
-                },
-                {
-                    "category": "SKETCH",
-                    "val": "3"
-                },
-                {
-                    "category": "TRICK",
-                    "val": "5"
-                },
-                {
-                    "category": "BUBBLE",
-                    "val": "1"
-                },
-                {
-                    "category": "DECIDE",
                     "val": "1"
                 }
             ],
             [
                 {
-                    "in": "DEUCE",
-                    "out": "QUICK",
-                    "count": "2"
-                },
-                {
-                    "in": "DICE",
-                    "out": "TRUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "TRUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "INSIDE ZONE",
-                    "count": "3"
-                },
-                {
-                    "in": "DICE",
-                    "out": "NAKED",
-                    "count": "4"
-                },
-                {
-                    "in": "DICE",
-                    "out": "PA",
-                    "count": "3"
-                },
-                {
-                    "in": "DING",
-                    "out": "BUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "DBP",
-                    "count": "5"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "TRAP",
-                    "count": "1"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "DBP",
-                    "count": "2"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "SHOVEL",
-                    "count": "1"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "BLING",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO",
-                    "out": "TRAP",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "THICK",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "TRICK",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "RPO",
-                    "count": "2"
-                },
-                {
-                    "in": "UNB",
-                    "out": "RACE",
-                    "count": "1"
-                },
-                {
-                    "in": "TWINS",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "WING",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "QUICK",
-                    "count": "2"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "SCREEN",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE OFF",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "POWER",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "RT",
-                    "out": "ISO",
-                    "count": "3"
-                },
-                {
-                    "in": "DING",
-                    "out": "PROP",
-                    "count": "1"
-                },
-                {
                     "in": "DUO ON",
                     "out": "QUICK",
-                    "count": "6"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "INSIDE ZONE",
-                    "count": "6"
-                },
-                {
-                    "in": "RT",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO STKS",
-                    "out": "OUTSIDE ZONE",
                     "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "DBP",
-                    "count": "3"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "RPO",
-                    "count": "4"
                 },
                 {
                     "in": "EMPTY",
                     "out": "SHOVEL",
-                    "count": "5"
+                    "count": "1"
                 },
                 {
                     "in": "TREY ON",
-                    "out": "QUICK",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "SKETCH",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY",
-                    "out": "LOCK",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "TRICK",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "RPO",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "INSIDE ZONE",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "INSIDE ZONE",
-                    "count": "4"
-                },
-                {
-                    "in": "TRUNK SQZ",
-                    "out": "TRICK",
-                    "count": "2"
-                },
-                {
-                    "in": "PRO",
-                    "out": "BOOT",
+                    "out": "DBP",
                     "count": "1"
                 },
                 {
                     "in": "TRIO",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "TOSS",
-                    "count": "1"
-                },
-                {
-                    "in": "WING",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "Q TRUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "HITCH",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
                     "out": "DBP",
-                    "count": "7"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "DBP",
-                    "count": "5"
-                },
-                {
-                    "in": "DUO",
-                    "out": "RACE",
                     "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO",
-                    "out": "PROP",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "SMOKE",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "RACE",
-                    "count": "2"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "RPO",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "SCREEN",
-                    "count": "6"
-                },
-                {
-                    "in": "DING",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "READ",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "BUBBLE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE STKS",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "BUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "BLING",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY",
-                    "out": "PA",
-                    "count": "6"
-                },
-                {
-                    "in": "DING",
-                    "out": "LOCK",
-                    "count": "3"
                 },
                 {
                     "in": "TRIPS",
                     "out": "DBP",
-                    "count": "13"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "POWER",
                     "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "READ",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "READ",
-                    "count": "1"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "QUICK",
-                    "count": "3"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "BUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRUNK SQZ",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "DBP",
-                    "count": "3"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "DECIDE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "WING",
-                    "out": "NAKED",
-                    "count": "1"
                 }
             ]
         ],
         "splits": {
             "Play Count": {
-                "run": "66",
-                "pass": "126",
-                "Total": "192"
+                "run": "0",
+                "pass": "6",
+                "total": "6"
             },
             "Total Yards": {
-                "run": "131.0",
-                "pass": "749.0",
-                "Total": "880.0"
+                "run": "0.0",
+                "pass": "10.0",
+                "total": "10.0"
             },
             "Average Yards": {
-                "run": "1.9848484848484849",
-                "pass": "6.139344262295082",
-                "Total": "4.583333333333333"
+                "run": "0.0",
+                "pass": "1.6666666666666667",
+                "total": "1.6666666666666667"
             },
             "TD Count": {
-                "run": "1",
-                "pass": "4",
-                "Total": "5"
+                "run": "0.0",
+                "pass": "0.0",
+                "total": "0.0"
             }
         }
     },
@@ -1382,453 +895,202 @@
         "datasets": [
             [
                 {
-                    "category": "OPEN",
-                    "val": "4"
+                    "category": "DEUCE",
+                    "val": "8"
                 },
                 {
-                    "category": "TREY",
-                    "val": "12"
-                },
-                {
-                    "category": "DING",
-                    "val": "17"
-                },
-                {
-                    "category": "TWINS",
-                    "val": "2"
+                    "category": "DICE",
+                    "val": "7"
                 },
                 {
                     "category": "DICE OFF",
                     "val": "1"
                 },
                 {
-                    "category": "TRIO ON",
-                    "val": "5"
-                },
-                {
-                    "category": "UNB",
-                    "val": "1"
-                },
-                {
-                    "category": "TRUNK SQZ",
-                    "val": "3"
-                },
-                {
-                    "category": "DICE",
-                    "val": "21"
-                },
-                {
-                    "category": "DEUCE",
-                    "val": "19"
-                },
-                {
-                    "category": "DUO ON",
-                    "val": "18"
-                },
-                {
-                    "category": "EMPTY",
-                    "val": "11"
-                },
-                {
-                    "category": "THICK",
-                    "val": "1"
-                },
-                {
-                    "category": "PRO",
-                    "val": "7"
-                },
-                {
-                    "category": "TREY ON",
-                    "val": "23"
-                },
-                {
-                    "category": "RT",
-                    "val": "5"
-                },
-                {
-                    "category": "TRIO",
-                    "val": "9"
+                    "category": "DING",
+                    "val": "6"
                 },
                 {
                     "category": "DUO",
-                    "val": "9"
+                    "val": "3"
                 },
                 {
-                    "category": "DUO STKS",
+                    "category": "DUO ON",
+                    "val": "8"
+                },
+                {
+                    "category": "EMPTY",
+                    "val": "3"
+                },
+                {
+                    "category": "OPEN",
+                    "val": "1"
+                },
+                {
+                    "category": "RT",
+                    "val": "3"
+                },
+                {
+                    "category": "TREY",
+                    "val": "5"
+                },
+                {
+                    "category": "TREY ON",
+                    "val": "8"
+                },
+                {
+                    "category": "TRIO",
+                    "val": "2"
+                },
+                {
+                    "category": "TRIO ON",
                     "val": "1"
                 },
                 {
                     "category": "TRIPS",
-                    "val": "19"
+                    "val": "1"
+                },
+                {
+                    "category": "TWINS",
+                    "val": "1"
                 },
                 {
                     "category": "WING",
-                    "val": "3"
-                },
-                {
-                    "category": "DEUCE STKS",
                     "val": "1"
                 }
             ],
             [
                 {
                     "category": "BLING",
-                    "val": "3"
-                },
-                {
-                    "category": "OUTSIDE ZONE",
-                    "val": "6"
+                    "val": "1"
                 },
                 {
                     "category": "BUCK",
-                    "val": "5"
-                },
-                {
-                    "category": "RPO",
-                    "val": "8"
-                },
-                {
-                    "category": "SCREEN",
-                    "val": "7"
-                },
-                {
-                    "category": "Q TRUCK",
                     "val": "1"
                 },
                 {
-                    "category": "ISO",
-                    "val": "3"
-                },
-                {
-                    "category": "RACE",
-                    "val": "4"
-                },
-                {
-                    "category": "PROP",
-                    "val": "2"
-                },
-                {
-                    "category": "SMOKE",
-                    "val": "1"
-                },
-                {
-                    "category": "POWER",
-                    "val": "3"
-                },
-                {
-                    "category": "TRAP",
-                    "val": "2"
-                },
-                {
-                    "category": "READ",
-                    "val": "6"
-                },
-                {
-                    "category": "SKETCH",
-                    "val": "3"
-                },
-                {
-                    "category": "TRICK",
-                    "val": "5"
-                },
-                {
-                    "category": "BUBBLE",
-                    "val": "1"
-                },
-                {
-                    "category": "DECIDE",
-                    "val": "1"
-                },
-                {
-                    "category": "PA",
-                    "val": "24"
-                },
-                {
-                    "category": "INSIDE ZONE",
-                    "val": "18"
-                },
-                {
-                    "category": "BOOT",
-                    "val": "1"
+                    "category": "DBP",
+                    "val": "10"
                 },
                 {
                     "category": "HITCH",
                     "val": "1"
                 },
                 {
-                    "category": "QUICK",
-                    "val": "20"
-                },
-                {
-                    "category": "DBP",
-                    "val": "41"
-                },
-                {
-                    "category": "TRUCK",
+                    "category": "INSIDE ZONE",
                     "val": "6"
                 },
                 {
-                    "category": "NAKED",
-                    "val": "9"
+                    "category": "ISO",
+                    "val": "1"
                 },
                 {
                     "category": "LOCK",
-                    "val": "4"
+                    "val": "1"
                 },
                 {
-                    "category": "SHOVEL",
+                    "category": "NAKED",
+                    "val": "3"
+                },
+                {
+                    "category": "OUTSIDE ZONE",
+                    "val": "2"
+                },
+                {
+                    "category": "PA",
+                    "val": "11"
+                },
+                {
+                    "category": "POWER",
+                    "val": "1"
+                },
+                {
+                    "category": "PROP",
+                    "val": "1"
+                },
+                {
+                    "category": "QUICK",
                     "val": "6"
+                },
+                {
+                    "category": "RACE",
+                    "val": "2"
+                },
+                {
+                    "category": "READ",
+                    "val": "2"
+                },
+                {
+                    "category": "RPO",
+                    "val": "3"
+                },
+                {
+                    "category": "SCREEN",
+                    "val": "3"
+                },
+                {
+                    "category": "SMOKE",
+                    "val": "1"
                 },
                 {
                     "category": "TOSS",
                     "val": "1"
+                },
+                {
+                    "category": "TRUCK",
+                    "val": "2"
                 }
             ],
             [
                 {
-                    "in": "RT",
-                    "out": "ISO",
-                    "count": "3"
-                },
-                {
-                    "in": "DING",
-                    "out": "PROP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "QUICK",
-                    "count": "6"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "INSIDE ZONE",
-                    "count": "6"
-                },
-                {
-                    "in": "RT",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO STKS",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "DBP",
+                    "in": "DEUCE",
+                    "out": "SCREEN",
                     "count": "3"
                 },
                 {
                     "in": "DEUCE",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "RPO",
-                    "count": "4"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "SHOVEL",
-                    "count": "5"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "QUICK",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "SKETCH",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY",
-                    "out": "LOCK",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "TRICK",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "RPO",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "INSIDE ZONE",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "INSIDE ZONE",
-                    "count": "4"
-                },
-                {
-                    "in": "TRUNK SQZ",
-                    "out": "TRICK",
-                    "count": "2"
-                },
-                {
-                    "in": "PRO",
-                    "out": "BOOT",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
                     "out": "PA",
                     "count": "2"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "TOSS",
-                    "count": "1"
-                },
-                {
-                    "in": "WING",
-                    "out": "PA",
-                    "count": "1"
                 },
                 {
                     "in": "DEUCE",
                     "out": "QUICK",
-                    "count": "2"
+                    "count": "1"
                 },
                 {
-                    "in": "DICE",
-                    "out": "TRUCK",
-                    "count": "3"
+                    "in": "DEUCE",
+                    "out": "BLING",
+                    "count": "1"
                 },
                 {
-                    "in": "OPEN",
+                    "in": "DEUCE",
                     "out": "DBP",
                     "count": "1"
                 },
                 {
-                    "in": "DING",
+                    "in": "DICE",
                     "out": "TRUCK",
-                    "count": "3"
+                    "count": "1"
                 },
                 {
-                    "in": "TRIO ON",
+                    "in": "DICE",
+                    "out": "PA",
+                    "count": "1"
+                },
+                {
+                    "in": "DICE",
+                    "out": "RACE",
+                    "count": "2"
+                },
+                {
+                    "in": "DICE",
                     "out": "INSIDE ZONE",
-                    "count": "3"
+                    "count": "1"
                 },
                 {
                     "in": "DICE",
                     "out": "NAKED",
-                    "count": "4"
-                },
-                {
-                    "in": "DICE",
-                    "out": "PA",
-                    "count": "3"
-                },
-                {
-                    "in": "DING",
-                    "out": "BUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "DBP",
-                    "count": "5"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "TRAP",
-                    "count": "1"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "DBP",
                     "count": "2"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "SHOVEL",
-                    "count": "1"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "BLING",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO",
-                    "out": "TRAP",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "THICK",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "TRICK",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "RPO",
-                    "count": "2"
-                },
-                {
-                    "in": "UNB",
-                    "out": "RACE",
-                    "count": "1"
-                },
-                {
-                    "in": "TWINS",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "WING",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "QUICK",
-                    "count": "2"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "SCREEN",
-                    "count": "1"
                 },
                 {
                     "in": "DICE OFF",
@@ -1836,53 +1098,103 @@
                     "count": "1"
                 },
                 {
-                    "in": "PRO",
-                    "out": "POWER",
+                    "in": "DING",
+                    "out": "TRUCK",
                     "count": "1"
                 },
                 {
-                    "in": "TRIPS",
-                    "out": "QUICK",
+                    "in": "DING",
+                    "out": "BUCK",
                     "count": "1"
                 },
                 {
-                    "in": "DICE",
-                    "out": "Q TRUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "HITCH",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
+                    "in": "DING",
                     "out": "DBP",
-                    "count": "7"
+                    "count": "3"
                 },
                 {
-                    "in": "TRIO",
-                    "out": "DBP",
-                    "count": "5"
-                },
-                {
-                    "in": "DUO",
-                    "out": "RACE",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "OUTSIDE ZONE",
+                    "in": "DING",
+                    "out": "PROP",
                     "count": "1"
                 },
                 {
                     "in": "DUO",
                     "out": "PA",
-                    "count": "2"
+                    "count": "1"
                 },
                 {
                     "in": "DUO",
-                    "out": "PROP",
+                    "out": "RPO",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO",
+                    "out": "INSIDE ZONE",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "READ",
+                    "count": "2"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "POWER",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "NAKED",
+                    "count": "1"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "QUICK",
+                    "count": "3"
+                },
+                {
+                    "in": "DUO ON",
+                    "out": "DBP",
+                    "count": "1"
+                },
+                {
+                    "in": "EMPTY",
+                    "out": "QUICK",
+                    "count": "1"
+                },
+                {
+                    "in": "EMPTY",
+                    "out": "DBP",
+                    "count": "2"
+                },
+                {
+                    "in": "OPEN",
+                    "out": "DBP",
+                    "count": "1"
+                },
+                {
+                    "in": "RT",
+                    "out": "PA",
+                    "count": "2"
+                },
+                {
+                    "in": "RT",
+                    "out": "ISO",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY",
+                    "out": "LOCK",
+                    "count": "1"
+                },
+                {
+                    "in": "TREY",
+                    "out": "PA",
+                    "count": "4"
+                },
+                {
+                    "in": "TREY ON",
+                    "out": "HITCH",
                     "count": "1"
                 },
                 {
@@ -1891,635 +1203,13 @@
                     "count": "1"
                 },
                 {
-                    "in": "DICE",
-                    "out": "RACE",
-                    "count": "2"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "RPO",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "SCREEN",
-                    "count": "6"
-                },
-                {
-                    "in": "DING",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "READ",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "BUBBLE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE STKS",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "BUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "BLING",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY",
-                    "out": "PA",
-                    "count": "6"
-                },
-                {
-                    "in": "DING",
-                    "out": "LOCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "DBP",
-                    "count": "13"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "POWER",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "READ",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "READ",
-                    "count": "1"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "QUICK",
-                    "count": "3"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "BUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRUNK SQZ",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "DBP",
-                    "count": "3"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "DECIDE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "WING",
-                    "out": "NAKED",
-                    "count": "1"
-                }
-            ]
-        ],
-        "splits": {
-            "Play Count": {
-                "run": "66",
-                "pass": "126",
-                "Total": "192"
-            },
-            "Total Yards": {
-                "run": "131.0",
-                "pass": "749.0",
-                "Total": "880.0"
-            },
-            "Average Yards": {
-                "run": "1.9848484848484849",
-                "pass": "6.139344262295082",
-                "Total": "4.583333333333333"
-            },
-            "TD Count": {
-                "run": "1",
-                "pass": "4",
-                "Total": "5"
-            }
-        }
-    },
-    {
-        "NumPlays": 81,
-        "col0": "form_fam",
-        "col1": "play_type",
-        "sit0": "down_sit",
-        "down_sit": "1st",
-        "datasets": [
-            [
-                {
-                    "category": "TREY ON",
-                    "val": "23"
-                },
-                {
-                    "category": "RT",
-                    "val": "5"
-                },
-                {
-                    "category": "TRIO",
-                    "val": "9"
-                },
-                {
-                    "category": "DUO",
-                    "val": "9"
-                },
-                {
-                    "category": "DUO STKS",
-                    "val": "1"
-                },
-                {
-                    "category": "TRIPS",
-                    "val": "19"
-                },
-                {
-                    "category": "WING",
-                    "val": "3"
-                },
-                {
-                    "category": "DEUCE STKS",
-                    "val": "1"
-                },
-                {
-                    "category": "TRIO ON",
-                    "val": "5"
-                },
-                {
-                    "category": "UNB",
-                    "val": "1"
-                },
-                {
-                    "category": "TRUNK SQZ",
-                    "val": "3"
-                },
-                {
-                    "category": "OPEN",
-                    "val": "4"
-                },
-                {
-                    "category": "TREY",
-                    "val": "12"
-                },
-                {
-                    "category": "DING",
-                    "val": "17"
-                },
-                {
-                    "category": "TWINS",
-                    "val": "2"
-                },
-                {
-                    "category": "DICE OFF",
-                    "val": "1"
-                },
-                {
-                    "category": "DICE",
-                    "val": "21"
-                },
-                {
-                    "category": "DEUCE",
-                    "val": "19"
-                },
-                {
-                    "category": "DUO ON",
-                    "val": "18"
-                },
-                {
-                    "category": "EMPTY",
-                    "val": "11"
-                },
-                {
-                    "category": "THICK",
-                    "val": "1"
-                },
-                {
-                    "category": "PRO",
-                    "val": "7"
-                }
-            ],
-            [
-                {
-                    "category": "BLING",
-                    "val": "3"
-                },
-                {
-                    "category": "OUTSIDE ZONE",
-                    "val": "6"
-                },
-                {
-                    "category": "BUCK",
-                    "val": "5"
-                },
-                {
-                    "category": "RPO",
-                    "val": "8"
-                },
-                {
-                    "category": "SCREEN",
-                    "val": "7"
-                },
-                {
-                    "category": "HITCH",
-                    "val": "1"
-                },
-                {
-                    "category": "QUICK",
-                    "val": "20"
-                },
-                {
-                    "category": "DBP",
-                    "val": "41"
-                },
-                {
-                    "category": "TRUCK",
-                    "val": "6"
-                },
-                {
-                    "category": "NAKED",
-                    "val": "9"
-                },
-                {
-                    "category": "LOCK",
-                    "val": "4"
-                },
-                {
-                    "category": "SHOVEL",
-                    "val": "6"
-                },
-                {
-                    "category": "TOSS",
-                    "val": "1"
-                },
-                {
-                    "category": "PA",
-                    "val": "24"
-                },
-                {
-                    "category": "INSIDE ZONE",
-                    "val": "18"
-                },
-                {
-                    "category": "BOOT",
-                    "val": "1"
-                },
-                {
-                    "category": "Q TRUCK",
-                    "val": "1"
-                },
-                {
-                    "category": "ISO",
-                    "val": "3"
-                },
-                {
-                    "category": "RACE",
-                    "val": "4"
-                },
-                {
-                    "category": "PROP",
-                    "val": "2"
-                },
-                {
-                    "category": "SMOKE",
-                    "val": "1"
-                },
-                {
-                    "category": "POWER",
-                    "val": "3"
-                },
-                {
-                    "category": "TRAP",
-                    "val": "2"
-                },
-                {
-                    "category": "READ",
-                    "val": "6"
-                },
-                {
-                    "category": "SKETCH",
-                    "val": "3"
-                },
-                {
-                    "category": "TRICK",
-                    "val": "5"
-                },
-                {
-                    "category": "BUBBLE",
-                    "val": "1"
-                },
-                {
-                    "category": "DECIDE",
-                    "val": "1"
-                }
-            ],
-            [
-                {
-                    "in": "DEUCE",
-                    "out": "QUICK",
-                    "count": "2"
-                },
-                {
-                    "in": "DICE",
-                    "out": "TRUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "TRUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "INSIDE ZONE",
-                    "count": "3"
-                },
-                {
-                    "in": "DICE",
-                    "out": "NAKED",
-                    "count": "4"
-                },
-                {
-                    "in": "DICE",
-                    "out": "PA",
-                    "count": "3"
-                },
-                {
-                    "in": "DING",
-                    "out": "BUCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "DBP",
-                    "count": "5"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "TRAP",
-                    "count": "1"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "DBP",
-                    "count": "2"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "SHOVEL",
-                    "count": "1"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "BLING",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO",
-                    "out": "TRAP",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "THICK",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "TRICK",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "RPO",
-                    "count": "2"
-                },
-                {
-                    "in": "UNB",
-                    "out": "RACE",
-                    "count": "1"
-                },
-                {
-                    "in": "TWINS",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "WING",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "QUICK",
-                    "count": "2"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "SCREEN",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE OFF",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "POWER",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "RT",
-                    "out": "ISO",
-                    "count": "3"
-                },
-                {
-                    "in": "DING",
-                    "out": "PROP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "QUICK",
-                    "count": "6"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "INSIDE ZONE",
-                    "count": "6"
-                },
-                {
-                    "in": "RT",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO STKS",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "DBP",
-                    "count": "3"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
                     "in": "TREY ON",
                     "out": "RPO",
-                    "count": "4"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "SHOVEL",
-                    "count": "5"
+                    "count": "2"
                 },
                 {
                     "in": "TREY ON",
-                    "out": "QUICK",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "SKETCH",
-                    "count": "3"
-                },
-                {
-                    "in": "TREY",
-                    "out": "LOCK",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "TRICK",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "RPO",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
                     "out": "INSIDE ZONE",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "INSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "INSIDE ZONE",
-                    "count": "4"
-                },
-                {
-                    "in": "TRUNK SQZ",
-                    "out": "TRICK",
-                    "count": "2"
-                },
-                {
-                    "in": "PRO",
-                    "out": "BOOT",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "PA",
                     "count": "2"
                 },
                 {
@@ -2528,88 +1218,8 @@
                     "count": "1"
                 },
                 {
-                    "in": "WING",
-                    "out": "PA",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "BLING",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY",
-                    "out": "PA",
-                    "count": "6"
-                },
-                {
-                    "in": "DING",
-                    "out": "LOCK",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIPS",
+                    "in": "TREY ON",
                     "out": "DBP",
-                    "count": "13"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "POWER",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "READ",
-                    "count": "3"
-                },
-                {
-                    "in": "TRIPS",
-                    "out": "READ",
-                    "count": "1"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "QUICK",
-                    "count": "3"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "QUICK",
-                    "count": "1"
-                },
-                {
-                    "in": "PRO",
-                    "out": "BUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRUNK SQZ",
-                    "out": "DBP",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "DBP",
-                    "count": "3"
-                },
-                {
-                    "in": "OPEN",
-                    "out": "DECIDE",
                     "count": "1"
                 },
                 {
@@ -2618,132 +1228,52 @@
                     "count": "1"
                 },
                 {
-                    "in": "WING",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "Q TRUCK",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "HITCH",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "DBP",
-                    "count": "7"
-                },
-                {
                     "in": "TRIO",
-                    "out": "DBP",
-                    "count": "5"
-                },
-                {
-                    "in": "DUO",
-                    "out": "RACE",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "OUTSIDE ZONE",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO",
-                    "out": "PROP",
-                    "count": "1"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "SMOKE",
-                    "count": "1"
-                },
-                {
-                    "in": "DICE",
-                    "out": "RACE",
-                    "count": "2"
-                },
-                {
-                    "in": "EMPTY",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DUO",
-                    "out": "RPO",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE",
-                    "out": "SCREEN",
-                    "count": "6"
-                },
-                {
-                    "in": "DING",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DING",
-                    "out": "PA",
-                    "count": "2"
-                },
-                {
-                    "in": "TREY ON",
-                    "out": "READ",
-                    "count": "2"
-                },
-                {
-                    "in": "DUO ON",
-                    "out": "BUBBLE",
-                    "count": "1"
-                },
-                {
-                    "in": "TRIO ON",
-                    "out": "NAKED",
-                    "count": "1"
-                },
-                {
-                    "in": "DEUCE STKS",
                     "out": "QUICK",
                     "count": "1"
                 },
                 {
-                    "in": "DICE",
-                    "out": "BUCK",
+                    "in": "TRIO ON",
+                    "out": "INSIDE ZONE",
+                    "count": "1"
+                },
+                {
+                    "in": "TRIPS",
+                    "out": "DBP",
+                    "count": "1"
+                },
+                {
+                    "in": "TWINS",
+                    "out": "PA",
+                    "count": "1"
+                },
+                {
+                    "in": "WING",
+                    "out": "OUTSIDE ZONE",
                     "count": "1"
                 }
             ]
         ],
         "splits": {
             "Play Count": {
-                "run": "66",
-                "pass": "126",
-                "Total": "192"
+                "run": "20",
+                "pass": "39",
+                "total": "59"
             },
             "Total Yards": {
-                "run": "131.0",
-                "pass": "749.0",
-                "Total": "880.0"
+                "run": "76.0",
+                "pass": "208.0",
+                "total": "284.0"
             },
             "Average Yards": {
-                "run": "1.9848484848484849",
-                "pass": "6.139344262295082",
-                "Total": "4.583333333333333"
+                "run": "3.8",
+                "pass": "5.473684210526316",
+                "total": "4.813559322033898"
             },
             "TD Count": {
                 "run": "1",
-                "pass": "4",
-                "Total": "5"
+                "pass": "0",
+                "total": "1"
             }
         }
     }
