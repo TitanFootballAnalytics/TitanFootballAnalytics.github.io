@@ -1,7 +1,9 @@
+
+
 // const standardset = ["Down","Distance","FieldZone","Personnel","Formation","PlayType","FormationFam","Cover","CoverFam"];
 //["GameID",	"PosTeam",	"DefTeam",	"HomeTeam",	"AwayTeam",	"Down",	"Dist",	"DistStr",	"Qtr",	"Fieldpos100",	"YdsGained",	"Turnover", "Rush", "Pass", "SpecialTeams", "Interception", "Fumble", "Sack", "Touchdown", "Safety", "DriveNum", "PlayType", "ScoreDiff", "Completion", "TimeUnder", "DDstr", "Hash", "OffPers", "Motion", "Back", "Form"]
 const standardset = ["gameid", "pos_team", "def_team", "home_team", "away_team", "down", "dist", "dist_str", "qtr", "fpos100", "gain", "turnover", "runpass", "specialteams", "int", "fum", "sack", "td", "safety", "drive_num", "playtype", "def_score", "off_score", "score_diff", "completion", "time_under", "dd_str", "hash", "off_pers", "motion", "back", "form"]
-
+var uploadedfile;
 var currentMapping = {};
 const NO_MAPPING = 404;
 for(var i = 0; i< standardset.length;i++){
@@ -287,9 +289,105 @@ function submitHandler(){
 		}
 	}
 
-	if(verifyMapping()){
+	if(verifyMapping() && uploadedfile){
 		console.log("Succesful Map!")
 		console.log(currentMapping);
+		cognitoUser.getSession(function(err, session) {
+			if (err) {	alert(err.message || JSON.stringify(err)); return;}
+			let team = "team";
+			// NOTE: getSession must be called to authenticate user before calling getUserAttributes
+			cognitoUser.getUserAttributes(function(err, attributes) {
+				if (err) {alert(err);}
+				else {
+					// console.log(attributes)
+				team = JSON.parse(JSON.stringify(attributes[1])).Value;
+					// console.log("======================",team);
+				}
+			});
+
+			var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+			AWS.config.region = _config.cognito.region;
+			AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+				IdentityPoolId: _config.identity.identityPoolId,
+				Logins: {
+					[`${loginUrl}`]: session
+						.getIdToken()
+						.getJwtToken(),
+				}
+			});
+
+			AWS.config.credentials.refresh(error => {
+				if (error) {console.error(error);	}
+				else {
+					var titancommon = new AWS.S3({
+							apiVersion: "2006-03-01",
+							params: { Bucket: "titancommonstorage" }
+					});
+					var filename = encodeURIComponent(uploadedfile.name);
+					filename = filename.substring(0,filename.lastIndexOf('.'));
+					var directory = ""+ encodeURIComponent(team);
+					console.log(directory+"/"+filename)
+
+					var blob = new Blob([JSON.stringify(currentMapping)], {type: "text/json;charset=utf-8"});
+					// saveAs(blob, "./hello world.txt");
+					var jsonfile = new File([blob],filename+".json")
+					console.log(blob);
+					console.log(jsonfile);
+
+					var params = {
+						Bucket: "titancommonstorage",
+						Key: directory+"/"+filename+"/"+filename+".json",
+						Body: jsonfile
+					}
+
+
+					titancommon.putObject(params, function(err, data) {
+						if (err) {
+							console.log(err);
+						} else {
+							var titanraw = new AWS.S3({
+									apiVersion: "2006-03-01",
+									params: { Bucket: "titanrawdata" }
+							});
+							var params = {
+								Bucket: "titanrawdata",
+								Key: directory+"/"+filename+".csv",
+								Body: uploadedfile
+							}
+							titanraw.putObject(params, function(err, data) {
+								if (err) {
+									console.log(err);
+								} else {
+									console.log("doublysuccess")
+								}
+							});
+						}
+					});
+
+
+					var params ={
+						Delimiter: "/",
+						Prefix:directory
+					}
+					// s3.listObjectsV2(params, function(err, data) {
+					// 	if (err) console.log(err,err.stack);
+					// 	else {//console.log(data.Contents);
+					// 		var currDirectory = data.Contents;
+					// 		for(var i = 0; i < currDirectory.length;i++){
+					// 			// console.log(currDirectory[i].Key,directory+photoKey)
+					// 			if(currDirectory[i].Key === directory+filename){
+					// 				alert("please change file already exists in our system, please change filename");
+					// 				return;
+					// 			}
+					// 		}
+					//
+					//
+					// 	}
+					//
+					// });
+				}
+			});
+		});
 	}
 	else if(firstToScroll){
 		// console.log("hit")
@@ -364,6 +462,7 @@ $(document).ready(function() {
 	// Upload selected file and create array
 	var uploadFile = function(evt) {
 		var file = evt.target.files[0];
+		uploadedfile = evt.target.files[0];
 		var reader = new FileReader();
 		reader.readAsText(file);
 		reader.onload = function(event) {
@@ -406,23 +505,23 @@ $(document).ready(function() {
 						// console.log(AWS)
 						var s3 = new AWS.S3({
 							  apiVersion: "2006-03-01",
-							  params: { Bucket: "/cornellheavies" }
+							  params: { Bucket: "titanrawdata" }
 						});
 
 
-					  var photoKey = encodeURIComponent(file.name);
-						var directory = ""+ encodeURIComponent(team)+"/datasets/";
+					  var filename = encodeURIComponent(file.name);
+						var directory = ""+ encodeURIComponent(team)+"/";
 						var params ={
 						  Delimiter: "/",
 						  Prefix:directory
 				    }
-					  s3.listObjects(params, function(err, data) {
+					  s3.listObjectsV2(params, function(err, data) {
 						  if (err) console.log(err,err.stack);
 						  else {//console.log(data.Contents);
 								var currDirectory = data.Contents;
 								for(var i = 0; i < currDirectory.length;i++){
 									// console.log(currDirectory[i].Key,directory+photoKey)
-									if(currDirectory[i].Key === directory+photoKey){
+									if(currDirectory[i].Key === directory+filename){
 										alert("please change file already exists in our system, please change filename");
 										return;
 									}
