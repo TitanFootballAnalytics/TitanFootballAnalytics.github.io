@@ -66,7 +66,7 @@ var Auth = window.auth || {};
     function register(email, password, onSuccess, onFailure) {
         var dataEmail = {
             Name: 'email',
-            Value: email
+            Value: email.toLowerCase()
         };
         var dataName = {
             Name: 'name',
@@ -76,15 +76,33 @@ var Auth = window.auth || {};
             Name: 'gender',
             Value: "Male"
         };
+        var dataCity = {
+            Name: 'custom:City',
+            Value: "Ithaca,NY"
+        };
+        var dataAge = {
+            Name: 'custom:Age',
+            Value: "59"
+        };
+        var dataTeam = {
+            Name: 'custom:Team',
+            Value: "BigRed"
+        };
 
         var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
         var attributeName = new AmazonCognitoIdentity.CognitoUserAttribute(dataName);
         var attributeGender = new AmazonCognitoIdentity.CognitoUserAttribute(dataGender);
+        var attributeCity = new AmazonCognitoIdentity.CognitoUserAttribute(dataCity);
+        var attributeAge = new AmazonCognitoIdentity.CognitoUserAttribute(dataAge);
+        var attributeTeam = new AmazonCognitoIdentity.CognitoUserAttribute(dataTeam);
 
         var attributeList = [];
         attributeList.push(attributeEmail);
         attributeList.push(attributeName);
         attributeList.push(attributeGender);
+        attributeList.push(attributeCity);
+        attributeList.push(attributeAge);
+        attributeList.push(attributeTeam);
 
 
         userPool.signUp(email, password, attributeList, null,
