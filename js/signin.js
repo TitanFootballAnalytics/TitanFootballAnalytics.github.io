@@ -88,7 +88,7 @@ var Auth = window.auth || {};
 
     function signin(email, password, onSuccess, onFailure) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-            Email: email,
+            Email: email.toLowerCase(),
             Password: password
         });
 
@@ -102,8 +102,8 @@ var Auth = window.auth || {};
 
     function createCognitoUser(email) {
         return new AmazonCognitoIdentity.CognitoUser({
-            Username: email,
-            Email: email,
+            Username: email.toLowerCase(),
+            Email: email.toLowerCase(),
             Pool: userPool
         });
     }
@@ -119,7 +119,7 @@ var Auth = window.auth || {};
         var email = $('#SIGNINUSERNAME').val();
         var password = $('#SIGNINPASSWORD').val();
         event.preventDefault();
-        signin(email, password,
+        signin(email.toLowerCase(), password,
             (result) => {
                 var accessToken = result.getAccessToken().getJwtToken();
                 console.log(accessToken);

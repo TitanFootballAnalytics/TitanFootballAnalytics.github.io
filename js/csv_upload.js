@@ -245,7 +245,7 @@ function submitHandler(){
 	var key;
 	var value;
 	var firstToScroll = null;
-	console.log("=============================")
+	// console.log("=============================")
 	for(var i = 0; i < mapObjs.length;i++){
 		leftBox = mapObjs[i].children[0];
 		rightBox = mapObjs[i].children[2];
@@ -271,7 +271,7 @@ function submitHandler(){
 			}
 			else{
 				if(firstToScroll === null && mapObjs[i].children[2].style.backgroundColor != "grey"){
-					console.log("set",mapObjs[i])
+					// console.log("set",mapObjs[i])
 					firstToScroll = mapObjs[i];
 				}
 			}
@@ -290,7 +290,7 @@ function submitHandler(){
 		console.log(currentMapping);
 	}
 	else if(firstToScroll){
-		console.log("hit")
+		// console.log("hit")
 
 		// console.log()
 		alert("Unsuccesful mapping (Missing some collumn, please disable collumns you cannot match with)")
@@ -367,6 +367,196 @@ $(document).ready(function() {
 		reader.onload = function(event) {
 			console.log(event)
 			//Jquery.csv
+			console.log(file)
+
+
+
+			cognitoUser.getSession(function(err, session) {
+				if (err) {	alert(err.message || JSON.stringify(err)); return;}
+				// console.log('session validity: ' + session.isValid());
+
+				let team = "team";
+				// NOTE: getSession must be called to authenticate user before calling getUserAttributes
+				cognitoUser.getUserAttributes(function(err, attributes) {
+					if (err) {alert(err);}
+					else {
+						// console.log(attributes)
+					team = JSON.parse(JSON.stringify(attributes[1])).Value;
+						// console.log("======================",team);
+					}
+				});
+
+				var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+		    AWS.config.region = _config.cognito.region;
+				AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+					IdentityPoolId: _config.identity.identityPoolId,
+					Logins: {
+						[`${loginUrl}`]: session
+							.getIdToken()
+							.getJwtToken(),
+					}
+				});
+
+		    AWS.config.credentials.refresh(error => {
+					if (error) {console.error(error);	}
+					else {
+						// console.log(AWS.config.credentials)
+						// console.log(AWS)
+						var s3 = new AWS.S3({
+							  apiVersion: "2006-03-01",
+							  params: { Bucket: "/cornellheavies" }
+						});
+
+
+					  var photoKey = encodeURIComponent(file.name);
+						var directory = ""+ encodeURIComponent(team)+"/datasets/";
+						var params ={
+						  Delimiter: "/",
+						  Prefix:directory
+				    }
+					  s3.listObjects(params, function(err, data) {
+						  if (err) console.log(err,err.stack);
+						  else {//console.log(data.Contents);
+								var currDirectory = data.Contents;
+								for(var i = 0; i < currDirectory.length;i++){
+									// console.log(currDirectory[i].Key,directory+photoKey)
+									if(currDirectory[i].Key === directory+photoKey){
+										alert("please change file already exists in our system, please change filename");
+										return;
+									}
+								}
+								// var params = {
+								// 	Bucket: "cornellheavies",
+								// 	Key: directory+photoKey,
+								// 	Body: file
+								// }
+								//
+								// s3.putObject(params, function(err, data) {
+								// 	if (err) {
+								// 		console.log(err);
+								// 	} else {
+								// 		console.log('Success');
+								// 	}
+								// });
+
+							}
+
+						});
+
+						// var params = {
+						//  Bucket: "cornellheaviesV2"
+						// };
+						// s3.createBucket(params, function(err, data) {
+						// 	if (err) console.log(err, err.stack); // an error occurred
+						// 	else     console.log(data);           // successful response
+						// });
+						// console.log(s3.listBuckets());
+
+
+
+
+
+					  // var upload = new AWS.S3.ManagedUpload({
+						// 	 params : {
+						// 		Bucket: "cornellheavies",
+						// 		Key: photoKey,
+						// 		Body: file,
+						// 		ACL: "public-read"
+						// 	}
+					  // });
+
+
+
+
+
+
+
+
+						//getting objects
+						// var params = {
+						// 	Bucket: "cornellheavies",
+						// 	Key: photoKey
+						// }
+						// var fileobj = s3.getObject(params, function(err, data) {
+					  //   if (err) console.log(err, err.stack); // an error occurred
+					  //   else {
+						// 	 	console.log(data);           // successful response
+					  //
+						// 		var binArrayToJson = function(binArray) {
+						// 	    var str = "";
+						// 	    for (var i = 0; i < binArray.length; i++) {
+						// 	        str += String.fromCharCode(parseInt(binArray[i]));
+						// 	    }
+						// 	    return str
+						// 	}
+						// 	console.log(binArrayToJson(data.Body));
+						//  }
+					  //
+					  // });
+
+
+
+
+					}
+				});
+			});
+
+
+			// console.log("Work location===========================")
+			// console.log(_config.identity.identityPoolId);
+			//
+			// // console.log(AWS.config);
+			// // AWS.config.crendentials.refresh((err)=>{
+			// // 	console.log(err)
+			// // 	console.log(AWS.credentials);
+			// // })
+			// console.log("Work location===========================")
+			// var s3 = new AWS.S3({
+			//   apiVersion: "2006-03-01",
+			//   params: { Bucket: "cornellheavies" }
+			// });
+			//
+			// console.log(s3);
+			// s3.listObjects({ Delimiter: "/" },(err, data) => {
+			// 	console.log(err);
+			// 	console.log(data);
+			// });
+
+
+
+
+
+
+
+
+			// const xhr = new XMLHttpRequest();
+			// console.log(xhr);
+			// const formData = new FormData();
+			//
+			// formData.append("myFiles[]",file);
+			// xhr.open("post","https://399j7jpqkf.execute-api.us-east-1.amazonaws.com/indevdeployment")
+			// xhr.send(formData);
+			// $.ajax({
+      //       method: 'POST',
+      //       url: "http://127.0.0.1:3000/",
+      //       headers: {
+      //           // Authorization: authToken
+			// 					contentType :
+      //       },
+      //       data: JSON.stringify({
+      //           PickupLocation: {
+      //               Latitude: pickupLocation.latitude,
+      //               Longitude: pickupLocation.longitude
+      //           }
+      //       }),
+      //       contentType: 'application/json',
+      //       success: completeRequest,
+      //       error: function ajaxError(jqXHR, textStatus, errorThrown) {
+      //           console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+      //           console.error('Response: ', jqXHR.responseText);
+      //           alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
+      //       }
+      //   });
 			createArray($.csv.toArrays(event.target.result));
 		};
 	};
@@ -374,8 +564,10 @@ $(document).ready(function() {
 	// Validate file import
 	var createArray = function(data) {
 		if(data !== null && data !== "" && data.length > 1) {
+
 			this.data = data;
 			generateHoldingCell(data[0]);
+			console.log(data);
 
 			StatsProcessor(data);
 

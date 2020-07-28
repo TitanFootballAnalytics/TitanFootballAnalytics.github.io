@@ -113,7 +113,7 @@ var colors=[
 ]
 
 function generateColorString(color,alpha){
-  return 'rgb('+ color.r +', ' + color.g + ', ' + color.b + ','+alpha+')'
+  return 'rgba('+ color.r +', ' + color.g + ', ' + color.b + ','+alpha+')'
 }
 
 function getColor(index){
@@ -430,7 +430,10 @@ function removeLoadingBars(canvas) {
 }
 
 function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex,metadata) {
-
+  var transition_delay = 500;
+  if(data.length > 14){
+    transition_delay = 4200/data.length;
+  }
 
   x1 = x1+5;
   x2 = x2-5;
@@ -519,7 +522,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex,metadata) {
     .transition()
     .duration(1000)
     .delay(function (d, i) {
-      return data.length*500 - i * 500;
+      return data.length*transition_delay - i * transition_delay;
     })
     .attr("name", d => d.category)
     .attr("width", d => x(d.val))
@@ -637,7 +640,10 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex,metadata) {
 };
 
 function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,colorDex2) {
-
+  var transition_delay = 300;
+  if(data.length > 14){
+    transition_delay = 4200/data.length;
+  }
   function toString(x, y) {
     return "" + x + " " + y + "";
   }
@@ -820,7 +826,7 @@ function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,c
     .transition()
     .duration(1000)
     .delay(function (d, i) {
-      return i * 300;
+      return i * transition_delay;
     })
     .attr("opacity",0.5)
 
@@ -1567,7 +1573,7 @@ function addHeader(svg, data,metadata) {
     if (i == 0) {
       shapes_top.push(canvas.append("path")
         .attr("d", "M " + (rad + 42) + " " + t + " A " + rad + " " + rad + " 0 0 1 " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
-        .attr("fill", "#FC766AFF")
+        .attr("fill", "#fc766a")
         .attr("fill-opacity", 0.6)
         .attr("stroke", "maroon")
         .attr("stroke-width", 1)
@@ -1575,7 +1581,7 @@ function addHeader(svg, data,metadata) {
       canvas.append("text")
         .attr("x", xcur + separation)
         .attr("y", ((h + t + t) / 2)+15)
-        .attr("fill", "#00203FFF")
+        .attr("fill", "#00203F")
         .style("font", "bold sans-serif")
         .style("font-weight", "bold")
         .text(titles[i])
@@ -1583,7 +1589,7 @@ function addHeader(svg, data,metadata) {
       canvas.append("text")
         .attr("x", xcur + separation)
         .attr("y", ((h + t + t) / 2))
-        .attr("fill", "#00203FFF")
+        .attr("fill", "#00203F")
         .style("font", "bold sans-serif")
         .style("font-weight", "normal")
         .text(columntitles[i])
@@ -1603,7 +1609,7 @@ function addHeader(svg, data,metadata) {
       if(i <= 2) {
         shapes_top.push(canvas.append("path")
           .attr("d", "M " + (xcur - 20) + " " + t + " L " + xcur + " " + (h + t) + " L " + (xcur + w) + " " + (h + t) + " L " + (xcur + w - 20) + " " + t + " z")
-          .attr("fill", "#FC766AFF")
+          .attr("fill", "#FC766A")
           .attr("fill-opacity", 0.6)
           .attr("stroke", "maroon")
           .attr("stroke-width", 1)
@@ -1613,7 +1619,7 @@ function addHeader(svg, data,metadata) {
       canvas.append("text")
         .attr("x", xcur + separation)
         .attr("y", ((h + t + t) / 2)+15)
-        .attr("fill", "#00203FFF")
+        .attr("fill", "#00203F")
         .style("font", "bold sans-serif")
         .style("font-weight", "bold")
         .text(titles[i])
@@ -1621,7 +1627,7 @@ function addHeader(svg, data,metadata) {
       canvas.append("text")
         .attr("x", xcur + separation)
         .attr("y", ((h + t + t) / 2))
-        .attr("fill", "#00203FFF")
+        .attr("fill", "#00203F")
         .style("font", "bold sans-serif")
         .style("font-weight", "normal")
         .text(columntitles[i])

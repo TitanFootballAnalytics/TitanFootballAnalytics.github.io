@@ -34,8 +34,8 @@ var Auth = window.auth || {};
         var code = $('#VERFICATIONCODE').val();
         event.preventDefault();
         var userData = {
-           Username: email,
-	         Email: email  ,
+           Username: email.toLowerCase(),
+	         Email: email.toLowerCase()  ,
 	         Pool: userPool,
         };
         var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
