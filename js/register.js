@@ -45,6 +45,13 @@ var Auth = window.auth || {};
         var email = $('#REGISTEREMAIL').val();
         var password = $('#REGISTERPASSWORD').val();
         var password2 = $('#CONFIRMPASSWORD').val();
+        var city = $('#CITY').val();
+        var age = $('#myRange').val();
+        var gender = $("input[name='gender']:checked").val();
+        var teamcode = $("CITY").val();
+
+
+
 
         var onSuccess = (result) => {
             var cognitoUser = result.user;
@@ -56,14 +63,17 @@ var Auth = window.auth || {};
         var onFailure = (err) => {alert(err);};
         event.preventDefault();
 
+        var teamcodemap = {1111:"Big Red",2222:"Small Blue"};
+        var team = teamcodemap[teamcode];
+
         if (password === password2) {
-            register(email, password, onSuccess, onFailure);
+            register(email, password, onSuccess, onFailure, gender, city, age, team);
         } else {
             alert('Passwords do not match');
         }
     }
 
-    function register(email, password, onSuccess, onFailure) {
+    function register(email, password, onSuccess, onFailure, gender, city, age, team) {
         var dataEmail = {
             Name: 'email',
             Value: email.toLowerCase()
@@ -117,3 +127,12 @@ var Auth = window.auth || {};
     }
 
 }(jQuery));
+
+
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("ageupdate");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {output.innerHTML = this.value;}
