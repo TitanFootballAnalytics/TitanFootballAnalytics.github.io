@@ -77,7 +77,7 @@ async function setscorecardrequests(reportid) {
 
     for (var i = 0; i < configfile.length; i++) {
 
-        tempscorecardrequest = document.getElementById("test"+i);
+        tempscorecardrequest = document.getElementById("test"+(i+1));
         selectors = tempscorecardrequest.getElementsByTagName("select");
         inputs = tempscorecardrequest.getElementsByTagName("input");
 
@@ -180,9 +180,7 @@ function submitscrequests() {
   var reportid = returnreportid()
 
   //PUT CODE HERE TO PASS REQUEST JSON
-  awsrequest(finalmapping,reportid)
-
-
+  var result = awsrequest(finalmapping,reportid);
 
   return finalmapping;}
 

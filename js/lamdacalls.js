@@ -49,7 +49,7 @@ function awsrequest(screquest,reportid){
 
         //calllambda(screquest,"testhtmljean",lambda);
         var directory = team+"/reports/"+reportid+"/report_"+team+"_"+reportid+".json";
-        writes3(screquest,directory,titancommon,"report_"+team+"_"+reportid+".json");
+        writes3(screquest,directory,titancommon,"report_"+team+"_"+reportid+".json",reportid);
 
 
 
@@ -57,7 +57,9 @@ function awsrequest(screquest,reportid){
   })
 }
 
-function writes3(msg,directory,s3bucket,filename){
+function writes3(msg,directory,s3bucket,filename,reportid){
+
+  
 
   var blob = new Blob([JSON.stringify(msg)], {type: "text/json;charset=utf-8"});
   var jsonfile = new File([blob],filename+".json")
@@ -75,9 +77,10 @@ function writes3(msg,directory,s3bucket,filename){
     } else {
       console.log("yeetushiatus")
 
+      window.location.replace("scorecards.html?reportid="+reportid);
+
     }
   });
-
 
 }
 
