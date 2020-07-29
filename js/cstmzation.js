@@ -43,8 +43,8 @@ function addselectoptions(){
 function checkifnewreport(){
   var reportid = getUrlParam("reportid","empty");
   if(reportid != "empty"){
-    console.log(reportid)
-    setscorecardrequests(reportid);
+    awsrequest({},reportid,2)
+
   }
   else {
     addselectoptions()
@@ -65,19 +65,25 @@ function returnreportid(){
 }
 
 
-async function setscorecardrequests(reportid) {
+async function setscorecardrequests(configjson) {
 
-    var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json";
-    const configfile = await d3.json(configfilename);
+    //var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json";
+    //const configfile = await d3.json(configfilename);
+
+    const configfile = configjson;
+
 
     var tempscorecardrequest;
     var selectors;var node;var textnode;var inputs;
 
-    multiplyNode(document.getElementById("test1"),configfile.length-1,true);
+    multiplyNode(document.getElementById("test1"),Object.keys(configfile).length,true);
 
-    for (var i = 0; i < configfile.length; i++) {
 
-        tempscorecardrequest = document.getElementById("test"+(i+1));
+
+    //for (var i = 0; i < configfile.length; i++) {
+    for (var i in configfile) {
+
+        tempscorecardrequest = document.getElementById("test"+(Number(i)+1));
         selectors = tempscorecardrequest.getElementsByTagName("select");
         inputs = tempscorecardrequest.getElementsByTagName("input");
 
@@ -95,9 +101,10 @@ async function setscorecardrequests(reportid) {
           node.appendChild(textnode);
           selectors[k+3].appendChild(node);
         }
+
         for (var k = 0; k < configfile[i]["Charts"].length; k++) {
-          if(configfile[i]["Charts"][k] == "Bar"){inputs[(k*2)+1].checked = true;}
-          if(configfile[i]["Charts"][k] == "Pie"){inputs[(k*2)+2].checked = true;}
+          if(configfile[i]["Charts"][k] == "Bar Chart"){inputs[(k*2)+1].checked = true;}
+          if(configfile[i]["Charts"][k] == "Pie Chart"){inputs[(k*2)+2].checked = true;}
         }
         for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
           if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
@@ -180,7 +187,7 @@ function submitscrequests() {
   var reportid = returnreportid()
 
   //PUT CODE HERE TO PASS REQUEST JSON
-  var result = awsrequest(finalmapping,reportid);
+  var result = awsrequest(finalmapping,reportid,1);
 
   return finalmapping;}
 

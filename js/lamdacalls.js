@@ -2,7 +2,7 @@
 
 
 
-function awsrequest(screquest,reportid){
+function awsrequest(screquest,reportid,type){
   cognitoUser.getSession(function(err, session) {
     if (err) {	alert(err.message || JSON.stringify(err)); return;}
 
@@ -49,7 +49,12 @@ function awsrequest(screquest,reportid){
 
         //calllambda(screquest,"testhtmljean",lambda);
         var directory = team+"/reports/"+reportid+"/report_"+team+"_"+reportid+".json";
-        writes3(screquest,directory,titancommon,"report_"+team+"_"+reportid+".json",reportid);
+        if(type == 1){
+          writes3(screquest,directory,titancommon,"report_"+team+"_"+reportid+".json",reportid);
+        }
+        if(type == 2){
+          gets3object(directory,titancommon);
+        }
 
 
 
@@ -59,7 +64,7 @@ function awsrequest(screquest,reportid){
 
 function writes3(msg,directory,s3bucket,filename,reportid){
 
-  
+
 
   var blob = new Blob([JSON.stringify(msg)], {type: "text/json;charset=utf-8"});
   var jsonfile = new File([blob],filename+".json")
@@ -84,6 +89,28 @@ function writes3(msg,directory,s3bucket,filename,reportid){
 
 }
 
+function gets3object(directory,s3bucket){
+
+  var output = "dd";
+
+  var params = {
+    Bucket: "titancommonstorage",
+    Key: directory
+  }
+
+
+  s3bucket.getObject(params, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      output = JSON.parse(binArrayToJson(data.Body))
+      setscorecardrequests(output);
+    }
+
+
+  });
+}
+
 function calllambda(message,lambdaname,lambda){
 
   var params = {
@@ -100,3 +127,11 @@ function calllambda(message,lambdaname,lambda){
     }
   });
 }
+
+function binArrayToJson(binArray) {
+	    var str = "";
+	    for (var i = 0; i < binArray.length; i++) {
+	        str += String.fromCharCode(parseInt(binArray[i]));
+	    }
+	    return str
+	}
