@@ -1,58 +1,99 @@
-cognitoUser.getSession(function(err, session) {
-  if (err) {	alert(err.message || JSON.stringify(err)); return;}
-  // console.log('session validity: ' + session.isValid());
 
-  let team = "team";
-  // NOTE: getSession must be called to authenticate user before calling getUserAttributes
-  cognitoUser.getUserAttributes(function(err, attributes) {
-    if (err) {alert(err);}
-    else {
-      // console.log(attributes)
-    team = JSON.parse(JSON.stringify(attributes[1])).Value;
-      // console.log("======================",team);
+
+
+
+function awsrequest(screquest,reportid){
+  cognitoUser.getSession(function(err, session) {
+    if (err) {	alert(err.message || JSON.stringify(err)); return;}
+
+    let team = "team";
+    // NOTE: getSession must be called to authenticate user before calling getUserAttributes
+    cognitoUser.getUserAttributes(function(err, attributes) {
+      if (err) {alert(err);}
+      else {
+      team = JSON.parse(JSON.stringify(attributes[1])).Value;
+
+      }
+    });
+
+    var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+    AWS.config.region = _config.cognito.region;
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: _config.identity.identityPoolId,
+      Logins: {
+        [`${loginUrl}`]: session
+          .getIdToken()
+          .getJwtToken(),
+      }
+    });
+
+    AWS.config.credentials.refresh(error => {
+      if (error) {console.error(error);	}
+      else {
+
+        var s3 = new AWS.S3({
+            apiVersion: "2006-03-01",
+            params: { Bucket: "titancommonstorage"}
+        });
+
+
+        var lambda = new AWS.Lambda({credentials: AWS.config.credentials,
+                                      region : _config.cognito.region });
+
+        var titancommon = new AWS.S3({
+            apiVersion: "2006-03-01",
+            params: { Bucket: "titancommonstorage" }
+        });
+
+
+
+        //calllambda(screquest,"testhtmljean",lambda);
+        var directory = team+"/reports/"+reportid+"/report_"+team+"_"+reportid+".json";
+        writes3(screquest,directory,titancommon,"report_"+team+"_"+reportid+".json");
+
+
+
+  }})
+  })
+}
+
+function writes3(msg,directory,s3bucket,filename){
+
+  var blob = new Blob([JSON.stringify(msg)], {type: "text/json;charset=utf-8"});
+  var jsonfile = new File([blob],filename+".json")
+
+  var params = {
+    Bucket: "titancommonstorage",
+    Key: directory,
+    Body: jsonfile
+  }
+
+
+  s3bucket.putObject(params, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("yeetushiatus")
+
     }
   });
 
-  var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
-  AWS.config.region = _config.cognito.region;
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: _config.identity.identityPoolId,
-    Logins: {
-      [`${loginUrl}`]: session
-        .getIdToken()
-        .getJwtToken(),
+
+}
+
+function calllambda(message,lambdaname,lambda){
+
+  var params = {
+    FunctionName: lambdaname, /* required */
+    Payload: JSON.stringify(message)}
+
+  lambda.invoke(params, function(err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else {
+      console.log(data);           // successful response
+      var result = JSON.parse(data.Payload)
+      // Obtain Report ID
+      // Redirect to report page
     }
   });
-
-  AWS.config.credentials.refresh(error => {
-    if (error) {console.error(error);	}
-    else {
-
-      // AWS.config.apiVersions = {
-      //   lambda: '2015-03-31'  ///ignore if latest version
-      // };
-      var lambda = new AWS.Lambda({credentials: AWS.config.credentials,
-                                    region : _config.cognito.region });
-
-
-
-      var params = {
-        FunctionName: 'testhtmljean', /* required */
-        Payload: JSON.stringify({"test":1})}
-
-      console.log(lambda)
-
-      lambda.invoke(params, function(err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else {
-
-          console.log(data);           // successful response
-          var result = JSON.parse(data.Payload)
-
-        }
-
-      });
-
-
-}})
-})
+}

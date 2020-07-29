@@ -49,10 +49,21 @@ function checkifnewreport(){
   else {
     addselectoptions()
   }
+}
+
+function returnreportid(){
+    var reportid = getUrlParam("reportid","empty");
+    if(reportid != "empty"){
+      return reportid
+    }
+    else {
+      return "9999"
+    }
 
 
 
 }
+
 
 async function setscorecardrequests(reportid) {
 
@@ -166,7 +177,10 @@ function submitscrequests() {
   }
   console.log(finalmapping)
 
+  var reportid = returnreportid()
+
   //PUT CODE HERE TO PASS REQUEST JSON
+  awsrequest(finalmapping,reportid)
 
 
 
