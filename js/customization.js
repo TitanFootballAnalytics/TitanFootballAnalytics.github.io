@@ -46,7 +46,7 @@ cognitoUser.getSession(function(err, session) {
             .getJwtToken(),
         }
       });
-
+      //TODO error when multiple sign ins and outs (cookie issue?)
       AWS.config.credentials.refresh(error => {
         if (error) {console.error(error);	}
         else {
