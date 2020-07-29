@@ -48,7 +48,7 @@ var Auth = window.auth || {};
         var city = $('#CITY').val();
         var age = $('#myRange').val();
         var gender = $("input[name='gender']:checked").val();
-        var teamcode = $("CITY").val();
+        var teamcode = $("#TEAMCODE").val();
 
 
 
@@ -63,7 +63,7 @@ var Auth = window.auth || {};
         var onFailure = (err) => {alert(err);};
         event.preventDefault();
 
-        var teamcodemap = {1111:"Big Red",2222:"Small Blue"};
+        var teamcodemap = {1111:"Big_Red",2222:"Small_Blue"};
         var team = teamcodemap[teamcode];
 
         if (password === password2) {
@@ -84,19 +84,19 @@ var Auth = window.auth || {};
         };
         var dataGender = {
             Name: 'gender',
-            Value: "Male"
+            Value: gender
         };
         var dataCity = {
             Name: 'custom:City',
-            Value: "Ithaca,NY"
+            Value: city
         };
         var dataAge = {
             Name: 'custom:Age',
-            Value: "59"
+            Value: age
         };
         var dataTeam = {
             Name: 'custom:Team',
-            Value: "BigRed"
+            Value: team
         };
 
         var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
