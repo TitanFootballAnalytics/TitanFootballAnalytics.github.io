@@ -144,9 +144,6 @@ function opensetting(target) {
   var target4 = headers[4];
   var target5 = headers[5];
 
-  for (var i = 0; i < mappings.Targetcolumns.length; i++) {
-
-  }
 
   target1.innerHTML = mappings["target0"].concat(" Chart Selection");
   target2.innerHTML = mappings["target1"].concat(" Chart Selection");

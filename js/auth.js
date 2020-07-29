@@ -33,6 +33,14 @@ var userPool= new AmazonCognitoIdentity.CognitoUserPool(poolData);
 var cognitoUser = userPool.getCurrentUser();
 
 if (cognitoUser != null) {
+  document.getElementById('SIGNOUT').addEventListener("click",handleSignOut,false);
+
+  function handleSignOut(){
+    cognitoUser.signOut();
+    window.location.href = '/index.html';
+    return;
+  }
+
 	cognitoUser.getSession(function(err, session) {
 		if (err) {
 			alert(err.message || JSON.stringify(err));
