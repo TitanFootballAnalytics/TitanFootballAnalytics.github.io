@@ -300,93 +300,99 @@ function submitHandler(){
 				if (err) {alert(err);}
 				else {
 					// console.log(attributes)
-				team = JSON.parse(JSON.stringify(attributes[1])).Value;
+					if(JSON.parse(JSON.stringify(attributes[1])).Name === "custom:Team")
+		        team = JSON.parse(JSON.stringify(attributes[1])).Value;
+		      else {
+		        alert("No team name detected")
+		      }
 					// console.log("======================",team);
-				}
-			});
 
-			var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
-			AWS.config.region = _config.cognito.region;
-			AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-				IdentityPoolId: _config.identity.identityPoolId,
-				Logins: {
-					[`${loginUrl}`]: session
-						.getIdToken()
-						.getJwtToken(),
-				}
-			});
-
-			AWS.config.credentials.refresh(error => {
-				if (error) {console.error(error);	}
-				else {
-					var titancommon = new AWS.S3({
-							apiVersion: "2006-03-01",
-							params: { Bucket: "titancommonstorage" }
-					});
-					var filename = encodeURIComponent(uploadedfile.name);
-					filename = filename.substring(0,filename.lastIndexOf('.'));
-					var directory = ""+ encodeURIComponent(team);
-					console.log(directory+"/"+filename)
-
-					var blob = new Blob([JSON.stringify(currentMapping)], {type: "text/json;charset=utf-8"});
-					// saveAs(blob, "./hello world.txt");
-					var jsonfile = new File([blob],filename+".json")
-					console.log(blob);
-					console.log(jsonfile);
-
-					var params = {
-						Bucket: "titancommonstorage",
-						Key: directory+"/datasets/"+filename+"/"+filename+".json",
-						Body: jsonfile
-					}
-
-
-					titancommon.putObject(params, function(err, data) {
-						if (err) {
-							console.log(err);
-						} else {
-							var titanraw = new AWS.S3({
-									apiVersion: "2006-03-01",
-									params: { Bucket: "titanrawdata" }
-							});
-							var params = {
-								Bucket: "titanrawdata",
-								Key: directory+"/"+filename+".csv",
-								Body: uploadedfile
-							}
-							titanraw.putObject(params, function(err, data) {
-								if (err) {
-									console.log(err);
-								} else {
-									console.log("doublysuccess")
-								}
-							});
+					var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+					AWS.config.region = _config.cognito.region;
+					AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+						IdentityPoolId: _config.identity.identityPoolId,
+						Logins: {
+							[`${loginUrl}`]: session
+								.getIdToken()
+								.getJwtToken(),
 						}
 					});
 
+					AWS.config.credentials.refresh(error => {
+						if (error) {console.error(error);	}
+						else {
+							var titancommon = new AWS.S3({
+									apiVersion: "2006-03-01",
+									params: { Bucket: "titancommonstorage" }
+							});
+							var filename = encodeURIComponent(uploadedfile.name);
+							filename = filename.substring(0,filename.lastIndexOf('.'));
+							var directory = ""+ encodeURIComponent(team);
+							console.log(directory+"/"+filename)
 
-					// var params ={
-					// 	Delimiter: "/",
-					// 	Prefix:directory
-					// }
-					// s3.listObjectsV2(params, function(err, data) {
-					// 	if (err) console.log(err,err.stack);
-					// 	else {//console.log(data.Contents);
-					// 		var currDirectory = data.Contents;
-					// 		for(var i = 0; i < currDirectory.length;i++){
-					// 			// console.log(currDirectory[i].Key,directory+photoKey)
-					// 			if(currDirectory[i].Key === directory+filename){
-					// 				alert("please change file already exists in our system, please change filename");
-					// 				return;
-					// 			}
-					// 		}
-					//
-					//
-					// 	}
-					//
-					// });
+							var blob = new Blob([JSON.stringify(currentMapping)], {type: "text/json;charset=utf-8"});
+							// saveAs(blob, "./hello world.txt");
+							var jsonfile = new File([blob],filename+".json")
+							console.log(blob);
+							console.log(jsonfile);
+
+							var params = {
+								Bucket: "titancommonstorage",
+								Key: directory+"/datasets/"+filename+"/"+filename+".json",
+								Body: jsonfile
+							}
+
+
+							titancommon.putObject(params, function(err, data) {
+								if (err) {
+									console.log(err);
+								} else {
+									var titanraw = new AWS.S3({
+											apiVersion: "2006-03-01",
+											params: { Bucket: "titanrawdata" }
+									});
+									var params = {
+										Bucket: "titanrawdata",
+										Key: directory+"/"+filename+".csv",
+										Body: uploadedfile
+									}
+									titanraw.putObject(params, function(err, data) {
+										if (err) {
+											console.log(err);
+										} else {
+											console.log("doublysuccess")
+										}
+									});
+								}
+							});
+
+
+							// var params ={
+							// 	Delimiter: "/",
+							// 	Prefix:directory
+							// }
+							// s3.listObjectsV2(params, function(err, data) {
+							// 	if (err) console.log(err,err.stack);
+							// 	else {//console.log(data.Contents);
+							// 		var currDirectory = data.Contents;
+							// 		for(var i = 0; i < currDirectory.length;i++){
+							// 			// console.log(currDirectory[i].Key,directory+photoKey)
+							// 			if(currDirectory[i].Key === directory+filename){
+							// 				alert("please change file already exists in our system, please change filename");
+							// 				return;
+							// 			}
+							// 		}
+							//
+							//
+							// 	}
+							//
+							// });
+						}
+					});
+
 				}
 			});
+
 		});
 	}
 	else if(firstToScroll){
@@ -396,7 +402,7 @@ function submitHandler(){
 		alert("Unsuccesful mapping (Missing some collumn, please disable collumns you cannot match with)")
 		$([document.documentElement, document.body]).animate({
         scrollTop: $("#"+firstToScroll.id).offset().top
-    }, 2000);
+    }, 1000);
 	}
 
 }
@@ -482,122 +488,127 @@ $(document).ready(function() {
 					if (err) {alert(err);}
 					else {
 						// console.log(attributes)
-					team = JSON.parse(JSON.stringify(attributes[1])).Value;
+						if(JSON.parse(JSON.stringify(attributes[1])).Name === "custom:Team")
+			        team = JSON.parse(JSON.stringify(attributes[1])).Value;
+			      else {
+			        alert("No team name detected")
+			      }
 						// console.log("======================",team);
-					}
-				});
 
-				var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
-		    AWS.config.region = _config.cognito.region;
-				AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-					IdentityPoolId: _config.identity.identityPoolId,
-					Logins: {
-						[`${loginUrl}`]: session
-							.getIdToken()
-							.getJwtToken(),
-					}
-				});
-
-		    AWS.config.credentials.refresh(error => {
-					if (error) {console.error(error);	}
-					else {
-						// console.log(AWS.config.credentials)
-						// console.log(AWS)
-						var s3 = new AWS.S3({
-							  apiVersion: "2006-03-01",
-							  params: { Bucket: "titanrawdata" }
+						var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+				    AWS.config.region = _config.cognito.region;
+						AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+							IdentityPoolId: _config.identity.identityPoolId,
+							Logins: {
+								[`${loginUrl}`]: session
+									.getIdToken()
+									.getJwtToken(),
+							}
 						});
 
+				    AWS.config.credentials.refresh(error => {
+							if (error) {console.error(error);	}
+							else {
+								// console.log(AWS.config.credentials)
+								// console.log(AWS)
+								var s3 = new AWS.S3({
+									  apiVersion: "2006-03-01",
+									  params: { Bucket: "titanrawdata" }
+								});
 
-					  var filename = encodeURIComponent(file.name);
-						var directory = ""+ encodeURIComponent(team)+"/";
-						var params ={
-						  Delimiter: "/",
-						  Prefix:directory
-				    }
-					  s3.listObjectsV2(params, function(err, data) {
-						  if (err) console.log(err,err.stack);
-						  else {//console.log(data.Contents);
-								var currDirectory = data.Contents;
-								for(var i = 0; i < currDirectory.length;i++){
-									// console.log(currDirectory[i].Key,directory+photoKey)
-									if(currDirectory[i].Key === directory+filename){
-										alert("please change file already exists in our system, please change filename");
-										return;
+
+							  var filename = encodeURIComponent(file.name);
+								var directory = ""+ encodeURIComponent(team)+"/";
+								var params ={
+								  Delimiter: "/",
+								  Prefix:directory
+						    }
+							  s3.listObjectsV2(params, function(err, data) {
+								  if (err) console.log(err,err.stack);
+								  else {
+										console.log(data.Contents);
+										var currDirectory = data.Contents;
+										for(var i = 0; i < currDirectory.length;i++){
+											// console.log(currDirectory[i].Key,directory+photoKey)
+											if(currDirectory[i].Key === directory+filename){
+												alert("please change file already exists in our system, please change filename");
+												return;
+											}
+										}
+										// var params = {
+										// 	Bucket: "cornellheavies",
+										// 	Key: directory+photoKey,
+										// 	Body: file
+										// }
+										//
+										// s3.putObject(params, function(err, data) {
+										// 	if (err) {
+										// 		console.log(err);
+										// 	} else {
+										// 		console.log('Success');
+										// 	}
+										// });
+
 									}
-								}
+
+								});
+
+								// var params = {
+								//  Bucket: "cornellheaviesV2"
+								// };
+								// s3.createBucket(params, function(err, data) {
+								// 	if (err) console.log(err, err.stack); // an error occurred
+								// 	else     console.log(data);           // successful response
+								// });
+								// console.log(s3.listBuckets());
+
+
+
+
+
+							  // var upload = new AWS.S3.ManagedUpload({
+								// 	 params : {
+								// 		Bucket: "cornellheavies",
+								// 		Key: photoKey,
+								// 		Body: file,
+								// 		ACL: "public-read"
+								// 	}
+							  // });
+
+
+
+
+
+
+
+
+								//getting objects
 								// var params = {
 								// 	Bucket: "cornellheavies",
-								// 	Key: directory+photoKey,
-								// 	Body: file
+								// 	Key: photoKey
 								// }
-								//
-								// s3.putObject(params, function(err, data) {
-								// 	if (err) {
-								// 		console.log(err);
-								// 	} else {
-								// 		console.log('Success');
+								// var fileobj = s3.getObject(params, function(err, data) {
+							  //   if (err) console.log(err, err.stack); // an error occurred
+							  //   else {
+								// 	 	console.log(data);           // successful response
+							  //
+								// 		var binArrayToJson = function(binArray) {
+								// 	    var str = "";
+								// 	    for (var i = 0; i < binArray.length; i++) {
+								// 	        str += String.fromCharCode(parseInt(binArray[i]));
+								// 	    }
+								// 	    return str
 								// 	}
-								// });
+								// 	console.log(binArrayToJson(data.Body));
+								//  }
+							  //
+							  // });
+
+
+
 
 							}
-
 						});
-
-						// var params = {
-						//  Bucket: "cornellheaviesV2"
-						// };
-						// s3.createBucket(params, function(err, data) {
-						// 	if (err) console.log(err, err.stack); // an error occurred
-						// 	else     console.log(data);           // successful response
-						// });
-						// console.log(s3.listBuckets());
-
-
-
-
-
-					  // var upload = new AWS.S3.ManagedUpload({
-						// 	 params : {
-						// 		Bucket: "cornellheavies",
-						// 		Key: photoKey,
-						// 		Body: file,
-						// 		ACL: "public-read"
-						// 	}
-					  // });
-
-
-
-
-
-
-
-
-						//getting objects
-						// var params = {
-						// 	Bucket: "cornellheavies",
-						// 	Key: photoKey
-						// }
-						// var fileobj = s3.getObject(params, function(err, data) {
-					  //   if (err) console.log(err, err.stack); // an error occurred
-					  //   else {
-						// 	 	console.log(data);           // successful response
-					  //
-						// 		var binArrayToJson = function(binArray) {
-						// 	    var str = "";
-						// 	    for (var i = 0; i < binArray.length; i++) {
-						// 	        str += String.fromCharCode(parseInt(binArray[i]));
-						// 	    }
-						// 	    return str
-						// 	}
-						// 	console.log(binArrayToJson(data.Body));
-						//  }
-					  //
-					  // });
-
-
-
-
 					}
 				});
 			});

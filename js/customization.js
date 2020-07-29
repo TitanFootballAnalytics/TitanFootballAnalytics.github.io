@@ -8,6 +8,193 @@ var situationlist = ["","DOWN","DIST","FIELD ZONE"];
 // ADD USER ID AND REPORT ID HERE
 var teamid = "MASTER";
 
+
+
+//
+// <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+// <label for="vehicle1"> Penn VS Cornell - <i>3/11/19</i></label><br>
+// <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+// <label for="vehicle1"> Penn VS Cornell - <i>3/11/19</i></label><br>
+// <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+// <label for="vehicle1"> Penn VS Cornell - <i>3/11/19</i></label><br>
+
+cognitoUser.getSession(function(err, session) {
+  if (err) {	alert(err.message || JSON.stringify(err)); return;}
+  // console.log('session validity: ' + session.isValid());
+
+  let team = "team";
+  // NOTE: getSession must be called to authenticate user before calling getUserAttributes
+  cognitoUser.getUserAttributes(function(err, attributes) {
+    if (err) {alert(err);}
+    else {
+      // console.log(attributes)
+      if(JSON.parse(JSON.stringify(attributes[1])).Name === "custom:Team"){
+        team = JSON.parse(JSON.stringify(attributes[1])).Value;
+      }
+      else {
+        alert("No team name detected")
+      }
+      // console.log("======================",team);
+
+      var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+      AWS.config.region = _config.cognito.region;
+      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: _config.identity.identityPoolId,
+        Logins: {
+          [`${loginUrl}`]: session
+            .getIdToken()
+            .getJwtToken(),
+        }
+      });
+
+      AWS.config.credentials.refresh(error => {
+        if (error) {console.error(error);	}
+        else {
+          // console.log(AWS.config.credentials)
+          // console.log(AWS)
+          var s3 = new AWS.S3({
+              apiVersion: "2006-03-01",
+              params: { Bucket: "titancommonstorage" }
+          });
+          //
+          // var filename = encodeURIComponent(file.name);
+          var directory = ""+ encodeURIComponent(team)+"/datasets/";
+          // s3.getCommonPrefixes(function(err,data){
+          //   if(err)console.log(err)
+          //   else console.log(data)
+          // })
+
+          var params ={
+            // Delimiter: "/",
+            // Prefix:directory
+          }
+          // s3.listBucket(params,function(err,data){
+          //     if(err)console.log(err)
+          //     else console.log(data)
+          // })
+
+          s3.listObjectsV2(params, function(err, data) {
+            if (err) console.log(err,err.stack);
+            else {
+              console.log(data.Contents);
+              var currDirectory = data.Contents;
+              var tokenlst = [];
+              for(var i = 0; i < currDirectory.length;i++){
+                // console.log(currDirectory[i].Key)
+                var tokens = currDirectory[i].Key.split("/")
+                // console.log(tokens);
+                if(tokens.length > 2 && tokens[0] === team && tokens [1] === "datasets"){
+                  if(!tokenlst.includes(tokens[2])){
+                    tokenlst.push(tokens[2]);
+                  }
+                }
+                // if(currDirectory[i].Key === directory+filename){
+                //   alert("please change file already exists in our system, please change filename");
+                //   return;
+                // }
+              }
+              console.log(tokenlst)
+
+              var container = document.getElementById("FILEDISPLAY");
+              for(var tokendex = 0; tokendex < tokenlst.length; tokendex++){
+                var inp = container.appendChild(document.createElement('input'));
+                inp.type = "checkbox";
+                inp.id = "filelst"+tokendex;
+                inp.name= "filelst"+tokendex;
+                inp.value= "Bike";//?
+                var lbl = container.appendChild(document.createElement("label"))
+                lbl.for = "filelst"+tokendex;
+                lbl.innerHTML = "&nbsp;&nbsp;"+tokenlst[tokendex];
+                container.appendChild(document.createElement("br"))
+              }
+
+
+
+
+
+
+
+              // var params = {
+              // 	Bucket: "cornellheavies",
+              // 	Key: directory+photoKey,
+              // 	Body: file
+              // }
+              //
+              // s3.putObject(params, function(err, data) {
+              // 	if (err) {
+              // 		console.log(err);
+              // 	} else {
+              // 		console.log('Success');
+              // 	}
+              // });
+
+            }
+
+          });
+
+          // var params = {
+          //  Bucket: "cornellheaviesV2"
+          // };
+          // s3.createBucket(params, function(err, data) {
+          // 	if (err) console.log(err, err.stack); // an error occurred
+          // 	else     console.log(data);           // successful response
+          // });
+          // console.log(s3.listBuckets());
+
+
+
+
+
+          // var upload = new AWS.S3.ManagedUpload({
+          // 	 params : {
+          // 		Bucket: "cornellheavies",
+          // 		Key: photoKey,
+          // 		Body: file,
+          // 		ACL: "public-read"
+          // 	}
+          // });
+
+
+
+
+
+
+
+
+          //getting objects
+          // var params = {
+          // 	Bucket: "cornellheavies",
+          // 	Key: photoKey
+          // }
+          // var fileobj = s3.getObject(params, function(err, data) {
+          //   if (err) console.log(err, err.stack); // an error occurred
+          //   else {
+          // 	 	console.log(data);           // successful response
+          //
+          // 		var binArrayToJson = function(binArray) {
+          // 	    var str = "";
+          // 	    for (var i = 0; i < binArray.length; i++) {
+          // 	        str += String.fromCharCode(parseInt(binArray[i]));
+          // 	    }
+          // 	    return str
+          // 	}
+          // 	console.log(binArrayToJson(data.Body));
+          //  }
+          //
+          // });
+
+
+
+
+        }
+      });
+    }
+  });
+});
+
+
+
+
 checkifnewreport()
 
 function addselectoptions(){
