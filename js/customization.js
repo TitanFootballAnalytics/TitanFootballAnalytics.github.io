@@ -8,7 +8,8 @@ var situationlist = ["","DOWN","DIST","FIELD ZONE"];
 // ADD USER ID AND REPORT ID HERE
 var teamid = "MASTER";
 
-
+var loadedMappings = {};
+var checklst = [];
 
 //
 // <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
@@ -17,6 +18,179 @@ var teamid = "MASTER";
 // <label for="vehicle1"> Penn VS Cornell - <i>3/11/19</i></label><br>
 // <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
 // <label for="vehicle1"> Penn VS Cornell - <i>3/11/19</i></label><br>
+
+async function downloadMap(key,callback){
+  if(key != undefined){
+    cognitoUser.getSession(function(err, session) {
+      if (err) {	alert(err.message || JSON.stringify(err)); return;}
+      // console.log('session validity: ' + session.isValid());
+
+      let team = "team";
+      // NOTE: getSession must be called to authenticate user before calling getUserAttributes
+      cognitoUser.getUserAttributes(function(err, attributes) {
+        if (err) {alert(err);}
+        else {
+          // console.log(attributes)
+          if(JSON.parse(JSON.stringify(attributes[1])).Name === "custom:Team"){
+            team = JSON.parse(JSON.stringify(attributes[1])).Value;
+          }
+          else {
+            alert("No team name detected")
+          }
+          // console.log("======================",team);
+
+          var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+          AWS.config.region = _config.cognito.region;
+          AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: _config.identity.identityPoolId,
+            Logins: {
+              [`${loginUrl}`]: session
+                .getIdToken()
+                .getJwtToken(),
+            }
+          });
+          //TODO error when multiple sign ins and outs (cookie issue?)
+          AWS.config.credentials.refresh(error => {
+            if (error) {console.error(error);	}
+            else {
+              // console.log(AWS.config.credentials)
+              // console.log(AWS)
+              var s3 = new AWS.S3({
+                  apiVersion: "2006-03-01",
+                  params: { Bucket: "titancommonstorage" }
+              });
+
+
+
+              //getting objects
+              var params = {
+              	Bucket: "titancommonstorage",
+              	Key: key
+              }
+              s3.getObject(params, function(err, data) {
+                if (err) console.log(err, err.stack); // an error occurred
+                else {
+
+
+            		var binArrayToJson = function(binArray) {
+            	    var str = "";
+            	    for (var i = 0; i < binArray.length; i++) {
+            	        str += String.fromCharCode(parseInt(binArray[i]));
+            	    }
+            	    return str
+            	   }
+                output = JSON.parse(binArrayToJson(data.Body));
+              	loadedMappings[key] = output;
+                console.log(loadedMappings);
+                callback();
+               }
+
+              });
+
+            }
+          });
+        }
+      });
+    });
+  }
+  else{
+    callback();
+  }
+}
+
+async function updateColList(){
+  var newdisplaylst = [];
+
+  for(var i = 0; i < checklst.length;i++){
+    if(checklst[i].checked){
+      newdisplaylst.push(checklst[i].key);
+    }
+  }
+  var mapToComplete = undefined;
+  var maplst = [];
+  for(var i = 0; i < newdisplaylst.length;i++){
+    if(newdisplaylst[i] in loadedMappings){
+      maplst.push(loadedMappings[newdisplaylst[i]])
+    }
+    else{
+      mapToComplete = newdisplaylst[i];
+    }
+  }
+
+  downloadMap(mapToComplete,()=>{
+    var loadedMaps = newdisplaylst.map(key => loadedMappings[key]);
+    var validKeysOfMaps = loadedMaps.map(map =>{
+      var outlst = [];
+      for(var key of Object.keys(map)){
+        if(map[key] != 404){
+          outlst.push(key)
+        }
+      }
+      return outlst
+    });
+
+    if(validKeysOfMaps.length>0){
+      var intersection = validKeysOfMaps[0];
+      for(var i = 1; i < validKeysOfMaps.length;i++){
+        intersection = intersection.filter(value => validKeysOfMaps[i].includes(value))
+      }
+      console.log("intersection" ,intersection);
+
+      var unionminusintersect = [];
+      validKeysOfMaps.forEach(keylst => {
+        keylst.forEach(key=>{
+          if(!intersection.includes(key) && !unionminusintersect.includes(key)){
+            unionminusintersect.push(key);
+          }
+        });
+      });
+      console.log("union/intersect",unionminusintersect);
+      var selectors = document.getElementsByTagName("select");
+      for( var i = 0; i < selectors.length;i++){
+        selectors[i].innerHTML = "";
+        node = document.createElement("option");
+        node.value = ""
+        textnode = document.createTextNode("");
+        node.appendChild(textnode);
+        selectors[i].appendChild(node);
+        //      if(tempid.includes("target")){ //TODO integrate target and situation cases once standard set of collumns has additional parameters to split collumns that should be grouped over
+        //active options
+        intersection.forEach(key=>{
+          node = document.createElement("option");
+          node.value = key;
+          textnode = document.createTextNode(key);
+          node.style.fontWeight = "bold";
+          node.appendChild(textnode);
+          selectors[i].appendChild(node);
+        });
+
+        //inactive options
+        unionminusintersect.forEach((key,j)=>{
+          node = document.createElement("option");
+          node.value = key
+          node.disabled = true;
+          node.style.backgroundColor = "lightgray";
+          // if(j == 0){
+            // node.style.border = "solid";
+            // console.log(node.style.borderTop)
+          // }
+          textnode = document.createTextNode(key);
+          node.appendChild(textnode);
+          selectors[i].appendChild(node);
+        });
+
+      }
+
+    }
+    else{
+      console.log("NO FILES SELECTED");
+      var selectors = document.getElementsByTagName("select");
+      for( var i = 0; i < selectors.length;i++){
+        selectors[i].innerHTML = "";
+      }
+    }
+  });
+}
 
 cognitoUser.getSession(function(err, session) {
   if (err) {	alert(err.message || JSON.stringify(err)); return;}
@@ -79,12 +253,14 @@ cognitoUser.getSession(function(err, session) {
               console.log(data.Contents);
               var currDirectory = data.Contents;
               var tokenlst = [];
+              var keylst = [];
               for(var i = 0; i < currDirectory.length;i++){
                 // console.log(currDirectory[i].Key)
                 var tokens = currDirectory[i].Key.split("/")
                 // console.log(tokens);
                 if(tokens.length > 2 && tokens[0] === team && tokens [1] === "datasets"){
                   if(!tokenlst.includes(tokens[2])){
+                    keylst.push(currDirectory[i].Key.substring(0,currDirectory[i].Key.lastIndexOf("."))+".json");
                     tokenlst.push(tokens[2]);
                   }
                 }
@@ -93,17 +269,17 @@ cognitoUser.getSession(function(err, session) {
                 //   return;
                 // }
               }
-              console.log(tokenlst)
-
+              console.log(tokenlst);
+              console.log(keylst);
               var container = document.getElementById("FILEDISPLAY");
               for(var tokendex = 0; tokendex < tokenlst.length; tokendex++){
                 var inp = container.appendChild(document.createElement('input'));
                 inp.type = "checkbox";
                 inp.id = "filelst"+tokendex;
-                inp.name= "filelst"+tokendex;
-                inp.value= "Bike";//?
+                inp.key = keylst[tokendex];
+                inp.addEventListener('change',updateColList,false);
+                checklst.push(inp);
                 var lbl = container.appendChild(document.createElement("label"))
-                lbl.for = "filelst"+tokendex;
                 lbl.innerHTML = "&nbsp;&nbsp;"+tokenlst[tokendex];
                 container.appendChild(document.createElement("br"))
               }
@@ -197,33 +373,33 @@ cognitoUser.getSession(function(err, session) {
 
 checkifnewreport()
 
-function addselectoptions(){
-
-  var selectors = document.getElementsByTagName("select");
-  var node;var textnode;var tempid;
-
-  for (var i = 0; i < selectors.length; i++) {
-     tempid = selectors[i].id;
-     if(tempid.includes("target")){
-       for (var k = 0; k < targetlist.length; k++) {
-         node = document.createElement("option");
-         node.value = targetlist[k]
-         textnode = document.createTextNode(targetlist[k]);
-         node.appendChild(textnode);
-         selectors[i].appendChild(node);
-       }
-     }
-     if(tempid.includes("situation")){
-       for (var k = 0; k < situationlist.length; k++) {
-         node = document.createElement("option");
-         node.value = situationlist[k]
-         textnode = document.createTextNode(situationlist[k]);
-         node.appendChild(textnode);
-         selectors[i].appendChild(node);
-       }
-     }
-  }
-}
+// function addselectoptions(){
+//
+//   var selectors = document.getElementsByTagName("select");
+//   var node;var textnode;var tempid;
+//
+//   for (var i = 0; i < selectors.length; i++) {
+//      tempid = selectors[i].id;
+//      if(tempid.includes("target")){
+//        for (var k = 0; k < targetlist.length; k++) {
+//          node = document.createElement("option");
+//          node.value = targetlist[k]
+//          textnode = document.createTextNode(targetlist[k]);
+//          node.appendChild(textnode);
+//          selectors[i].appendChild(node);
+//        }
+//      }
+//      if(tempid.includes("situation")){
+//        for (var k = 0; k < situationlist.length; k++) {
+//          node = document.createElement("option");
+//          node.value = situationlist[k]
+//          textnode = document.createTextNode(situationlist[k]);
+//          node.appendChild(textnode);
+//          selectors[i].appendChild(node);
+//        }
+//      }
+//   }
+// }
 
 
 
@@ -234,7 +410,7 @@ function checkifnewreport(){
 
   }
   else {
-    addselectoptions()
+    // addselectoptions()
   }
 }
 
@@ -298,7 +474,7 @@ async function setscorecardrequests(configjson) {
           if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
         }
     }
-    addselectoptions()
+    // addselectoptions()
 }
 
 
