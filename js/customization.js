@@ -366,6 +366,23 @@ function submitscrequests() {
   for (var i = 0; i < requestcard.length; i++) {
     finalmapping[i] = grabscrequestsingle(requestcard[i].id);
   }
+
+  var dataholder = document.getElementById("FILEDISPLAY");
+  var selections = dataholder.getElementsByTagName("input");
+  var files = dataholder.getElementsByTagName("label");
+
+  var tempdir;
+  var dirlist = [];
+
+  for (var i = 0; i < selections.length; i++) {
+    if(selections[i].checked == true){
+      tempdir = files[i].innerHTML.replace('&nbsp;&nbsp;','') + "/" + files[i].innerHTML.replace('&nbsp;&nbsp;','') + ".csv";
+      dirlist.push(tempdir);
+    }
+  }
+
+  finalmapping["files"] = dirlist
+
   console.log(finalmapping)
 
   var reportid = returnreportid()

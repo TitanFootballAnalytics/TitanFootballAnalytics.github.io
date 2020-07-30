@@ -64,8 +64,6 @@ function awsrequest(screquest,reportid,type){
 
 function writes3(msg,directory,s3bucket,filename,reportid){
 
-
-
   var blob = new Blob([JSON.stringify(msg)], {type: "text/json;charset=utf-8"});
   var jsonfile = new File([blob],filename+".json")
 
@@ -81,9 +79,7 @@ function writes3(msg,directory,s3bucket,filename,reportid){
       console.log(err);
     } else {
       console.log("yeetushiatus")
-
       window.location.replace("scorecards.html?reportid="+reportid);
-
     }
   });
 
