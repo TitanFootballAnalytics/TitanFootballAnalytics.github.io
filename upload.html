@@ -67,15 +67,23 @@
             </div>
           </div>
         </nav>
-  			<section  class="row">
+
+        <section  class="row">
           <br>
-  				<div style="background-color: white;padding:10px;color: #1c1c1c;" class="shadow col-xs-2 col-xs-offset-2" align="left">
+          <button style="margin-left: 60vw;padding: 20px;" class="btn default submitButton" id="submitButton">Submit</button>
+  				<div style="background-color: white;padding:10px;color: #1c1c1c;" class="shadow col-xs-3 col-xs-offset-1" align="left">
   					<fieldset>
   						<input  type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
   					</fieldset>
             <h5>Upload your data using this button</h5>
             <h5>Then match your own columns by dragging each column on the right and matching it with one on the left</h5>
-            <button sttyle="margin-left: -30px;" class="btn default submitButton" id="submitButton">Submit</button>
+            <input id="hudldata" type="radio" value="hudl" name="datatype" checked="checked"><label> &nbsp;Hudl Data</label>
+            <input type="text" id="omap" placeholder="O Team Name">&nbsp;<input type="text" id="omap" placeholder="D Team Name">
+
+            <br>
+
+            <input id="cstmdata" type="radio" value="custom" name="datatype"><label> &nbsp;Custom Data  </label><br>
+
   				</div>
           <br>
   			</section>

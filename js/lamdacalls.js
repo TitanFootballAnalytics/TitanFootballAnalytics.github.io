@@ -47,13 +47,17 @@ function awsrequest(screquest,reportid,type){
 
 
 
-        //calllambda(screquest,"testhtmljean",lambda);
+        //
         var directory = team+"/reports/"+reportid+"/report_"+team+"_"+reportid+".json";
         if(type == 1){
           writes3(screquest,directory,titancommon,"report_"+team+"_"+reportid+".json",reportid);
         }
         if(type == 2){
           gets3object(directory,titancommon);
+        }
+        if(type == 3){
+          console.log("tirgger")
+          calllambda(screquest,"prephudldata",lambda);
         }
 
 

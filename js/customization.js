@@ -76,7 +76,7 @@ cognitoUser.getSession(function(err, session) {
           s3.listObjectsV2(params, function(err, data) {
             if (err) console.log(err,err.stack);
             else {
-              console.log(data.Contents);
+              // console.log(data.Contents);
               var currDirectory = data.Contents;
               var tokenlst = [];
               for(var i = 0; i < currDirectory.length;i++){
@@ -93,7 +93,7 @@ cognitoUser.getSession(function(err, session) {
                 //   return;
                 // }
               }
-              console.log(tokenlst)
+              // console.log(tokenlst)
 
               var container = document.getElementById("FILEDISPLAY");
               for(var tokendex = 0; tokendex < tokenlst.length; tokendex++){
@@ -263,39 +263,40 @@ async function setscorecardrequests(configjson) {
     var tempscorecardrequest;
     var selectors;var node;var textnode;var inputs;
 
-    multiplyNode(document.getElementById("test1"),Object.keys(configfile).length,true);
+    multiplyNode(document.getElementById("test1"),Object.keys(configfile).length-1,true);
 
+    console.log(configfile)
 
-
-    //for (var i = 0; i < configfile.length; i++) {
     for (var i in configfile) {
 
-        tempscorecardrequest = document.getElementById("test"+(Number(i)+1));
-        selectors = tempscorecardrequest.getElementsByTagName("select");
-        inputs = tempscorecardrequest.getElementsByTagName("input");
+        if(i != "files"){
+          tempscorecardrequest = document.getElementById("test"+(Number(i)+1));
+          selectors = tempscorecardrequest.getElementsByTagName("select");
+          inputs = tempscorecardrequest.getElementsByTagName("input");
 
-        for (var k = 0; k < configfile[i]["Targetcolumns"].length; k++) {
-          node = document.createElement("option");
-          node.value = configfile[i]["Targetcolumns"][k];
-          textnode = document.createTextNode(configfile[i]["Targetcolumns"][k]);
-          node.appendChild(textnode);
-          selectors[k].appendChild(node);
-        }
-        for (var k = 0; k < configfile[i]["Situationcols"].length; k++) {
-          node = document.createElement("option");
-          node.value = configfile[i]["Situationcols"][k];
-          textnode = document.createTextNode(configfile[i]["Situationcols"][k]);
-          node.appendChild(textnode);
-          selectors[k+3].appendChild(node);
-        }
+          for (var k = 0; k < configfile[i]["Targetcolumns"].length; k++) {
+            node = document.createElement("option");
+            node.value = configfile[i]["Targetcolumns"][k];
+            textnode = document.createTextNode(configfile[i]["Targetcolumns"][k]);
+            node.appendChild(textnode);
+            selectors[k].appendChild(node);
+          }
+          for (var k = 0; k < configfile[i]["Situationcols"].length; k++) {
+            node = document.createElement("option");
+            node.value = configfile[i]["Situationcols"][k];
+            textnode = document.createTextNode(configfile[i]["Situationcols"][k]);
+            node.appendChild(textnode);
+            selectors[k+3].appendChild(node);
+          }
 
-        for (var k = 0; k < configfile[i]["Charts"].length; k++) {
-          if(configfile[i]["Charts"][k] == "Bar Chart"){inputs[(k*2)+1].checked = true;}
-          if(configfile[i]["Charts"][k] == "Pie Chart"){inputs[(k*2)+2].checked = true;}
-        }
-        for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
-          if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
-          if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
+          for (var k = 0; k < configfile[i]["Charts"].length; k++) {
+            if(configfile[i]["Charts"][k] == "Bar Chart"){inputs[(k*2)+1].checked = true;}
+            if(configfile[i]["Charts"][k] == "Pie Chart"){inputs[(k*2)+2].checked = true;}
+          }
+          for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
+            if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
+            if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
+          }
         }
     }
     addselectoptions()
@@ -383,12 +384,12 @@ function submitscrequests() {
 
   finalmapping["files"] = dirlist
 
-  console.log(finalmapping)
+  console.log(JSON.stringify(finalmapping))
 
   var reportid = returnreportid()
 
   //PUT CODE HERE TO PASS REQUEST JSON
-  var result = awsrequest(finalmapping,reportid,1);
+  //var result = awsrequest(finalmapping,reportid,1);
 
   return finalmapping;}
 

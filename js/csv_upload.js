@@ -3,14 +3,61 @@
 // const standardset = ["Down","Distance","FieldZone","Personnel","Formation","PlayType","FormationFam","Cover","CoverFam"];
 //["GameID",	"PosTeam",	"DefTeam",	"HomeTeam",	"AwayTeam",	"Down",	"Dist",	"DistStr",	"Qtr",	"Fieldpos100",	"YdsGained",	"Turnover", "Rush", "Pass", "SpecialTeams", "Interception", "Fumble", "Sack", "Touchdown", "Safety", "DriveNum", "PlayType", "ScoreDiff", "Completion", "TimeUnder", "DDstr", "Hash", "OffPers", "Motion", "Back", "Form"]
 const standardset = ["gameid", "pos_team", "def_team", "home_team", "away_team", "down", "dist", "dist_str", "qtr", "fpos100", "gain", "turnover", "runpass", "specialteams", "int", "fum", "sack", "td", "safety", "drive_num", "playtype", "def_score", "off_score", "score_diff", "completion", "time_under", "dd_str", "hash", "off_pers", "motion", "back", "form"]
+const hudlset = ["playnumber", "odk", "down", "distance", "hash", "yardline", "playtype", "result",
+								"gain", "off_formation", "off_play", "off_strength", "backfield", "play_direction", "run_gap",
+								"def_front", "coverage", "blitz", "quarter", "drive_num"];
+
+
+var hudl = document.getElementById("hudldata");
+var cstm = document.getElementById("cstmdata");
+
+hudl.oninput = function() {
+	if(hudl.checked = true){
+		currentMapping = {};
+		for(var i = 0; i< hudlset.length;i++){
+			currentMapping[hudlset[i]] = "";
+		}
+		createRecepticle(hudlset);
+	}
+}
+
+cstm.oninput = function() {
+	if(cstm.checked = true){
+		currentMapping = {};
+		for(var i = 0; i< standardset.length;i++){
+			currentMapping[standardset[i]] = "";
+		}
+		createRecepticle(standardset);
+	}
+}
+
+
+
+
+
 var uploadedfile;
 var currentMapping = {};
 const NO_MAPPING = 404;
-for(var i = 0; i< standardset.length;i++){
-	currentMapping[standardset[i]] = "";
+
+if(cstm.checked = true) {
+	currentMapping = {};
+	for(var i = 0; i< standardset.length;i++){
+		currentMapping[standardset[i]] = "";
+	}
+	createRecepticle(standardset);
 }
+
+if(hudl.checked = true) {
+	currentMapping = {};
+	for(var i = 0; i< hudlset.length;i++){
+		currentMapping[hudlset[i]] = "";
+	}
+	createRecepticle(hudlset);
+}
+
+
 document.getElementById("submitButton").addEventListener("click",submitHandler,false);
-createRecepticle(standardset);
+
 // d3.select("#mainDiv").append("svg")
 // .attr("width", 2000)
 // .attr("height", 2000)
@@ -43,20 +90,23 @@ function fitText(lBox,sourceText){
 	}
 }
 
-function createRecepticle(){
+function createRecepticle(set){
 		var parent = document.getElementById("lefthalf");
+		while (parent.firstChild) {
+    	parent.removeChild(parent.lastChild);
+  	}
 		var unit;
 		var lBox;
 		var rBox;
 		var svg;
 		var text;
-		for(var i = 0; i < standardset.length;i++){
+		for(var i = 0; i < set.length;i++){
 			unit = parent.appendChild(document.createElement('div'));
 			unit.id = "unit"+i;
 			unit.className = "unit";
 			lBox = unit.appendChild(document.createElement('div'));
 			lBox.className = "lBox";
-			fitText(lBox,standardset[i])
+			fitText(lBox,set[i])
 			svg = d3.select("#unit"+i).append("svg")
 												 .attr("width",100)
 												 .attr("height",80)
