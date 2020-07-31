@@ -5,6 +5,86 @@ var poolData = {
     ClientId: _config.cognito.userPoolClientId
 };
 
+
+function authAndRun(callback){
+    cognitoUser.getSession(function(err, session) {
+    if (err) {	alert(err.message || JSON.stringify(err)); return;}
+    // console.log('session validity: ' + session.isValid());
+
+    var team = "team";
+    // NOTE: getSession must be called to authenticate user before calling getUserAttributes
+    cognitoUser.getUserAttributes(function(err, attributes) {
+      if (err) {alert(err);}
+      else {
+        // console.log(attributes)
+        if(JSON.parse(JSON.stringify(attributes[1])).Name === "custom:Team"){
+          team = JSON.parse(JSON.stringify(attributes[1])).Value;
+        }
+        else {
+          alert("No team name detected")
+        }
+        // console.log("======================",team);
+
+        var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+        AWS.config.region = _config.cognito.region;
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: _config.identity.identityPoolId,
+          Logins: {
+            [`${loginUrl}`]: session
+              .getIdToken()
+              .getJwtToken(),
+          }
+        });
+        //TODO error when multiple sign ins and outs (cookie issue?)
+        AWS.config.credentials.refresh(error => {
+          if (error) {console.error(error);	}
+          else {
+            // console.log(AWS.config.credentials)
+            // console.log(AWS)
+            callback(team);
+
+          }
+        });
+      }
+    });
+  });
+}
+
+
+function getObjAndRun(bucket,key,callback){
+  var s3 = new AWS.S3({
+      apiVersion: "2006-03-01",
+      params: { Bucket: bucket }
+  });
+
+
+
+  //getting objects
+  var params = {
+    Bucket: bucket,
+    Key: key
+  }
+  s3.getObject(params, function(err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else {
+
+
+    var binArrayToJson = function(binArray) {
+      var str = "";
+      for (var i = 0; i < binArray.length; i++) {
+          str += String.fromCharCode(parseInt(binArray[i]));
+      }
+      return str
+     }
+    output = JSON.parse(binArrayToJson(data.Body));
+    callback(output);
+   }
+
+  });
+}
+
+
+
 var userPool= new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 // Auth.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
@@ -47,17 +127,18 @@ if (cognitoUser != null) {
 
       return;
 		}
-		console.log('session validity: ' + session.isValid());
+		//console.log('session validity: ' + session.isValid());
 
 
 		// NOTE: getSession must be called to authenticate user before calling getUserAttributes
-		cognitoUser.getUserAttributes(function(err, attributes) {
-			if (err) {
-				alert(err);
-			} else {
-				console.log(attributes)
-			}
-		});
+		// cognitoUser.getUserAttributes(function(err, attributes) {
+		// 	if (err) {
+		// 		alert(err);
+		// 	} else {
+		// 		//console.log(attributes)
+		// 	}
+		// });
+    
     var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
     AWS.config.region = _config.cognito.region;
 		AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -69,17 +150,17 @@ if (cognitoUser != null) {
 					.getJwtToken(),
 			}
 		});
-    console.log(AWS.config.credentials);
+    // console.log(AWS.config.credentials);
 
     AWS.config.credentials.refresh(error => {
 			if (error) {
-				console.error(error);
+				// console.error(error);
 			} else {
 				// Instantiate aws sdk service objects now that the credentials have been updated.
 				// example: var s3 = new AWS.S3();
-        console.log(AWS.config.credentials);
+        // console.log(AWS.config.credentials);
 				console.log('Successfully logged!');
-        alert("logged in user detected");
+        //*alert("logged in user detected");
 
 			}
 		});

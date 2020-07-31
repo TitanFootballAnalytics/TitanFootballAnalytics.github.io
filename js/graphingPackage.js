@@ -4,21 +4,7 @@ function convToRGB(i,hex){
   return {id:i,r:rgb.r,g:rgb.g,b:rgb.b};
 }
 
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
-    });
-    return vars;
-}
 
-function getUrlParam(parameter, defaultvalue){
-    var urlparameter = defaultvalue;
-    if(window.location.href.indexOf(parameter) > -1){
-        urlparameter = getUrlVars()[parameter];
-        }
-    return urlparameter;
-}
 
 d3.selection.prototype.moveToFront = function() {
    return this.each(function(){
@@ -1930,21 +1916,12 @@ function cleandata(data){
 
 }
 
-async function generateScorecards(filename, filter){
+async function generateScorecards(data,configjson, filter){
 
-       var reportid = getUrlParam("reportid","empty");
 
-       // Grab teamid here using userid
-       var teamid = "MASTER";
-
-       // SDK call here
-       var data = await d3.json("Sample Data/report_"+teamid+"_"+reportid+".json");
        data = cleandata(data);
 
-       // config file naming convention
-       var configfilename = "configs/report_"+teamid+"_"+reportid+".json"
-       // SDK call here
-       const configfile = await d3.json(configfilename);
+       console.log(data)
 
 
        var sortedData = tieredSort(data,filter);
@@ -1975,14 +1952,13 @@ async function generateScorecards(filename, filter){
        // }
 
        sep = (fixedWidth-30)/numCharts;
-       var configselection;
+       var configselection = configjson;
        var barchartcount;
        var sankeychartcount = 0;
 
        for(let i = 0; i < sortedData.length; i++){
 
          // Call new metadata in json of which config to refrence
-          configselection = configfile[0];
           sankeychartcount = 0;
 
           barchartcount = configselection["Targetcolumns"].length;
@@ -2022,20 +1998,44 @@ async function generateScorecards(filename, filter){
 
            var dexlist = [0];
            var tempdex;
-
            for (var k = 0; k < configselection["Charts"].length; k++) {
-              if(configselection["Charts"][k] == "Bar"){
-                tempdex = addBarGraph(sortedData[i].datasets[k], k, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,dexlist[dexlist.length-1],metadata);
-                dexlist.push(tempdex);
+              if(configselection["Charts"][k] == "Bar Chart"){
+
+                dexlist.push(addBarGraph(sortedData[i].datasets[k],
+                                         k,
+                                         svg,
+                                         currX,
+                                         svg.attr("height")*0.40,
+                                         (currX+sep),
+                                         svg.attr("height")*0.90,
+                                         dexlist[dexlist.length-1],
+                                         metadata));
                 currX = currX+sep;
               }
-              if(configselection["Charts"][k] == "Pie"){
-                tempdex = addPieChart(sortedData[i].datasets[k], k, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,dexlist[dexlist.length-1],metadata);
-                dexlist.push(tempdex);
+              if(configselection["Charts"][k] == "Pie Chart"){
+                dexlist.push(addPieChart(sortedData[i].datasets[k],
+                                         k,
+                                         svg,
+                                         currX,
+                                         svg.attr("height")*0.40,
+                                         (currX+sep),
+                                         svg.attr("height")*0.90,
+                                         dexlist[dexlist.length-1],
+                                         metadata) );
                 currX = currX+sep;
               }
               if(configselection["Sankey"][k] == "Yes"){
-                addSankey(""+i+"_"+(k+1), sortedData[i].datasets[k+configselection["Charts"].length], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,dexlist[k],dexlist[k+1]);
+                addSankey(""+i+"_"+(k+1),
+                          sortedData[i].datasets[k+configselection["Charts"].length],
+                          svg,
+                          2,
+                          currX ,
+                          svg.attr("height")*0.40,
+                          (currX+sep),
+                          svg.attr("height")*0.90,
+                          true,
+                          dexlist[k],
+                          dexlist[k+1]);
                 currX = currX+sep
               }
            }
