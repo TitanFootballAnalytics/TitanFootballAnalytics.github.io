@@ -445,7 +445,7 @@ async function setscorecardrequests(configjson) {
 
     for (var i in configfile) {
 
-        if(i != "files"){
+        if(i != "metadata"){
           tempscorecardrequest = document.getElementById("test"+(Number(i)+1));
           selectors = tempscorecardrequest.getElementsByTagName("select");
           inputs = tempscorecardrequest.getElementsByTagName("input");
@@ -538,6 +538,7 @@ function opensetting(target) {
 
 
 function submitscrequests() {
+  //TODO make finalmapping into list
   var finalmapping = {};
   var requestcard = document.getElementsByClassName("reportrequest");
   for (var i = 0; i < requestcard.length; i++) {
@@ -558,14 +559,21 @@ function submitscrequests() {
     }
   }
 
-  finalmapping["files"] = dirlist
+  // TEAM IS HARD CODED HERE AND OFFDEF
+  finalmapping["metadata"] = {"files":dirlist,
+                              "bucket":"titancommonstorage",
+                              "target_team":"URI",
+                              "offdef":"off"};
+
 
   console.log(JSON.stringify(finalmapping))
 
   var reportid = returnreportid()
 
   //PUT CODE HERE TO PASS REQUEST JSON
-  //var result = awsrequest(finalmapping,reportid,1);
+  awsrequest(finalmapping,reportid,1);
+  //awsrequest(finalmapping,reportid,3);
+
 
   return finalmapping;}
 
