@@ -2,7 +2,7 @@
 
 // const standardset = ["Down","Distance","FieldZone","Personnel","Formation","PlayType","FormationFam","Cover","CoverFam"];
 //["GameID",	"PosTeam",	"DefTeam",	"HomeTeam",	"AwayTeam",	"Down",	"Dist",	"DistStr",	"Qtr",	"Fieldpos100",	"YdsGained",	"Turnover", "Rush", "Pass", "SpecialTeams", "Interception", "Fumble", "Sack", "Touchdown", "Safety", "DriveNum", "PlayType", "ScoreDiff", "Completion", "TimeUnder", "DDstr", "Hash", "OffPers", "Motion", "Back", "Form"]
-const standardset = ["offense","defense","pass","run","gain","td""gameid", "pos_team", "def_team", "home_team", "away_team", "down", "dist", "dist_str", "qtr", "fpos100", "gain", "turnover", "runpass", "specialteams", "int", "fum", "sack", "td", "safety", "drive_num", "playtype", "def_score", "off_score", "score_diff", "completion", "time_under", "dd_str", "hash", "off_pers", "motion", "back", "form"]
+const standardset = ["offense","defense","pass","run","gain","td","gameid", "pos_team", "def_team", "home_team", "away_team", "down", "dist", "dist_str", "qtr", "fpos100", "gain", "turnover", "runpass", "specialteams", "int", "fum", "sack", "td", "safety", "drive_num", "playtype", "def_score", "off_score", "score_diff", "completion", "time_under", "dd_str", "hash", "off_pers", "motion", "back", "form"]
 const hudlset = ["playnumber", "odk", "down", "distance", "hash", "yardline", "playtype", "result",
 								"gain", "off_formation", "off_play", "off_strength", "backfield", "play_direction", "run_gap",
 								"def_front", "coverage", "blitz", "quarter", "drive_num"];
