@@ -21,6 +21,7 @@
   <script src="https://d3js.org/topojson.v2.min.js"></script>
   <script src="./js/graphingPackage.js"></script>
   <script src="./js/sortingPackage.js"></script>
+  <script src="./js/generalfunctions.js"></script>
 
   <script src="./js/navBar.js"></script>
   <script src="js/raphael.min.js" crossorigin="anonymous"></script>
@@ -141,23 +142,63 @@
     </nav>
     <div class = "container-fluid", id = "mainDiv">
     </div>
+
+  <script src="js/aws-cognito-sdk.min.js"></script>
+  <script src="js/amazon-cognito-identity.min.js"></script>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.721.0.min.js"></script>
+  <script src="js/cognito-config.js"></script>
+  <script src="js/auth.js"></script>
   <script>
+
+
         const fixedHeight = 500
         const fixedWidth = 1200
         const margin = {top:0,bottom:0,left:0,right:0};
         const height = fixedHeight - margin.top - margin.bottom;
         const width = fixedWidth - margin.left - margin.right;
 
-        generateScorecards("scoreCardAutomation.json",["NumPlays"])
-        setupNavClicks();
+
+        // function getUrlVars() {
+        //     var vars = {};
+        //     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        //         vars[key] = value;
+        //     });
+        //     return vars;
+        // }
+        //
+        // function getUrlParam(parameter, defaultvalue){
+        //     var urlparameter = defaultvalue;
+        //     if(window.location.href.indexOf(parameter) > -1){
+        //         urlparameter = getUrlVars()[parameter];
+        //         }
+        //     return urlparameter;
+        // }
+
+
+        var reportid = getUrlParam("reportid","empty");
+        if(reportid == "empty"){
+          console.log("Please select scorecards from browse report page");
+        }
+        else{
+          authAndRun((team)=>{
+            var key = `${team}/reports/${reportid}/report_${team}_${reportid}.json`;
+            getObjAndRun("titancommonstorage",key,(config)=>{
+              console.log(config);
+              key = `${team}/reports/${reportid}/data_${team}_${reportid}.json`;
+              getObjAndRun("titancommonstorage",key,(report)=>{
+                console.log(report)
+                //TODO iterate over multiple reports rather than just present the first
+                generateScorecards(report,config[0],["NumPlays"]);
+              });
+            });
+          });
+        }
+
+        // generateScorecards("scoreCardAutomation.json",["NumPlays"])
+        // setupNavClicks();
 
 
   </script>
-  <script src="js/aws-cognito-sdk.min.js"></script>
-  <script src="js/amazon-cognito-identity.min.js"></script>
-  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.721.0.min.js"></script>
-  <script src="js/cognito-config.js"></script>
-  <script src="js/auth.js"></script>
 
 </body>
 </html>
