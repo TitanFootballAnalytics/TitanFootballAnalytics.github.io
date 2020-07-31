@@ -12,6 +12,7 @@ function awsrequest(screquest,reportid,type){
       if (err) {alert(err);}
       else {
       team = JSON.parse(JSON.stringify(attributes[1])).Value;
+      console.log(team)
 
       }
     });
@@ -57,7 +58,11 @@ function awsrequest(screquest,reportid,type){
         }
         if(type == 3){
           console.log("tirgger")
-          calllambda(screquest,"prephudldata",lambda);
+          screquest["metadata"]["team"] = team
+          screquest["metadata"]["reportid"] = reportid
+
+          calllambda(screquest,"generate_scorecards",lambda);
+          //console.log(JSON.stringify(screquest))
         }
 
 
@@ -83,7 +88,8 @@ function writes3(msg,directory,s3bucket,filename,reportid){
       console.log(err);
     } else {
       console.log("yeetushiatus")
-      window.location.replace("scorecards.html?reportid="+reportid);
+      awsrequest(msg,reportid,3);
+
     }
   });
 
@@ -113,6 +119,7 @@ function gets3object(directory,s3bucket){
 
 function calllambda(message,lambdaname,lambda){
 
+
   var params = {
     FunctionName: lambdaname, /* required */
     Payload: JSON.stringify(message)}
@@ -122,6 +129,8 @@ function calllambda(message,lambdaname,lambda){
     else {
       console.log(data);           // successful response
       var result = JSON.parse(data.Payload)
+      console.log(result)
+      window.location.replace("scorecards.html?reportid="+message["metadata"]["reportid"]);
       // Obtain Report ID
       // Redirect to report page
     }
