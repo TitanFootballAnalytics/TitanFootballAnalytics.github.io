@@ -589,6 +589,8 @@ function grabscrequestsingle(id){
         if(values[i].value != ""){
           mapping["Targetcolumns"].push(values[i].value)
           mapping["Charts"].push("Bar Chart")
+          if(inputs[i+1+i].checked == true){mapping["Charts"][i] = "Bar Chart"}
+          if(inputs[i+2+i].checked == true){mapping["Charts"][i] = "Pie Chart"}
         }
       }
       if(i >= 3){
@@ -599,12 +601,13 @@ function grabscrequestsingle(id){
     }
 
 
-    if(inputs[1].checked == true){mapping["Charts"][0] = "Bar Chart"}
-    if(inputs[2].checked == true){mapping["Charts"][0] = "Pie Chart"}
-    if(inputs[3].checked == true){mapping["Charts"][1] = "Bar Chart"}
-    if(inputs[4].checked == true){mapping["Charts"][1] = "Pie Chart"}
-    if(inputs[5].checked == true){mapping["Charts"][2] = "Bar Chart"}
-    if(inputs[6].checked == true){mapping["Charts"][2] = "Pie Chart"}
+    // if(inputs[1].checked == true){mapping["Charts"][0] = "Bar Chart"}
+    // if(inputs[2].checked == true){mapping["Charts"][0] = "Pie Chart"}
+    // if(inputs[3].checked == true){mapping["Charts"][1] = "Bar Chart"}
+    // if(inputs[4].checked == true){mapping["Charts"][1] = "Pie Chart"}
+    // if(inputs[5].checked == true){mapping["Charts"][2] = "Bar Chart"}
+    // if(inputs[6].checked == true){mapping["Charts"][2] = "Pie Chart"}
+
     if(mapping["Targetcolumns"].length > 1){
       if(inputs[7].checked == true){mapping["Sankey"].push("Yes")}
       else{mapping["Sankey"].push("No")}
