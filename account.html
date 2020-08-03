@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/general.css" >
     <link rel="stylesheet" href="css/navbar.css" >
+    <link rel="stylesheet" href="css/account.css" >
 
 
 </head>
   <body >
+
 
 
 
@@ -61,13 +63,22 @@
           </div>
         </nav>
 
-        <div class="">
-        </div>
+      <div class="container">
+          <div id="accountinfo" class="accountinfo col-md-6 col-md-offset-3">
+
+          </div>
 
 
+
+
+      </div>
+
+
+
+      </div>
 </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-
+  <script src="js/account.js"></script>
 
   <script src="js/aws-cognito-sdk.min.js"></script>
   <script src="js/amazon-cognito-identity.min.js"></script>
@@ -78,4 +89,7 @@
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+  <script>
+      authAndReturnParams(addUserInfo)
+  </script>
 </html>

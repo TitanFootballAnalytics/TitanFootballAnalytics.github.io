@@ -1958,7 +1958,7 @@ async function generateScorecards(data,configjson, filter){
 
        for(let i = 0; i < sortedData.length; i++){
 
-         configselection = configjson[sortedData[i].scid]
+         //configselection = configjson[sortedData[i].scid]
 
 
 

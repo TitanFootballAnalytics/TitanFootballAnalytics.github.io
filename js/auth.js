@@ -6,6 +6,62 @@ var poolData = {
 };
 
 
+function authAndReturnParams(callback){
+    cognitoUser.getSession(function(err, session) {
+    if (err) {	alert(err.message || JSON.stringify(err)); return;}
+    // console.log('session validity: ' + session.isValid());
+
+    var team = "team";
+    // NOTE: getSession must be called to authenticate user before calling getUserAttributes
+    cognitoUser.getUserAttributes(function(err, attributes) {
+      if (err) {alert(err);}
+      else {
+        // console.log(attributes)
+        if(JSON.parse(JSON.stringify(attributes[1])).Name === "custom:Team"){
+          team = JSON.parse(JSON.stringify(attributes[1])).Value;
+        }
+        else {
+          alert("No team name detected")
+        }
+        // console.log("======================",team);
+
+        var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
+        AWS.config.region = _config.cognito.region;
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: _config.identity.identityPoolId,
+          Logins: {
+            [`${loginUrl}`]: session
+              .getIdToken()
+              .getJwtToken(),
+          }
+        });
+        //TODO error when multiple sign ins and outs (cookie issue?)
+        AWS.config.credentials.refresh(error => {
+          if (error) {console.error(error);	}
+          else {
+            // console.log(AWS.config.credentials)
+            // console.log(AWS)
+            var usermetadata = {};
+            usermetadata["name"] = JSON.parse(JSON.stringify(attributes))[4].Value
+            usermetadata["email"] = JSON.parse(JSON.stringify(attributes))[7].Value
+            usermetadata["team"] = JSON.parse(JSON.stringify(attributes))[1].Value
+            usermetadata["gender"] = JSON.parse(JSON.stringify(attributes))[3].Value
+            usermetadata["city"] = JSON.parse(JSON.stringify(attributes))[5].Value
+            usermetadata["age"] = JSON.parse(JSON.stringify(attributes))[6].Value
+
+
+
+            console.log(usermetadata)
+            callback(usermetadata);
+
+          }
+        });
+      }
+    });
+  });
+}
+
+
 function authAndRun(callback){
     cognitoUser.getSession(function(err, session) {
     if (err) {	alert(err.message || JSON.stringify(err)); return;}
