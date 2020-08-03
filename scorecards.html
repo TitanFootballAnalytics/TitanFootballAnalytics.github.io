@@ -183,10 +183,10 @@
           authAndRun((team)=>{
             var key = `${team}/reports/${reportid}/report_${team}_${reportid}.json`;
             getObjAndRun("titancommonstorage",key,(config)=>{
-              console.log(config);
               key = `${team}/reports/${reportid}/data_${team}_${reportid}.json`;
               getObjAndRun("titancommonstorage",key,(report)=>{
                 console.log(report)
+                console.log(config)
                 console.log(team)
                 //TODO iterate over multiple reports rather than just present the first
 
