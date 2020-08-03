@@ -133,7 +133,7 @@
                 <li><a href="#">Contact Us</a></li>
               </ul>
             </li>
-            <li><a href="#">Account</a></li>
+            <li><a href="account.html">Account</a></li>
             <li><a href="#">Contact Us</a></li>
             <li><a id="SIGNOUT" href="#">Sign Out</a></li>
           </ul>
@@ -187,8 +187,10 @@
               key = `${team}/reports/${reportid}/data_${team}_${reportid}.json`;
               getObjAndRun("titancommonstorage",key,(report)=>{
                 console.log(report)
+                console.log(team)
                 //TODO iterate over multiple reports rather than just present the first
-                generateScorecards(report,config[0],["NumPlays"]);
+
+                generateScorecards(report,config,["NumPlays"]);
               });
             });
           });

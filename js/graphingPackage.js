@@ -1952,11 +1952,15 @@ async function generateScorecards(data,configjson, filter){
        // }
 
        sep = (fixedWidth-30)/numCharts;
-       var configselection = configjson;
+       var configselection = configjson[0];
        var barchartcount;
        var sankeychartcount = 0;
 
        for(let i = 0; i < sortedData.length; i++){
+
+         configselection = configjson[sortedData[i].scid]
+
+
 
          // Call new metadata in json of which config to refrence
           sankeychartcount = 0;

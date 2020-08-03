@@ -7,15 +7,8 @@
     <script src="https://use.fontawesome.com/9cd807d549.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/general.css" >
-    <link rel="stylesheet" href="css/loadingbar.css" >
-    <link rel="stylesheet" href="css/upload.css" >
     <link rel="stylesheet" href="css/navbar.css" >
 
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://d3js.org/topojson.v2.min.js"></script>
-    <script src='https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js'></script>
 
 </head>
   <body >
@@ -48,7 +41,7 @@
                     <li><a href="#">Contact Us</a></li>
                   </ul>
                 </li>
-                <li class="dropdown active">
+                <li class="dropdown ">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="reportbrowse.html">Browse Reports</a></li>
@@ -60,7 +53,7 @@
                     <li><a href="#">Contact Us</a></li>
                   </ul>
                 </li>
-                <li><a href="account.html">Account</a></li>
+                <li class="active"><a href="account.html">Account</a></li>
                 <li><a href="#">Contact Us</a></li>
                 <li><a id="SIGNOUT" href="#">Sign Out</a></li>
               </ul>
@@ -68,39 +61,10 @@
           </div>
         </nav>
 
-        <section  class="row">
-          <br>
-          <button style="margin-left: 60vw;padding: 20px;" class="btn default submitButton" id="submitButton">Submit</button>
-  				<div style="background-color: white;padding:10px;color: #1c1c1c;" class="shadow col-xs-3 col-xs-offset-1" align="left">
-  					<fieldset>
-  						<input  type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
-  					</fieldset>
-            <h5>Upload your data using this button</h5>
-            <h5>Then match your own columns by dragging each column on the right and matching it with one on the left</h5>
-            <input id="hudldata" type="radio" value="hudl" name="datatype" checked="checked"><label> &nbsp;Hudl Data</label>
-            <input type="text" id="omap" placeholder="O Team Name">&nbsp;<input type="text" id="omap" placeholder="D Team Name">
-
-            <br>
-
-            <input id="cstmdata" type="radio" value="custom" name="datatype"><label> &nbsp;Custom Data  </label><br>
-
-  				</div>
-          <br>
-  			</section>
-
-        <div id ="container">
-          <div id="wrapper">
-            <div id="lefthalf"></div>
-            <div id="righthalf">
-              <!-- <span class="searchbar">
-                <input class="search" type="text" placeholder="Search..">
-                <button type="submit"><i class="fa fa-search"></i></button>
-              </span> -->
-              <div id="headerContainer" class="row"></div>
-            </div>
-          </div>
+        <div class="">
         </div>
-	    </div>
+
+
 </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 
@@ -113,6 +77,5 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-  <script  src="js/csv_upload.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
 </html>
