@@ -14,15 +14,20 @@ background-size: cover;height: 300%;background-position: bottom;min-height: 100v
 
 
 
-  .data-holder {width: 100%;background-color: white;height: 70vh;padding: 5px;}
+  .data-holder {width: 100%;background-color: white;height: 50vh;padding: 5px;}
 
   .data-holder hr {width: 90%;height: 4px;background-color: #1c1c1c;margin-top: 4px;}
   .data-holder h3 {padding: 0px;margin-left: 5%;margin-top:5px;margin-bottom: 2px;font-weight: 900;}
 
   .data-holder input {margin-left: 5%;}
 
+.othersettings {background-color: #1c1c1c;padding: 10px;}
 
+.subpill {padding: 10px;}
 
+.subpill h4 {font-weight: 600;color: white;}
+
+.subpill .reportcustominput {border-bottom: 2px solid white;}
 
 .nomargin{margin: 0px;}
 

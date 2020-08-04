@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/customizationpage.css" >
     <link rel="stylesheet" href="css/navbar.css" >
     <link rel="stylesheet" href="css/general.css" >
+    <link rel="stylesheet" href="css/dev.css" >
+
 
     <script src="https://kit.fontawesome.com/35e5480a9e.js" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -112,10 +114,37 @@
         </div>
       </div> -->
 
+
+
+
       <div style="height: 300px;padding: 20px;float:right;padding-top: 0px;" class="col-md-3">
         <div id="FILEDISPLAY" class="data-holder">
           <h3 style=""> <img src="/Images/TitanLogoB.png" width="30px"> FILE SELECTION </h3>
           <hr>
+
+        </div>
+
+        <div class="othersettings">
+          <div class="subpill">
+
+            <h4>
+                Offense / Defense
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+
+              </h4>
+            <br>
+            <h4> I want to scout
+              <select class="reportcustominput">
+                <option value="URI">URI</option>
+
+              </select>
+
+          </div>
+          <input style="border: solid white 2px;" class="roundbutton submitcustom" value="Create Report" type="submit" list="" name="submitcustom" onclick="submitscrequests()" />
+
 
         </div>
 
@@ -164,11 +193,11 @@
         </div>
       </div>
 
-      
 
-      <div class=" col-md-2 col-md-offset-5" align="center">
+
+      <!-- <div class=" col-md-2 col-md-offset-5" align="center">
           <input class="roundbutton submitcustom" value="Create Report" type="submit" list="" name="submitcustom" onclick="submitscrequests()" />
-      </div>
+      </div> -->
     </div>
   </div>
 

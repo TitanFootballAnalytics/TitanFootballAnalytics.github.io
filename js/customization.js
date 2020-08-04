@@ -283,6 +283,8 @@ cognitoUser.getSession(function(err, session) {
                 lbl.innerHTML = "&nbsp;&nbsp;"+tokenlst[tokendex];
                 container.appendChild(document.createElement("br"))
               }
+              //
+              checkifnewreport();
 
 
 
@@ -371,7 +373,7 @@ cognitoUser.getSession(function(err, session) {
 
 
 
-checkifnewreport()
+
 
 // function addselectoptions(){
 //
@@ -428,7 +430,7 @@ function returnreportid(){
 }
 
 
-async function setscorecardrequests(configjson) {
+function setscorecardrequests(configjson) {
 
     //var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json";
     //const configfile = await d3.json(configfilename);
@@ -473,6 +475,30 @@ async function setscorecardrequests(configjson) {
             if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
             if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
           }
+        }
+        else{
+
+          var dataholder = document.getElementById("FILEDISPLAY");
+          var selections = dataholder.getElementsByTagName("input");
+          var files = document.getElementById("FILEDISPLAY").getElementsByTagName("label");
+
+
+
+          var tempdir;
+          var dirlist = [];
+
+          for (var k = 0; k < selections.length; k++) {
+
+            for (var j = 0; j < configfile[i].files.length; j++) {
+              if(String(configfile[i].files[j]).includes(files[k].innerHTML.replace('&nbsp;&nbsp;',''))){
+
+                selections[k].checked = true;
+              }
+            }
+
+          }
+
+
         }
     }
     // addselectoptions()
@@ -571,7 +597,12 @@ function submitscrequests() {
   var reportid = returnreportid()
 
   //PUT CODE HERE TO PASS REQUEST JSON
-  awsrequest(finalmapping,reportid,1);
+  //awsrequest(finalmapping,reportid,1);
+
+
+
+
+
   //awsrequest(finalmapping,reportid,3);
 
 
