@@ -112,7 +112,7 @@ function iteratedObjGet(bucket,keylst,agg,callback){
   }
   else{
     getObjAndRun(bucket,keylst.pop(),(data)=>{
-      console.log("GET!")
+      // console.log("GET!")
       agg.push(data);
       iteratedObjGet(bucket,keylst,agg,callback);
     });
