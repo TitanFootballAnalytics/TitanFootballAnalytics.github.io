@@ -240,7 +240,7 @@ cognitoUser.getSession(function(err, session) {
 
           var params ={
             // Delimiter: "/",
-            // Prefix:directory
+            Prefix:directory
           }
           // s3.listBucket(params,function(err,data){
           //     if(err)console.log(err)
@@ -250,7 +250,7 @@ cognitoUser.getSession(function(err, session) {
           s3.listObjectsV2(params, function(err, data) {
             if (err) console.log(err,err.stack);
             else {
-              // console.log(data.Contents);
+              console.log(data.Contents);
               var currDirectory = data.Contents;
               var tokenlst = [];
               var keylst = [];

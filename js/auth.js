@@ -106,6 +106,18 @@ function authAndRun(callback){
   });
 }
 
+function iteratedObjGet(bucket,keylst,agg,callback){
+  if(keylst.length == 0){
+    callback(agg);
+  }
+  else{
+    getObjAndRun(bucket,keylst.pop(),(data)=>{
+      // console.log("GET!")
+      agg.push(data);
+      iteratedObjGet(bucket,keylst,agg,callback);
+    });
+  }
+}
 
 function getObjAndRun(bucket,key,callback){
   var s3 = new AWS.S3({
@@ -135,6 +147,33 @@ function getObjAndRun(bucket,key,callback){
     output = JSON.parse(binArrayToJson(data.Body));
     callback(output);
    }
+
+  });
+}
+
+
+function listObjsAndRun(prefix,bucket,callback){
+  var s3 = new AWS.S3({
+      apiVersion: "2006-03-01",
+      params: { Bucket: bucket }
+  });
+
+
+  var params ={
+    // Delimiter: "/",
+    // Prefix:directory
+  }
+
+  if(prefix != ""){
+    params.Prefix = prefix;
+  }
+
+
+  s3.listObjectsV2(params, function(err, data) {
+    if (err) console.log(err,err.stack);
+    else {
+      callback(data);
+    }
 
   });
 }
