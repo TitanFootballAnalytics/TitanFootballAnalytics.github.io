@@ -146,41 +146,43 @@ async function updateColList(){
       });
       console.log("union/intersect",unionminusintersect);
       var selectors = document.getElementsByTagName("select");
+      console.log(selectors)
       for( var i = 0; i < selectors.length;i++){
-        selectors[i].innerHTML = "";
-        node = document.createElement("option");
-        node.value = ""
-        textnode = document.createTextNode("");
-        node.appendChild(textnode);
-        selectors[i].appendChild(node);
-        //      if(tempid.includes("target")){ //TODO integrate target and situation cases once standard set of collumns has additional parameters to split collumns that should be grouped over
-        //active options
-        intersection.forEach(key=>{
+        if(selectors[i].id.includes("target") || selectors[i].id.includes("situation")){
+          selectors[i].innerHTML = "";
           node = document.createElement("option");
-          node.value = key;
-          textnode = document.createTextNode(key);
-          node.style.fontWeight = "bold";
+          node.value = ""
+          textnode = document.createTextNode("");
           node.appendChild(textnode);
           selectors[i].appendChild(node);
-        });
+          //      if(tempid.includes("target")){ //TODO integrate target and situation cases once standard set of collumns has additional parameters to split collumns that should be grouped over
+          //active options
+          intersection.forEach(key=>{
+            node = document.createElement("option");
+            node.value = key;
+            textnode = document.createTextNode(key);
+            node.style.fontWeight = "bold";
+            node.appendChild(textnode);
+            selectors[i].appendChild(node);
+          });
 
-        //inactive options
-        unionminusintersect.forEach((key,j)=>{
-          node = document.createElement("option");
-          node.value = key
-          node.disabled = true;
-          node.style.backgroundColor = "lightgray";
-          // if(j == 0){
-            // node.style.border = "solid";
-            // console.log(node.style.borderTop)
-          // }
-          textnode = document.createTextNode(key);
-          node.appendChild(textnode);
-          selectors[i].appendChild(node);
-        });
+          //inactive options
+          unionminusintersect.forEach((key,j)=>{
+            node = document.createElement("option");
+            node.value = key
+            node.disabled = true;
+            node.style.backgroundColor = "lightgray";
+            // if(j == 0){
+              // node.style.border = "solid";
+              // console.log(node.style.borderTop)
+            // }
+            textnode = document.createTextNode(key);
+            node.appendChild(textnode);
+            selectors[i].appendChild(node);
+          });
 
       }
-
+    }
     }
     else{
       console.log("NO FILES SELECTED");
@@ -586,10 +588,21 @@ function submitscrequests() {
   }
 
   // TEAM IS HARD CODED HERE AND OFFDEF
+  var offdef = document.getElementById("offdef");
+  var scoutteam = document.getElementById("teamselect").value;
+  var offdefres;
+  if(offdef.checked){
+    offdefres = "def"
+  }
+  else{
+    offdefres = "off"
+  }
+
+
   finalmapping["metadata"] = {"files":dirlist,
                               "bucket":"titancommonstorage",
-                              "target_team":"URI",
-                              "offdef":"off"};
+                              "target_team":scoutteam,
+                              "offdef":offdefres};
 
 
   console.log(JSON.stringify(finalmapping))
@@ -597,7 +610,7 @@ function submitscrequests() {
   var reportid = returnreportid()
 
   //PUT CODE HERE TO PASS REQUEST JSON
-  //awsrequest(finalmapping,reportid,1);
+  awsrequest(finalmapping,reportid,1);
 
 
 

@@ -27,7 +27,9 @@ background-size: cover;height: 300%;background-position: bottom;min-height: 100v
 
 .subpill h4 {font-weight: 600;color: white;}
 
-.subpill .reportcustominput {border-bottom: 2px solid white;}
+.subpill .reportcustominput {border-bottom: 2px solid white;color: white;}
+
+.subpill select option {background-color: white;color: #1c1c1c;}
 
 .nomargin{margin: 0px;}
 
