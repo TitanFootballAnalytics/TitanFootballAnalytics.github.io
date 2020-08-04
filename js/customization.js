@@ -193,7 +193,7 @@ function updateColList(callback){
       for( var i = 0; i < selectors.length;i++){
         selectors[i].innerHTML = "";
       }
-      callback()
+      //callback()
     }
   });
 }
@@ -283,7 +283,10 @@ cognitoUser.getSession(function(err, session) {
                 inp.type = "checkbox";
                 inp.id = "filelst"+tokendex;
                 inp.key = keylst[tokendex];
-                inp.addEventListener('change',updateColList,false);
+                inp.addEventListener('change',()=>{
+                  updateColList(()=>{
+                    
+                  })},false);
                 checklst.push(inp);
                 var lbl = container.appendChild(document.createElement("label"))
                 lbl.innerHTML = "&nbsp;&nbsp;"+tokenlst[tokendex];
