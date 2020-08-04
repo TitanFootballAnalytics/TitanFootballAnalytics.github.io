@@ -424,7 +424,9 @@ function returnreportid(){
       return reportid
     }
     else {
-      return "9999"
+      var tempid = document.getElementById("reportitle")
+
+      return tempid.value
     }
 
 
@@ -590,6 +592,7 @@ function submitscrequests() {
   // TEAM IS HARD CODED HERE AND OFFDEF
   var offdef = document.getElementById("offdef");
   var scoutteam = document.getElementById("teamselect").value;
+  console.log(scoutteam)
   var offdefres;
   if(offdef.checked){
     offdefres = "def"
@@ -599,15 +602,18 @@ function submitscrequests() {
   }
 
 
+  var reportid = returnreportid()
+
   finalmapping["metadata"] = {"files":dirlist,
                               "bucket":"titancommonstorage",
                               "target_team":scoutteam,
-                              "offdef":offdefres};
+                              "offdef":offdefres,
+                              "reportid":reportid};
 
 
   console.log(JSON.stringify(finalmapping))
 
-  var reportid = returnreportid()
+
 
   //PUT CODE HERE TO PASS REQUEST JSON
   awsrequest(finalmapping,reportid,1);

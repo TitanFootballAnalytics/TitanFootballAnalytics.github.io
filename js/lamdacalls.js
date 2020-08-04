@@ -52,7 +52,7 @@ function awsrequest(screquest,reportid,type){
         var directory = team+"/reports/"+reportid+"/report_"+team+"_"+reportid+".json";
         if(type == 1){
           screquest["metadata"]["team"] = team
-          screquest["metadata"]["reportid"] = reportid
+          //screquest["metadata"]["reportid"] = reportid
           writes3(screquest,directory,titancommon,"report_"+team+"_"+reportid+".json",reportid);
         }
         if(type == 2){
@@ -61,7 +61,7 @@ function awsrequest(screquest,reportid,type){
         if(type == 3){
           console.log("tirgger")
           screquest["metadata"]["team"] = team
-          screquest["metadata"]["reportid"] = reportid
+          //screquest["metadata"]["reportid"] = reportid
 
 
           calllambda(screquest,"generate_scorecards",lambda);
