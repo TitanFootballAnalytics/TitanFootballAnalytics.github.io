@@ -622,6 +622,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex,metadata) {
 };
 
 function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,colorDex2) {
+  
   var transition_delay = 300;
   if(data.length > 14){
     transition_delay = 4200/data.length;
@@ -1660,10 +1661,10 @@ function addHeader(svg, data,metadata) {
 
 
   var sample_data2 = [["","Pass","Run","Total"],
-    ["Play Count",data["Play Count"]["pass"],data["Play Count"]["run"],data["Play Count"]["total"]],
-    ["Total Yards",data["Total Yards"]["pass"],data["Total Yards"]["run"],data["Total Yards"]["total"]],
-    ["Average Yards",roundnumber(data["Average Yards"]["pass"],2),roundnumber(data["Average Yards"]["run"],2),roundnumber(data["Average Yards"]["total"],2)],
-    ["TD Count",data["TD Count"]["pass"],data["TD Count"]["run"],data["TD Count"]["total"]]];
+    ["Play Count",data["Play Count"]["P"],data["Play Count"]["R"],data["Play Count"]["total"]],
+    ["Total Yards",data["Total Yards"]["P"],data["Total Yards"]["R"],data["Total Yards"]["total"]],
+    ["Average Yards",roundnumber(data["Average Yards"]["P"],2),roundnumber(data["Average Yards"]["R"],2),roundnumber(data["Average Yards"]["total"],2)],
+    ["TD Count",data["TD Count"]["P"],data["TD Count"]["R"],data["TD Count"]["total"]]];
 
 
   addJeanTable(sample_data2,svg,800,10,1180,150);
@@ -1919,12 +1920,8 @@ function cleandata(data){
 async function generateScorecards(data,configjson, filter){
 
 
-       data = cleandata(data);
+       // data = cleandata(data);
 
-       console.log(data)
-
-
-       var sortedData = tieredSort(data,filter);
 
        var svg;
        var sep;
@@ -1956,141 +1953,148 @@ async function generateScorecards(data,configjson, filter){
        var barchartcount;
        var sankeychartcount = 0;
 
-       for(let i = 0; i < sortedData.length; i++){
 
-         //configselection = configjson[sortedData[i].scid]
+       for(var j = 0; j < Object.keys(configjson).length-1; j++){
+            data[j] = cleandata(data[j])
+            var sortedData = tieredSort(data[j],filter);
+            configselection = configjson[j];
+            for(let i = 0; i < sortedData.length; i++){
 
-
-
-         // Call new metadata in json of which config to refrence
-          sankeychartcount = 0;
-
-          barchartcount = configselection["Targetcolumns"].length;
-          for (var j = 0; j < configselection["Sankey"].length; j++) {
-            if(configselection["Sankey"][j] == "Yes"){sankeychartcount++;}
-          }
-          sep = (fixedWidth-30)/(sankeychartcount+barchartcount);
-
-          var metadata = {"col0":sortedData[i]["col0"],
-                          "col1":sortedData[i]["col1"],
-                          "col2":sortedData[i]["col2"],
-                          "sit0":sortedData[i]["sit0"],
-                          "sit1":sortedData[i]["sit1"],
-                          "sit2":sortedData[i]["sit2"]};
-
-           var startDex1 = 0;
-           currX = 10;
-           d3.select("#mainDiv").append("div")
-               .attr("class","row wrapper-div drop scorecardContainer")
-               .style("height",fixedHeight)
-               .style("width",fixedWidth)
-               .style("margin-top","100px")
-               .attr("id","div" + i)
-           d3.select("#div"+i).append("svg")
-               .attr("width",fixedWidth)
-               .attr("height",fixedHeight)
-               .attr("class","scorecard centered-basic")
-              // .style("animation-delay",i*.2+"s")
-               .attr("id","scoreCard"+i)
-
-           svg = d3.select(("#scoreCard"+i));
-
-           var sctargetcols = [sortedData[i]["col0"],sortedData[i]["col1"],sortedData[i]["col2"]]
+              //configselection = configjson[sortedData[i].scid]
 
 
-           var besttend = findmaxtend(sortedData[i],sctargetcols);
 
-           var dexlist = [0];
-           var tempdex;
-           for (var k = 0; k < configselection["Charts"].length; k++) {
-              if(configselection["Charts"][k] == "Bar Chart"){
+              // Call new metadata in json of which config to refrence
+               sankeychartcount = 0;
 
-                dexlist.push(addBarGraph(sortedData[i].datasets[k],
-                                         k,
-                                         svg,
-                                         currX,
-                                         svg.attr("height")*0.40,
-                                         (currX+sep),
-                                         svg.attr("height")*0.90,
-                                         dexlist[dexlist.length-1],
-                                         metadata));
-                currX = currX+sep;
-              }
-              if(configselection["Charts"][k] == "Pie Chart"){
-                dexlist.push(addPieChart(sortedData[i].datasets[k],
-                                         k,
-                                         svg,
-                                         currX,
-                                         svg.attr("height")*0.40,
-                                         (currX+sep),
-                                         svg.attr("height")*0.90,
-                                         dexlist[dexlist.length-1],
-                                         metadata) );
-                currX = currX+sep;
-              }
-              if(configselection["Sankey"][k] == "Yes"){
-                addSankey(""+i+"_"+(k+1),
-                          sortedData[i].datasets[k+configselection["Charts"].length],
-                          svg,
-                          2,
-                          currX ,
-                          svg.attr("height")*0.40,
-                          (currX+sep),
-                          svg.attr("height")*0.90,
-                          true,
-                          dexlist[k],
-                          dexlist[k+1]);
-                currX = currX+sep
-              }
-           }
+               barchartcount = configselection["Targetcolumns"].length;
+               for (var k = 0; k < configselection["Sankey"].length; k++) {
+                 if(configselection["Sankey"][k] == "Yes"){sankeychartcount++;}
+               }
+               sep = (fixedWidth-30)/(sankeychartcount+barchartcount);
+
+               var metadata = {"col0":sortedData[i]["col0"],
+                               "col1":sortedData[i]["col1"],
+                               "col2":sortedData[i]["col2"],
+                               "sit0":sortedData[i]["sit0"],
+                               "sit1":sortedData[i]["sit1"],
+                               "sit2":sortedData[i]["sit2"]};
+
+                var startDex1 = 0;
+                currX = 10;
+                d3.select("#mainDiv").append("div")
+                    .attr("class","row wrapper-div drop scorecardContainer")
+                    .style("height",fixedHeight)
+                    .style("width",fixedWidth)
+                    .style("margin-top","100px")
+                    .attr("id","div" + i +"_"+j)
+                d3.select("#div"+i+"_"+j).append("svg")
+                    .attr("width",fixedWidth)
+                    .attr("height",fixedHeight)
+                    .attr("class","scorecard centered-basic")
+                   // .style("animation-delay",i*.2+"s")
+                    .attr("id","scoreCard"+i+"_"+j)
+
+                svg = d3.select(("#scoreCard"+i+"_"+j));
+
+                var sctargetcols = [sortedData[i]["col0"],sortedData[i]["col1"],sortedData[i]["col2"]]
 
 
-           // if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
-           //     //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
-           //     startDex1 = addBarGraph(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
-           //     currX = currX+sep;
-           // }
-           // else if(d3.select("#graph1").text()=='Pie Chart'){
-           //   startDex1 = addPieChart(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
-           //   currX = currX+sep;
-           // }
-           // if(d3.select("#sankey1").property("checked")){
-           //     addSankey(""+i+"_"+1, sortedData[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
-           //     currX = currX+sep
-           // }
-           // if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
-           //     startDex2 = addBarGraph(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
-           //     currX = currX+sep
-           // }
-           // else if(d3.select("#graph2").text()=='Pie Chart'){
-           //   startDex2 = addPieChart(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
-           //   currX = currX+sep;
-           // }
-           // if(d3.select("#sankey2").property("checked")){
-           //     addSankey(""+i+"_"+2, sortedData[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
-           //     currX = currX+sep
-           // }
-           // if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
-           //     addBarGraph(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
-           //
-           // }
-           // else if(d3.select("#graph3").text()=='Pie Chart'){
-           //   addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
-           // }
+                var besttend = findmaxtend(sortedData[i],sctargetcols);
+
+                var dexlist = [0];
+                var tempdex;
+                for (var k = 0; k < configselection["Charts"].length; k++) {
+                   if(configselection["Charts"][k] == "Bar Chart"){
+
+                     dexlist.push(addBarGraph(sortedData[i].datasets[k],
+                                              k,
+                                              svg,
+                                              currX,
+                                              svg.attr("height")*0.40,
+                                              (currX+sep),
+                                              svg.attr("height")*0.90,
+                                              dexlist[dexlist.length-1],
+                                              metadata));
+                     currX = currX+sep;
+                   }
+                   if(configselection["Charts"][k] == "Pie Chart"){
+                     dexlist.push(addPieChart(sortedData[i].datasets[k],
+                                              k,
+                                              svg,
+                                              currX,
+                                              svg.attr("height")*0.40,
+                                              (currX+sep),
+                                              svg.attr("height")*0.90,
+                                              dexlist[dexlist.length-1],
+                                              metadata) );
+                     currX = currX+sep;
+                   }
+                   if(configselection["Sankey"][k] == "Yes"){
+                     addSankey(""+i+"_"+(k+1),
+                               sortedData[i].datasets[k+configselection["Charts"].length],
+                               svg,
+                               2,
+                               currX ,
+                               svg.attr("height")*0.40,
+                               (currX+sep),
+                               svg.attr("height")*0.90,
+                               true,
+                               dexlist[k],
+                               dexlist[k+1]);
+                     currX = currX+sep
+                   }
+                }
 
 
-           var st0 = sortedData[i]["sit0"];
-           var st1 = sortedData[i]["sit1"];
-           var st2 = sortedData[i]["sit2"];
+                // if((d3.select("#graph1").text()=='Bar Graph') || (d3.select("#graph1").text()=='Graph 1')){
+                //     //startDex1 = addPieChart(data.scorecards[i].datasets[0],0,svg,currX,svg.attr("height")*0.40,(currX+sep), svg.attr("height")*0.90,0);
+                //     startDex1 = addBarGraph(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
+                //     currX = currX+sep;
+                // }
+                // else if(d3.select("#graph1").text()=='Pie Chart'){
+                //   startDex1 = addPieChart(sortedData[i].datasets[0], 0, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,0,metadata);
+                //   currX = currX+sep;
+                // }
+                // if(d3.select("#sankey1").property("checked")){
+                //     addSankey(""+i+"_"+1, sortedData[i].datasets[3], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,0,startDex1);
+                //     currX = currX+sep
+                // }
+                // if((d3.select("#graph2").text()=='Bar Graph') || (d3.select("#graph2").text()=='Graph 2')){//if(!(d3.select("#graph2").text()=='None')){
+                //     startDex2 = addBarGraph(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
+                //     currX = currX+sep
+                // }
+                // else if(d3.select("#graph2").text()=='Pie Chart'){
+                //   startDex2 = addPieChart(sortedData[i].datasets[1], 1, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex1,metadata);
+                //   currX = currX+sep;
+                // }
+                // if(d3.select("#sankey2").property("checked")){
+                //     addSankey(""+i+"_"+2, sortedData[i].datasets[4], svg, 2, currX , svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,true,startDex1,startDex2);
+                //     currX = currX+sep
+                // }
+                // if((d3.select("#graph3").text()=='Bar Graph') || (d3.select("#graph3").text()=='Graph 3')){//if(!(d3.select("#graph3").text()=='None')){
+                //     addBarGraph(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
+                //
+                // }
+                // else if(d3.select("#graph3").text()=='Pie Chart'){
+                //   addPieChart(sortedData[i].datasets[2], 2, svg, currX, svg.attr("height")*0.40, (currX+sep), svg.attr("height")*0.90,startDex2,metadata);
+                // }
 
-           metadata[st0] = sortedData[i][sortedData[i]["sit0"]]
-           metadata[st1] = sortedData[i][sortedData[i]["sit1"]]
-           metadata[st2] = sortedData[i][sortedData[i]["sit2"]]
-           metadata["tendacy"] = besttend;
+
+                var st0 = sortedData[i]["sit0"];
+                var st1 = sortedData[i]["sit1"];
+                var st2 = sortedData[i]["sit2"];
+
+                metadata[st0] = sortedData[i][sortedData[i]["sit0"]]
+                metadata[st1] = sortedData[i][sortedData[i]["sit1"]]
+                metadata[st2] = sortedData[i][sortedData[i]["sit2"]]
+                metadata["tendacy"] = besttend;
 
 
-           addHeader(svg, sortedData[i].splits,metadata);
+                addHeader(svg, sortedData[i].splits,metadata);
+            }
        }
+
 }
 
 function emptyScoreCards(svg){
