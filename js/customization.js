@@ -98,7 +98,7 @@ async function downloadMap(key,callback){
   }
 }
 
-async function updateColList(){
+function updateColList(callback){
   var newdisplaylst = [];
 
   for(var i = 0; i < checklst.length;i++){
@@ -181,8 +181,11 @@ async function updateColList(){
             selectors[i].appendChild(node);
           });
 
+
       }
+
     }
+    callback()
     }
     else{
       console.log("NO FILES SELECTED");
@@ -190,6 +193,7 @@ async function updateColList(){
       for( var i = 0; i < selectors.length;i++){
         selectors[i].innerHTML = "";
       }
+      callback()
     }
   });
 }
@@ -440,7 +444,7 @@ function setscorecardrequests(configjson) {
     //const configfile = await d3.json(configfilename);
 
     const configfile = configjson;
-
+    document.getElementById("reportitle").value = configfile["metadata"]["reportid"]
 
     var tempscorecardrequest;
     var selectors;var node;var textnode;var inputs;
@@ -449,63 +453,70 @@ function setscorecardrequests(configjson) {
 
     console.log(configfile)
 
-    for (var i in configfile) {
+    var dataholder = document.getElementById("FILEDISPLAY");
+    var selections = dataholder.getElementsByTagName("input");
+    var files = document.getElementById("FILEDISPLAY").getElementsByTagName("label");
 
-        if(i != "metadata"){
-          tempscorecardrequest = document.getElementById("test"+(Number(i)+1));
-          selectors = tempscorecardrequest.getElementsByTagName("select");
-          inputs = tempscorecardrequest.getElementsByTagName("input");
 
-          for (var k = 0; k < configfile[i]["Targetcolumns"].length; k++) {
-            node = document.createElement("option");
-            node.value = configfile[i]["Targetcolumns"][k];
-            textnode = document.createTextNode(configfile[i]["Targetcolumns"][k]);
-            node.appendChild(textnode);
-            selectors[k].appendChild(node);
-          }
-          for (var k = 0; k < configfile[i]["Situationcols"].length; k++) {
-            node = document.createElement("option");
-            node.value = configfile[i]["Situationcols"][k];
-            textnode = document.createTextNode(configfile[i]["Situationcols"][k]);
-            node.appendChild(textnode);
-            selectors[k+3].appendChild(node);
-          }
 
-          for (var k = 0; k < configfile[i]["Charts"].length; k++) {
-            if(configfile[i]["Charts"][k] == "Bar Chart"){inputs[(k*2)+1].checked = true;}
-            if(configfile[i]["Charts"][k] == "Pie Chart"){inputs[(k*2)+2].checked = true;}
-          }
-          for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
-            if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
-            if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
-          }
+    var tempdir;
+    var dirlist = [];
+
+    for (var k = 0; k < selections.length; k++) {
+
+      for (var j = 0; j < configfile["metadata"].files.length; j++) {
+        if(String(configfile["metadata"].files[j]).includes(files[k].innerHTML.replace('&nbsp;&nbsp;',''))){
+
+          selections[k].checked = true;
         }
-        else{
+      }
 
-          var dataholder = document.getElementById("FILEDISPLAY");
-          var selections = dataholder.getElementsByTagName("input");
-          var files = document.getElementById("FILEDISPLAY").getElementsByTagName("label");
+    }
+    updateColList(()=>{
+      for (var i in configfile) {
+          if(i != "metadata"){
+            tempscorecardrequest = document.getElementById("test"+(Number(i)+1));
+            selectors = tempscorecardrequest.getElementsByTagName("select");
+            inputs = tempscorecardrequest.getElementsByTagName("input");
 
-
-
-          var tempdir;
-          var dirlist = [];
-
-          for (var k = 0; k < selections.length; k++) {
-
-            for (var j = 0; j < configfile[i].files.length; j++) {
-              if(String(configfile[i].files[j]).includes(files[k].innerHTML.replace('&nbsp;&nbsp;',''))){
-
-                selections[k].checked = true;
-              }
+            for (var k = 0; k < configfile[i]["Targetcolumns"].length; k++) {
+              node = document.createElement("option");
+              node.selected = "selected";
+              node.value = configfile[i]["Targetcolumns"][k];
+              textnode = document.createTextNode(configfile[i]["Targetcolumns"][k]);
+              node.appendChild(textnode);
+              selectors[k].prepend(node);
+            }
+            for (var k = 0; k < configfile[i]["Situationcols"].length; k++) {
+              node = document.createElement("option");
+              node.selected = "selected"
+              node.value = configfile[i]["Situationcols"][k];
+              textnode = document.createTextNode(configfile[i]["Situationcols"][k]);
+              node.appendChild(textnode);
+              selectors[k+3].prepend(node);
             }
 
+            for (var k = 0; k < configfile[i]["Charts"].length; k++) {
+              if(configfile[i]["Charts"][k] == "Bar Chart"){inputs[(k*2)+1].checked = true;}
+              if(configfile[i]["Charts"][k] == "Pie Chart"){inputs[(k*2)+2].checked = true;}
+            }
+            for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
+              if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
+              if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
+            }
           }
+          else{
 
 
-        }
-    }
+
+
+          }
+      }
+    })
+
+
     // addselectoptions()
+    //
 }
 
 
