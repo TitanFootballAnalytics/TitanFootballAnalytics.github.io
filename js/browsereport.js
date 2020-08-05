@@ -79,7 +79,7 @@ authAndRun((team)=>{
           let othertext = document.createElement('o');
           boldtext.innerHTML = d.metadata["target_team"];
           h5.appendChild(boldtext);
-          othertext.textContent  = " Scouting Report";
+          othertext.textContent  = " Scouting Report -"+d.metadata.reportid;
           h5.appendChild(othertext);
 
           for(var j = 0; j < d.metadata.files.length; j++){
