@@ -140,7 +140,7 @@ body{
   min-height: 100vh;
   margin-left: -30px;
   display:table-cell;
-  margin-top:-50px;
+  margin-top:-120px;
 }
 
 #righthalf ::-webkit-scrollbar {width: 10px;}
@@ -151,7 +151,7 @@ body{
 
 #headerContainer{
   margin-top:10px;
-  height: 85vh;
+  height: 75vh;
   overflow-y: scroll;
   border: thick dashed #1c1c1c;
   border-width: 2px;
