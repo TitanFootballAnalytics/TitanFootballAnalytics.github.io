@@ -7,7 +7,7 @@ const hudlset = ["playnumber", "odk", "down", "distance", "hash", "yardline", "p
 								"gain", "off_formation", "off_play", "off_strength", "backfield", "play_direction", "run_gap",
 								"def_front", "coverage", "blitz", "quarter", "drive_num"];
 
-
+var ourData;
 var hudl = document.getElementById("hudldata");
 var cstm = document.getElementById("cstmdata");
 
@@ -19,6 +19,7 @@ hudl.oninput = function() {
 		}
 		// createRecepticle(hudlset);
 		generateHoldingCell(hudlset);
+		createRecepticle(ourData[0]);
 	}
 }
 
@@ -30,6 +31,7 @@ cstm.oninput = function() {
 		}
 		// createRecepticle(standardset);
 		generateHoldingCell(standardset);
+		createRecepticle(ourData[0])
 	}
 }
 
@@ -56,7 +58,7 @@ if(hudl.checked = true) {
 		currentMapping[hudlset[i]] = "";
 	}
 	// createRecepticle(hudlset);
-	generateHoldingCell(standardset);
+	generateHoldingCell(hudlset);
 }
 
 function removeChildren(parent){
@@ -89,7 +91,7 @@ function fitText(lBox,sourceText){
 	var bBox = text.node().getBBox();
 	var currWidth = bBox.width;
 	var currHeight = bBox.height;
-	while(fSize > 1 && (currWidth > 134 || currHeight > 34)){
+	while(fSize > 1 && (currWidth > 130 || currHeight > 34)){
 		fSize--;
 		text.style("font-size",""+fSize+"px");
 		bBox = text.node().getBBox();
@@ -100,9 +102,7 @@ function fitText(lBox,sourceText){
 
 function createRecepticle(set){
 		var parent = document.getElementById("lefthalf");
-		while (parent.firstChild) {
-    	parent.removeChild(parent.lastChild);
-  	}
+		removeChildren(parent);
 		var unit;
 		var lBox;
 		var rBox;
@@ -571,6 +571,7 @@ function submitHandler(){
 
 function generateHoldingCell(data){
 	var parent = document.getElementById("headerContainer");
+	removeChildren(parent);
 	var unit;
 	var lBox;
 	var svg;
@@ -839,6 +840,7 @@ $(document).ready(function() {
 		if(data !== null && data !== "" && data.length > 1) {
 
 			this.data = data;
+			ourData = data;
 			// generateHoldingCell(data[0]);
 			createRecepticle(data[0])
 
