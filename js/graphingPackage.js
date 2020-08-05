@@ -622,7 +622,7 @@ function addBarGraph(data, uniqueID, canvas, x1, y1, x2, y2,colorDex,metadata) {
 };
 
 function addSankey(uniqueID,data, canvas, pad,x1, y1, x2, y2,barflag,colorDex1,colorDex2) {
-  
+
   var transition_delay = 300;
   if(data.length > 14){
     transition_delay = 4200/data.length;
@@ -1656,9 +1656,21 @@ function addHeader(svg, data,metadata) {
   // }
 
 
+  // var tabledataform = [["","Pass","Run","Total"]]
+  // var templist;
+  // for (var key in data) {
+  //   templist = []
+  //   templist.push(key)
+  //   for (var subkey in data[key]) {
+  //       console.log(subkey)
+  //       templist.push((data[key][subkey]))
+  //   }
+  //   tabledataform.push(templist)
+  // }
+  //
+  // console.log(tabledataform)
 
-
-
+  console.log(data)
 
   var sample_data2 = [["","Pass","Run","Total"],
     ["Play Count",data["Play Count"]["P"],data["Play Count"]["R"],data["Play Count"]["total"]],
