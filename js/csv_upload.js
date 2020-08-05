@@ -17,7 +17,8 @@ hudl.oninput = function() {
 		for(var i = 0; i< hudlset.length;i++){
 			currentMapping[hudlset[i]] = "";
 		}
-		createRecepticle(hudlset);
+		// createRecepticle(hudlset);
+		generateHoldingCell(hudlset);
 	}
 }
 
@@ -27,7 +28,8 @@ cstm.oninput = function() {
 		for(var i = 0; i< standardset.length;i++){
 			currentMapping[standardset[i]] = "";
 		}
-		createRecepticle(standardset);
+		// createRecepticle(standardset);
+		generateHoldingCell(standardset);
 	}
 }
 
@@ -44,7 +46,8 @@ if(cstm.checked = true) {
 	for(var i = 0; i< standardset.length;i++){
 		currentMapping[standardset[i]] = "";
 	}
-	createRecepticle(standardset);
+	// createRecepticle(standardset);
+	generateHoldingCell(standardset);
 }
 
 if(hudl.checked = true) {
@@ -52,9 +55,15 @@ if(hudl.checked = true) {
 	for(var i = 0; i< hudlset.length;i++){
 		currentMapping[hudlset[i]] = "";
 	}
-	createRecepticle(hudlset);
+	// createRecepticle(hudlset);
+	generateHoldingCell(standardset);
 }
 
+function removeChildren(parent){
+	while(parent.firstChild){
+		parent.removeChild(parent.firstChild);
+	}
+}
 
 document.getElementById("submitButton").addEventListener("click",submitHandler,false);
 
@@ -65,23 +74,22 @@ document.getElementById("submitButton").addEventListener("click",submitHandler,f
 // svg = d3.select("#graph");
 function fitText(lBox,sourceText){
 	var fSize = 32;
-
+	removeChildren(lBox);
 	var text = d3.select(lBox).append("svg")
 								 .attr("width",150)
 								 .attr("height",40)
 								 .append("text")
 								 .style("alignment-baseline","middle")
+								 .style("z-index",4)
 								 .style("text-anchor","middle")
 								 .attr("x",69)
 								 .attr("y",20)
 								 .text(sourceText)
 								 .style("font-size",""+fSize+"px");
-
 	var bBox = text.node().getBBox();
 	var currWidth = bBox.width;
 	var currHeight = bBox.height;
 	while(fSize > 1 && (currWidth > 134 || currHeight > 34)){
-		// console.log(currWidth)
 		fSize--;
 		text.style("font-size",""+fSize+"px");
 		bBox = text.node().getBBox();
@@ -136,12 +144,67 @@ function createRecepticle(set){
 				 .attr("fill","white");
 			rBox = unit.appendChild(document.createElement('div'));
 			rBox.className = "rBox";
-			rBox.addEventListener('dragover', allowDrop, false);
-			rBox.addEventListener('drop', drop, false);
+			// rBox.addEventListener('dragover', allowDrop, false);
+			// rBox.addEventListener('drop', drop, false);
+			// rBox.addEventListener('dragleave',dragLeave,false);
+			// <label class="switch">
+			// 	<input id="offdef" type="checkbox">
+			// 	<span class="slider"></span>
+			// </label>
+			var switchElem = unit.appendChild(document.createElement("label"));
+			switchElem.className = "switch";
+			var inp = switchElem.appendChild(document.createElement("input"));
+			inp.type = "checkbox";
+			inp.className = "checkInp";
+			inp.checked = true;
+			inp.id = "switch"+i
+			var slider = switchElem.appendChild(document.createElement("span"));
+			slider.className = "slider";
+			inp.addEventListener("change",disableRelationship,true);
+
+
+			var hitbox = rBox.appendChild(document.createElement('div'));
+			hitbox.addEventListener('dragover', allowDrop, false);
+			hitbox.addEventListener('drop', drop, false);
+			hitbox.addEventListener('dragleave',dragLeave,false);
+			hitbox.style.height = "105px";
+			hitbox.style.minWidth = "200px";
+			// hitbox.style.backgroundColor = "rgba(100,0,0,.5)"
+			hitbox.style.zIndex = "4";
+
 			// svg = d3.select("#arrow")
 			// console.log(svg)
 
 		}
+		var clearButt = d3.select("#clearAll");
+		clearButt._groups[0][0].style.visibility = "visible";
+		clearButt._groups[0][0].addEventListener("click",(event)=>{
+		  var switchSelect =	d3.selectAll(".checkInp");
+			var switchArr =  switchSelect._groups[0];
+			for(var j = 0; j < switchArr.length; j++){
+				if(switchArr[j].checked == true && switchArr[j].parentNode.getElementsByClassName("cover").length == 0){
+					switchArr[j].checked = false;
+					// console.log(d3.select(switchArr[j]));
+					//====================================
+					var unit = switchArr[j].parentNode.parentNode;
+					// console.log(unit)
+					// console.log(unit)
+					// unit.style.border = "thick dashed grey";
+					unit.children[0].style.borderLeft = "solid green 7px";
+					unit.children[0].style.backgroundColor = "grey";
+					var key = unit.children[0].children[0].children[0].textContent;
+					currentMapping[key] = NO_MAPPING;
+					unit.children[1].children[0].style.fill = "grey";
+					unit.children[2].style.backgroundColor = "grey";
+					removeChildren(unit.children[2]);
+					// unit.children[2].removeEventListener('dragover', allowDrop);
+					// unit.children[2].removeEventListener('dragleave',dragLeave);
+					// unit.children[2].removeEventListener('drop', drop);tionship,true);
+					switchArr[j].addEventListener("change",enableRelationship,true);
+					//++++++++++++++++++++++++++++++++++++++
+			  }
+			}
+		},false);
 
 }
 
@@ -149,6 +212,11 @@ function createRecepticle(set){
 
 function allowDrop(ev) {
   ev.preventDefault();
+	ev.target.parentElement.style.backgroundColor = "green"//parentElement.style.backgroundColor = "green";
+}
+
+function dragLeave(ev){
+	ev.target.parentElement.style.backgroundColor = "white"//parentElement.style.backgroundColor = "white";
 }
 
 function drag(ev) {
@@ -176,16 +244,26 @@ function drop(ev) {
 		var sourceBox = document.getElementById(data);
 		sourceBoxD3.attr("draggable","false");
 		// console.log(sourceBox)
-		var targetBoxD3 = d3.select(ev.target);
+		var trueTarget = ev.target.parentElement;
+		var targetBoxD3 = d3.select(trueTarget);
 		ev.target.removeEventListener('dragover', allowDrop);
+		ev.target.removeEventListener('dragleave',dragLeave);
 		ev.target.removeEventListener('drop', drop);
-		ev.target.parentNode.style.border = "none";
-		if(ev.target.parentNode.children[3])
-			ev.target.parentNode.removeChild(ev.target.parentNode.children[3]);
+
+		var parentid = trueTarget.parentElement.id
+		var localid = parentid.substring(4,parentid.length);
+		var switchElem = trueTarget.parentElement.getElementsByTagName("label")[0];
+		switchElem.style.pointerEvents = "none"
+
+		trueTarget.parentElement.children[0].style.borderLeft = "solid green 7px";
+		var cover = switchElem.appendChild(document.createElement("div"));
+		cover.className = "cover";
+
 		targetBoxD3.style("z-index","3")
-						 .style("background-color","limegreen");
-		fitText(ev.target,sourceBoxD3._groups[0][0].labelTitan)
-		sourceBox.addEventListener('click', function() {undoSelect(ev.target,targetBoxD3,sourceBoxD3,sourceBox)}, false);
+						 .style("background-color","green");
+		fitText(trueTarget,sourceBoxD3._groups[0][0].labelTitan)
+
+		sourceBox.addEventListener('click', function() {undoSelect(trueTarget,targetBoxD3,sourceBoxD3,sourceBox)}, false);
 	}
 	//console.log(info._groups[0][0].labelTitan);
 
@@ -200,12 +278,35 @@ function drop(ev) {
 //TODO: reenable fbox:active{grabbing}
 function undoSelect(target,targetD3,sourceD3,source){
 	 targetD3.node().removeChild(targetD3.node().firstChild);
-	 target.addEventListener('dragover', allowDrop, false);
-	 target.addEventListener('drop', drop, false);
+
+
+
+
+	 target.parentElement.children[0].style.borderLeft = "solid crimson 7px";
 	 //var old_element = document.getElementById("btn");
 	 sourceD3.style("background-color","white");
 	 targetD3.style("background-color","white")
-	         .style("z-index","0");
+	         .style("z-index","");
+
+	var hitbox = target.appendChild(document.createElement('div'));
+ 	hitbox.addEventListener('dragover', allowDrop, false);
+ 	hitbox.addEventListener('drop', drop, false);
+ 	hitbox.addEventListener('dragleave',dragLeave,false);
+ 	hitbox.style.height = "105px";
+ 	hitbox.style.minWidth = "200px";
+ 	// hitbox.style.backgroundColor = "rgba(100,0,0,.5)"
+ 	hitbox.style.zIndex = "10";
+
+
+
+	var parentid = target.parentElement.id
+	var localid = parentid.substring(4,parentid.length);
+	var switchElem = target.parentElement.getElementsByTagName("label")[0];
+	switchElem.style.pointerEvents = "Auto"
+	var cover = switchElem.getElementsByClassName("cover")[0];
+	cover.parentNode.removeChild(cover);
+
+
 	 var new_element = source.cloneNode(true);
 	 source.parentNode.replaceChild(new_element, source);
 	 d3.select(new_element)
@@ -217,6 +318,7 @@ function undoSelect(target,targetD3,sourceD3,source){
 }
 
 function enableRelationship(event){
+	// console.log("Enable!")
 	var unit = event.target.parentNode;
 	var tests = 2;
 	while(tests > 0){
@@ -230,18 +332,26 @@ function enableRelationship(event){
 		}
 	}
 	// console.log("pong")
-	unit.style.border = "thick dashed rgb(180,30,30)";
+	// unit.style.border = "thick dashed rgb(180,30,30)";
+	unit.children[0].style.borderLeft = "solid crimson 7px";
 	unit.children[0].style.backgroundColor = "white";
 	var key = unit.children[0].children[0].children[0].textContent;
 	currentMapping[key] = "";
 	unit.children[1].children[0].style.fill = "white";
 	unit.children[2].style.backgroundColor = "white";
-	unit.children[2].addEventListener('dragover', allowDrop,false);
-	unit.children[2].addEventListener('drop', drop,false);
-	unit.children[3].style.backgroundColor = "red";
-	unit.children[3].children[0].className = "fa fa-trash";
-  unit.children[3].removeEventListener("click",enableRelationship,false);
-	unit.children[3].addEventListener("click",disableRelationship,false);
+	var hitbox = unit.children[2].appendChild(document.createElement('div'));
+	hitbox.addEventListener('dragover', allowDrop, false);
+	hitbox.addEventListener('drop', drop, false);
+	hitbox.addEventListener('dragleave',dragLeave,false);
+	hitbox.style.height = "105px";
+	hitbox.style.minWidth = "200px";
+	// hitbox.style.backgroundColor = "rgba(100,0,0,.5)"
+	hitbox.style.zIndex = "4";
+	// unit.children[2].addEventListener('dragover', allowDrop,false);
+	// unit.children[2].addEventListener('dragleave',dragLeave,false);
+	// unit.children[2].addEventListener('drop', drop,false);
+  event.target.removeEventListener("change",enableRelationship,true);
+	event.target.addEventListener("change",disableRelationship,true);
 }
 
 function disableRelationship(event){
@@ -251,6 +361,7 @@ function disableRelationship(event){
 	// console.log("last delete");
 	// console.log("ping")
 	//Removes element from list VVVVV
+	console.log("Disable!")
 	var unit = event.target.parentNode;
 	var tests = 2;
 	while(tests > 0){
@@ -263,19 +374,20 @@ function disableRelationship(event){
 			unit = unit.parentNode;
 		}
 	}
-	// console.log(unit);
-	unit.style.border = "thick dashed grey";
+	// console.log(unit)
+	// unit.style.border = "thick dashed grey";
+	unit.children[0].style.borderLeft = "solid green 7px";
 	unit.children[0].style.backgroundColor = "grey";
 	var key = unit.children[0].children[0].children[0].textContent;
 	currentMapping[key] = NO_MAPPING;
 	unit.children[1].children[0].style.fill = "grey";
 	unit.children[2].style.backgroundColor = "grey";
-	unit.children[2].removeEventListener('dragover', allowDrop);
-	unit.children[2].removeEventListener('drop', drop);
-	unit.children[3].style.backgroundColor = "green";
-	unit.children[3].children[0].className = "fa fa-undo";
-  unit.children[3].removeEventListener("click",disableRelationship,false);
-	unit.children[3].addEventListener("click",enableRelationship,false);
+	removeChildren(unit.children[2]);
+	// unit.children[2].removeEventListener('dragover', allowDrop);
+	// unit.children[2].removeEventListener('dragleave',dragLeave);
+	// unit.children[2].removeEventListener('drop', drop);
+  event.target.removeEventListener("change",disableRelationship,true);
+	event.target.addEventListener("change",enableRelationship,true);
 
 	// console.log(unit);
 
@@ -308,19 +420,19 @@ function submitHandler(){
 			// console.log("missing mapping for " + key);
 
 			if(mapObjs[i].children[3]===undefined){
-				mapObjs[i].style.border = "thick dashed rgb(180,30,30)";
-				if(firstToScroll === null){
-					firstToScroll = mapObjs[i];
-				}
-				var button = mapObjs[i].appendChild(document.createElement("button"));
-				var icon = button.appendChild(document.createElement("i"));
-				button.className = "btn default";
-				button.style.backgroundColor="rgb(255,0,0)";
-				icon.className = "fa fa-trash";
-				icon.style.color="rgb(255,255,255)";
-				// button.textContent = "Remove";
-				button.type = "submit";
-				button.addEventListener("click",disableRelationship,false);
+				// mapObjs[i].style.border = "thick dashed rgb(180,30,30)";
+				// if(firstToScroll === null){
+				// 	firstToScroll = mapObjs[i];
+				// }
+				// var button = mapObjs[i].appendChild(document.createElement("button"));
+				// var icon = button.appendChild(document.createElement("i"));
+				// button.className = "btn default";
+				// button.style.backgroundColor="rgb(255,0,0)";
+				// icon.className = "fa fa-trash";
+				// icon.style.color="rgb(255,255,255)";
+				// // button.textContent = "Remove";
+				// button.type = "submit";
+				// button.addEventListener("click",disableRelationship,false);
 				// console.log(button);
 			}
 			else{
@@ -461,7 +573,6 @@ function generateHoldingCell(data){
 	var parent = document.getElementById("headerContainer");
 	var unit;
 	var lBox;
-	var rBox;
 	var svg;
 	var text;
 	for(var i = 0; i < data.length;i++){
@@ -728,8 +839,8 @@ $(document).ready(function() {
 		if(data !== null && data !== "" && data.length > 1) {
 
 			this.data = data;
-			generateHoldingCell(data[0]);
-			console.log(data);
+			// generateHoldingCell(data[0]);
+			createRecepticle(data[0])
 
 			StatsProcessor(data);
 
