@@ -600,6 +600,7 @@ function moveToBrowseReport(){
     // TEAM IS HARD CODED HERE AND OFFDEF
     var offdef = document.getElementById("offdef");
     var scoutteam = document.getElementById("teamselect").value;
+    sccoutteam = sccoutteam.replace(/%20/g,"_")
     console.log(scoutteam)
     var offdefres;
     if(offdef.checked){
