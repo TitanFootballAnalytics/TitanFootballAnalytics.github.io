@@ -1670,7 +1670,7 @@ function addHeader(svg, data,metadata) {
   //
   // console.log(tabledataform)
 
-  console.log(data)
+  // console.log(data)
 
   var sample_data2 = [["","Pass","Run","Total"],
     ["Play Count",data["Play Count"]["P"],data["Play Count"]["R"],data["Play Count"]["total"]],
@@ -1684,6 +1684,7 @@ function addHeader(svg, data,metadata) {
   var startsubx = 450;
   var startsuby = 80;
   var deltay = 18;
+  // console.log(metadata)
   if(metadata.tendacy.length > 0){
     for (var i = 0; i < metadata.tendacy.length; i++) {
 
@@ -1868,6 +1869,7 @@ function findmaxtend(data,targetcolumns){
     var maxtend = 0;var temptend;
     var maxstr;
     var maxdic = [];
+    // console.log(data)
     for (var i = 0; i < data.datasets.length; i++) {
         for (var k = 0; k < data.datasets[i].length; k++) {
 
@@ -1880,12 +1882,13 @@ function findmaxtend(data,targetcolumns){
               tempvalue = data.datasets[i][k].val;
               tempvalstr = targetcolumns[i]+" is "+data.datasets[i][k].category;
             }
-            temptend = tempvalue / numofplays;
+            temptend = tempvalue / (numofplays*-1);
             if(temptend > maxtend){
               maxstr = tempvalstr;
               maxtend = temptend;
             }
             if(temptend > .65){
+
               maxdic.push({"category":tempvalstr,"tend":temptend})
             }
 
@@ -2014,6 +2017,7 @@ async function generateScorecards(data,configjson, filter){
 
 
                 var besttend = findmaxtend(sortedData[i],sctargetcols);
+                // console.log(besttend)
 
                 var dexlist = [0];
                 var tempdex;
