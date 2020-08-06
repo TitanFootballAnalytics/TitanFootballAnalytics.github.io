@@ -55,7 +55,9 @@ authAndRun((team)=>{
     console.log(data);
     var keylst = [];
     for(var i = 0; i < data.Contents.length;i++){
-       if(data.Contents[i].Key.split("/")[3].split("_")[0] == "report")
+       var tokenarr = data.Contents[i].Key.split("/");
+       if(tokenarr[tokenarr.length-1] != "" &&
+         tokenarr[3].split("_")[0] == "report")
         keylst.push(data.Contents[i].Key);
     }
     var mainholder = document.getElementById("holder");
