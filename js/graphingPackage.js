@@ -1862,6 +1862,7 @@ function addJeanTable(data,canvas,x1,y1,x2,y2){
 }
 
 function findmaxtend(data,targetcolumns){
+    //TODO: if NumPlays is broken, switch below lower case
     var numofplays = data.NumPlays * -1;
     // console.log(targetcolumns)
     var tempvalue; var tempvalstr;

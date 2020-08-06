@@ -132,7 +132,7 @@ function getObjAndRun(bucket,key,callback){
     Bucket: bucket,
     Key: key
   }
-  s3.getObject(params, function(err, data) {
+  s3.getObject(params,function(err,data) {
     if (err) console.log(err, err.stack); // an error occurred
     else {
 
@@ -176,6 +176,49 @@ function listObjsAndRun(prefix,bucket,callback){
     }
 
   });
+}
+
+function putObjAndRun(bucket,key,filebody,callback){
+  var s3 = new AWS.S3({
+      apiVersion: "2006-03-01",
+      params: { Bucket: bucket }
+  });
+
+  var params = {
+    Bucket: bucket,
+    Key: key,
+    Body: filebody
+  }
+
+
+  s3.putObject(params, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      callback(data);
+    }
+  });
+}
+
+function callLambdaAndRun(jsonObj,functionName,callback){
+  var lambda = new AWS.Lambda(
+              {credentials: AWS.config.credentials,
+                   region : _config.cognito.region });
+
+
+  var params = {
+    FunctionName: functionName, /* required */
+    Payload: JSON.stringify(jsonObj)
+  }
+
+  lambda.invoke(params, function(err, data) {
+    console.log(params.Payload)
+    if (err) console.log(err, err.stack); // an error occurred
+    else {
+      callback(data);
+    }
+  });
+
 }
 
 

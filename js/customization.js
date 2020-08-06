@@ -285,7 +285,7 @@ cognitoUser.getSession(function(err, session) {
                 inp.key = keylst[tokendex];
                 inp.addEventListener('change',()=>{
                   updateColList(()=>{
-                    
+
                   })},false);
                 checklst.push(inp);
                 var lbl = container.appendChild(document.createElement("label"))
@@ -293,7 +293,91 @@ cognitoUser.getSession(function(err, session) {
                 container.appendChild(document.createElement("br"))
               }
               //
-              checkifnewreport();
+              var reportid = getUrlParam("reportid","empty");
+              if(reportid != "empty"){
+                //awsrequest({},reportid,2)
+                var key = team+"/reports/"+reportid+"/report_"+team+"_"+reportid+".json"
+                getObjAndRun("titancommonstorage",key,(configjson)=>{
+
+                  //setscorecardrequests start ============================================================================
+
+
+                    //var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json";
+                    //const configfile = await d3.json(configfilename);
+
+                    const configfile = configjson;
+                    document.getElementById("reportitle").value = configfile["metadata"]["reportid"]
+
+                    var tempscorecardrequest;
+                    var selectors;var node;var textnode;var inputs;
+
+                    multiplyNode(document.getElementById("test1"),Object.keys(configfile).length-1,true);
+
+                    console.log(configfile)
+
+                    var dataholder = document.getElementById("FILEDISPLAY");
+                    var selections = dataholder.getElementsByTagName("input");
+                    var files = document.getElementById("FILEDISPLAY").getElementsByTagName("label");
+
+
+
+                    var tempdir;
+                    var dirlist = [];
+
+                    for (var k = 0; k < selections.length; k++) {
+
+                      for (var j = 0; j < configfile["metadata"].files.length; j++) {
+                        if(String(configfile["metadata"].files[j]).includes(files[k].innerHTML.replace('&nbsp;&nbsp;',''))){
+
+                          selections[k].checked = true;
+                        }
+                      }
+
+                    }
+                    updateColList(()=>{
+                      for (var i in configfile) {
+                          if(i != "metadata"){
+                            tempscorecardrequest = document.getElementById("test"+(Number(i)+1));
+                            selectors = tempscorecardrequest.getElementsByTagName("select");
+                            inputs = tempscorecardrequest.getElementsByTagName("input");
+
+                            for (var k = 0; k < configfile[i]["Targetcolumns"].length; k++) {
+                              node = document.createElement("option");
+                              node.selected = "selected";
+                              node.value = configfile[i]["Targetcolumns"][k];
+                              textnode = document.createTextNode(configfile[i]["Targetcolumns"][k]);
+                              node.appendChild(textnode);
+                              selectors[k].prepend(node);
+                            }
+                            for (var k = 0; k < configfile[i]["Situationcols"].length; k++) {
+                              node = document.createElement("option");
+                              node.selected = "selected"
+                              node.value = configfile[i]["Situationcols"][k];
+                              textnode = document.createTextNode(configfile[i]["Situationcols"][k]);
+                              node.appendChild(textnode);
+                              selectors[k+3].prepend(node);
+                            }
+
+                            for (var k = 0; k < configfile[i]["Charts"].length; k++) {
+                              if(configfile[i]["Charts"][k] == "Bar Chart"){inputs[(k*2)+1].checked = true;}
+                              if(configfile[i]["Charts"][k] == "Pie Chart"){inputs[(k*2)+2].checked = true;}
+                            }
+                            for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
+                              if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
+                              if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
+                            }
+                          }
+                      }
+                    })
+
+
+
+                  //SET SCREQ END =============================================================================
+
+
+
+                });
+              }
 
 
 
@@ -414,16 +498,7 @@ cognitoUser.getSession(function(err, session) {
 
 
 
-function checkifnewreport(){
-  var reportid = getUrlParam("reportid","empty");
-  if(reportid != "empty"){
-    awsrequest({},reportid,2)
 
-  }
-  else {
-    // addselectoptions()
-  }
-}
 
 function returnreportid(){
     var reportid = getUrlParam("reportid","empty");
@@ -440,87 +515,6 @@ function returnreportid(){
 
 }
 
-
-function setscorecardrequests(configjson) {
-
-    //var configfilename = "configs/report_"+teamid+"_"+getUrlParam("reportid","empty")+".json";
-    //const configfile = await d3.json(configfilename);
-
-    const configfile = configjson;
-    document.getElementById("reportitle").value = configfile["metadata"]["reportid"]
-
-    var tempscorecardrequest;
-    var selectors;var node;var textnode;var inputs;
-
-    multiplyNode(document.getElementById("test1"),Object.keys(configfile).length-1,true);
-
-    console.log(configfile)
-
-    var dataholder = document.getElementById("FILEDISPLAY");
-    var selections = dataholder.getElementsByTagName("input");
-    var files = document.getElementById("FILEDISPLAY").getElementsByTagName("label");
-
-
-
-    var tempdir;
-    var dirlist = [];
-
-    for (var k = 0; k < selections.length; k++) {
-
-      for (var j = 0; j < configfile["metadata"].files.length; j++) {
-        if(String(configfile["metadata"].files[j]).includes(files[k].innerHTML.replace('&nbsp;&nbsp;',''))){
-
-          selections[k].checked = true;
-        }
-      }
-
-    }
-    updateColList(()=>{
-      for (var i in configfile) {
-          if(i != "metadata"){
-            tempscorecardrequest = document.getElementById("test"+(Number(i)+1));
-            selectors = tempscorecardrequest.getElementsByTagName("select");
-            inputs = tempscorecardrequest.getElementsByTagName("input");
-
-            for (var k = 0; k < configfile[i]["Targetcolumns"].length; k++) {
-              node = document.createElement("option");
-              node.selected = "selected";
-              node.value = configfile[i]["Targetcolumns"][k];
-              textnode = document.createTextNode(configfile[i]["Targetcolumns"][k]);
-              node.appendChild(textnode);
-              selectors[k].prepend(node);
-            }
-            for (var k = 0; k < configfile[i]["Situationcols"].length; k++) {
-              node = document.createElement("option");
-              node.selected = "selected"
-              node.value = configfile[i]["Situationcols"][k];
-              textnode = document.createTextNode(configfile[i]["Situationcols"][k]);
-              node.appendChild(textnode);
-              selectors[k+3].prepend(node);
-            }
-
-            for (var k = 0; k < configfile[i]["Charts"].length; k++) {
-              if(configfile[i]["Charts"][k] == "Bar Chart"){inputs[(k*2)+1].checked = true;}
-              if(configfile[i]["Charts"][k] == "Pie Chart"){inputs[(k*2)+2].checked = true;}
-            }
-            for (var k = 0; k < configfile[i]["Sankey"].length; k++) {
-              if(configfile[i]["Sankey"][k] == "Yes"){inputs[(k+7)].checked = true;}
-              if(configfile[i]["Sankey"][k] == "No"){inputs[(k+7)].checked = false;}
-            }
-          }
-          else{
-
-
-
-
-          }
-      }
-    })
-
-
-    // addselectoptions()
-    //
-}
 
 
 
@@ -581,65 +575,74 @@ function opensetting(target) {
 }
 
 
-function submitscrequests() {
-  //TODO make finalmapping into list
-  var finalmapping = {};
-  var requestcard = document.getElementsByClassName("reportrequest");
-  for (var i = 0; i < requestcard.length; i++) {
-    finalmapping[i] = grabscrequestsingle(requestcard[i].id);
-  }
+function moveToBrowseReport(){
 
-  var dataholder = document.getElementById("FILEDISPLAY");
-  var selections = dataholder.getElementsByTagName("input");
-  var files = dataholder.getElementsByTagName("label");
-
-  var tempdir;
-  var dirlist = [];
-
-  for (var i = 0; i < selections.length; i++) {
-    if(selections[i].checked == true){
-      tempdir = files[i].innerHTML.replace('&nbsp;&nbsp;','') + "/" + files[i].innerHTML.replace('&nbsp;&nbsp;','') + ".csv";
-      dirlist.push(tempdir);
+    var finalmapping = {};
+    var requestcard = document.getElementsByClassName("reportrequest");
+    for (var i = 0; i < requestcard.length; i++) {
+      finalmapping[i] = grabscrequestsingle(requestcard[i].id);
     }
-  }
 
-  // TEAM IS HARD CODED HERE AND OFFDEF
-  var offdef = document.getElementById("offdef");
-  var scoutteam = document.getElementById("teamselect").value;
-  console.log(scoutteam)
-  var offdefres;
-  if(offdef.checked){
-    offdefres = "def"
-  }
-  else{
-    offdefres = "off"
-  }
+    var dataholder = document.getElementById("FILEDISPLAY");
+    var selections = dataholder.getElementsByTagName("input");
+    var files = dataholder.getElementsByTagName("label");
 
+    var tempdir;
+    var dirlist = [];
 
-  var reportid = returnreportid()
+    for (var i = 0; i < selections.length; i++) {
+      if(selections[i].checked == true){
+        tempdir = files[i].innerHTML.replace('&nbsp;&nbsp;','') + "/" + files[i].innerHTML.replace('&nbsp;&nbsp;','') + ".csv";
+        dirlist.push(tempdir);
+      }
+    }
 
-  finalmapping["metadata"] = {"files":dirlist,
-                              "bucket":"titancommonstorage",
-                              "target_team":scoutteam,
-                              "offdef":offdefres,
-                              "reportid":reportid};
-
-
-  console.log(JSON.stringify(finalmapping))
-
-
-
-  //PUT CODE HERE TO PASS REQUEST JSON
-  awsrequest(finalmapping,reportid,1);
+    // TEAM IS HARD CODED HERE AND OFFDEF
+    var offdef = document.getElementById("offdef");
+    var scoutteam = document.getElementById("teamselect").value;
+    console.log(scoutteam)
+    var offdefres;
+    if(offdef.checked){
+      offdefres = "def"
+    }
+    else{
+      offdefres = "off"
+    }
 
 
+    var reportid = returnreportid()
+
+    finalmapping["metadata"] = {"files":dirlist,
+                                "bucket":"titancommonstorage",
+                                "target_team":scoutteam,
+                                "offdef":offdefres,
+                                "reportid":reportid};
+
+
+    console.log(JSON.stringify(finalmapping))
 
 
 
-  //awsrequest(finalmapping,reportid,3);
+    //PUT CODE HERE TO PASS REQUEST JSON
+    //awsrequest(finalmapping,reportid,1);
+    authAndRun((team)=>{
+      finalmapping.metadata.team = team;
+      var blob = new Blob([JSON.stringify(finalmapping)],{type:"text/json;charset=utf-8"});
+      var filebody = new File([blob],`report_${team}_${reportid}.json`)
+      var key = team+"/reports/"+reportid+"/report_"+team+"_"+reportid+".json";
+      putObjAndRun("titancommonstorage",key,filebody,(data)=>{
+        window.location.replace("reportbrowse.html?reportid="+returnreportid());
+      });
+    });
 
 
-  return finalmapping;}
+
+
+    //awsrequest(finalmapping,reportid,3);
+
+
+
+}
 
 function grabscrequestsingle(id){
     var target = document.getElementById(id);
