@@ -3,6 +3,12 @@
 var targetlist = ["","FORM","PERS","PLAY TYPE"];
 var situationlist = ["","DOWN","DIST","FIELD ZONE"];
 
+var offdefslider = document.getElementById("offdef");
+
+offdefslider.oninput = function() {
+  updateColList(()=>{console.log("recalculated teams and columns") })
+
+}
 
 
 // ADD USER ID AND REPORT ID HERE
@@ -98,6 +104,27 @@ async function downloadMap(key,callback){
   }
 }
 
+function intersectionOfList(lists){
+
+  if(lists.length>0){
+    var intersection = lists[0];
+    for(var i = 1; i < lists.length;i++){
+      intersection = intersection.filter(value => lists[i].includes(value))
+    }
+
+    var unionminusintersect = [];
+    lists.forEach(keylst => {
+      keylst.forEach(key=>{
+        if(!intersection.includes(key) && !unionminusintersect.includes(key)){
+          unionminusintersect.push(key);
+        }
+      });
+    });
+
+  }
+  return [unionminusintersect, intersection]
+}
+
 function updateColList(callback){
   var newdisplaylst = [];
 
@@ -122,31 +149,60 @@ function updateColList(callback){
     var validKeysOfMaps = loadedMaps.map(map =>{
       var outlst = [];
       for(var key of Object.keys(map)){
-        if(map[key] != 404){
+        if((map[key] != 404) && (key != "metadata")){
           outlst.push(key)
         }
       }
       return outlst
     });
 
-    if(validKeysOfMaps.length>0){
-      var intersection = validKeysOfMaps[0];
-      for(var i = 1; i < validKeysOfMaps.length;i++){
-        intersection = intersection.filter(value => validKeysOfMaps[i].includes(value))
-      }
-      console.log("intersection" ,intersection);
+    var offdef = document.getElementById("offdef");
+    var teamselectfilter;
+    if(offdef.checked){
+      teamselectfilter = "defense"
+    }
+    else{
+      teamselectfilter = "offense"
+    }
 
-      var unionminusintersect = [];
-      validKeysOfMaps.forEach(keylst => {
-        keylst.forEach(key=>{
-          if(!intersection.includes(key) && !unionminusintersect.includes(key)){
-            unionminusintersect.push(key);
-          }
-        });
-      });
-      console.log("union/intersect",unionminusintersect);
+    var validKeysOfTeams = loadedMaps.map(map =>{
+      var tmpteamlist = [];
+      for (var i = 0; i < map.metadata[teamselectfilter].unique.length; i++) {
+        tmpteamlist.push(map.metadata[teamselectfilter].unique[i])
+      }
+      return tmpteamlist
+    });
+
+
+    if(validKeysOfMaps.length>0){
+
+      // var intersection = validKeysOfMaps[0];
+      // for(var i = 1; i < validKeysOfMaps.length;i++){
+      //   intersection = intersection.filter(value => validKeysOfMaps[i].includes(value))
+      // }
+      // console.log("intersection" ,intersection);
+      //
+      // var unionminusintersect = [];
+      // validKeysOfMaps.forEach(keylst => {
+      //   keylst.forEach(key=>{
+      //     if(!intersection.includes(key) && !unionminusintersect.includes(key)){
+      //       unionminusintersect.push(key);
+      //     }
+      //   });
+      // });
+      // console.log("union/intersect",unionminusintersect);
+
+      // replaced this code ^ to this code below
+      var intersectionandunion = intersectionOfList(validKeysOfMaps)
+      var teamintersectandunion = intersectionOfList(validKeysOfTeams)
+      console.log(teamintersectandunion)
+      unionminusintersect = intersectionandunion[0]
+      intersection = intersectionandunion[1]
+      // -------------------------------
+
       var selectors = document.getElementsByTagName("select");
-      console.log(selectors)
+
+
       for( var i = 0; i < selectors.length;i++){
         if(selectors[i].id.includes("target") || selectors[i].id.includes("situation")){
           selectors[i].innerHTML = "";
@@ -183,9 +239,29 @@ function updateColList(callback){
 
 
       }
+        if(selectors[i].id.includes("teamselect")){
+          selectors[i].innerHTML = "";
+          teamintersectandunion[1].forEach(key=>{
+            node = document.createElement("option");
+            node.value = key;
+            textnode = document.createTextNode(key);
+            node.style.fontWeight = "bold";
+            node.appendChild(textnode);
+            selectors[i].appendChild(node);
+          });
+          teamintersectandunion[0].forEach((key,j)=>{
+            node = document.createElement("option");
+            node.value = key
+            node.disabled = true;
+            node.style.backgroundColor = "lightgray";
+            textnode = document.createTextNode(key);
+            node.appendChild(textnode);
+            selectors[i].appendChild(node);
+          });
 
-    }
-    callback()
+        }
+      }
+      callback()
     }
     else{
       console.log("NO FILES SELECTED");

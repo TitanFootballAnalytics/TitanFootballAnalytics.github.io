@@ -2,7 +2,7 @@
 
 // const standardset = ["Down","Distance","FieldZone","Personnel","Formation","PlayType","FormationFam","Cover","CoverFam"];
 //["GameID",	"PosTeam",	"DefTeam",	"HomeTeam",	"AwayTeam",	"Down",	"Dist",	"DistStr",	"Qtr",	"Fieldpos100",	"YdsGained",	"Turnover", "Rush", "Pass", "SpecialTeams", "Interception", "Fumble", "Sack", "Touchdown", "Safety", "DriveNum", "PlayType", "ScoreDiff", "Completion", "TimeUnder", "DDstr", "Hash", "OffPers", "Motion", "Back", "Form"]
-const standardset = ["offense","defense","pass","run","gain","td","gameid", "pos_team", "def_team", "home_team", "away_team", "down", "dist", "dist_str", "qtr", "fpos100", "gain", "turnover", "runpass", "specialteams", "int", "fum", "sack", "td", "safety", "drive_num", "playtype", "def_score", "off_score", "score_diff", "completion", "time_under", "dd_str", "hash", "off_pers", "motion", "back", "form"]
+const standardset = ["offense","defense","runpass","distance","fieldpos100","down","td","gain"]
 const hudlset = ["playnumber", "odk", "down", "distance", "hash", "yardline", "playtype", "result",
 								"gain", "off_formation", "off_play", "off_strength", "backfield", "play_direction", "run_gap",
 								"def_front", "coverage", "blitz", "quarter", "drive_num"];
@@ -40,6 +40,7 @@ cstm.oninput = function() {
 
 
 var uploadedfile;
+var globaltempcsv;
 var currentMapping = {};
 const NO_MAPPING = 404;
 
@@ -404,6 +405,8 @@ function verifyMapping(){
 }
 
 function submitHandler(){
+	console.log(currentMapping)
+	console.log("started submit process")
 	var mappingSelect = d3.selectAll(".unit");
 	var mapObjs = mappingSelect._groups[0];
 	var leftBox;
@@ -451,6 +454,10 @@ function submitHandler(){
 		}
 	}
 
+	// Grab unique teams from offense and defense and save in metadata in mapping config
+	currentMapping["metadata"] = getuniquecols(globaltempcsv,[currentMapping.offense,currentMapping.defense])
+
+	console.log(JSON.stringify(currentMapping))
 	if(verifyMapping() && uploadedfile){
 		console.log("Succesful Map!")
 		console.log(currentMapping);
@@ -595,6 +602,34 @@ function generateHoldingCell(data){
 	}
 }
 
+function getuniquecols(csvdata,columnames){
+
+	var headers = csvdata[0]
+	var lookinfo = {};
+
+	for (var i = 0; i < columnames.length; i++) {
+		for (var j = 0; j < headers.length; j++) {
+			if(columnames[i] == headers[j]){
+				lookinfo[columnames[i]] = {"location":j};
+			}
+		}
+	}
+	var tempval;
+	for (var column in lookinfo) {
+		lookinfo[column].unique = [];
+
+		for (var i = 1; i < csvdata.length; i++) {
+			tempval = csvdata[i][lookinfo[column].location]
+			if(!(lookinfo[column]["unique"].includes(tempval))){
+				lookinfo[column]["unique"].push(tempval)
+			}
+		}
+	}
+	return lookinfo
+
+}
+
+
 $(document).ready(function() {
 	function StatsProcessor() {
 		// var newStats = new Stats();
@@ -688,7 +723,7 @@ $(document).ready(function() {
 							  s3.listObjectsV2(params, function(err, data) {
 								  if (err) console.log(err,err.stack);
 								  else {
-										console.log(data.Contents);
+
 										var currDirectory = data.Contents;
 										for(var i = 0; i < currDirectory.length;i++){
 											// console.log(currDirectory[i].Key,directory+photoKey)
@@ -832,8 +867,11 @@ $(document).ready(function() {
       //       }
       //   });
 			createArray($.csv.toArrays(event.target.result));
+
+			globaltempcsv = $.csv.toArrays(event.target.result);
 		};
 	};
+
 
 	// Validate file import
 	var createArray = function(data) {
