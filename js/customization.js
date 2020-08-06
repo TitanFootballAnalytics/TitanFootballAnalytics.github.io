@@ -7,7 +7,6 @@ var offdefslider = document.getElementById("offdef");
 
 offdefslider.oninput = function() {
   updateColList(()=>{console.log("recalculated teams and columns") })
-
 }
 
 
@@ -383,6 +382,13 @@ cognitoUser.getSession(function(err, session) {
 
                     const configfile = configjson;
                     document.getElementById("reportitle").value = configfile["metadata"]["reportid"]
+                    if(configfile.metadata.offdef == "off"){
+                      offdefslider.checked = false;
+                    }
+                    if(configfile.metadata.offdef == "def"){
+                      offdefslider.checked = true;
+                    }
+
 
                     var tempscorecardrequest;
                     var selectors;var node;var textnode;var inputs;
@@ -676,7 +682,7 @@ function moveToBrowseReport(){
     // TEAM IS HARD CODED HERE AND OFFDEF
     var offdef = document.getElementById("offdef");
     var scoutteam = document.getElementById("teamselect").value;
-    sccoutteam = sccoutteam.replace(/%20/g,"_")
+    scoutteam = scoutteam.replace(/%20/g,"_")
     console.log(scoutteam)
     var offdefres;
     if(offdef.checked){
