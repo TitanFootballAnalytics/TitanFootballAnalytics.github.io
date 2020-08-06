@@ -450,6 +450,14 @@ cognitoUser.getSession(function(err, session) {
                             }
                           }
                       }
+                      var preseltarget_team  = configfile.metadata.target_team;
+                      node = document.createElement("option");
+                      node.selected = "selected"
+                      node.value = preseltarget_team
+                      textnode = document.createTextNode(preseltarget_team);
+                      node.appendChild(textnode);
+                      document.getElementById("teamselect").prepend(node);
+
                     })
 
 
