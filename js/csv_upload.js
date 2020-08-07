@@ -6,32 +6,39 @@ const standardset = ["offense","defense","pass","run","gain","td","gameid", "pos
 const hudlset = ["playnumber", "odk", "down", "distance", "hash", "yardline", "playtype", "result",
 								"gain", "off_formation", "off_play", "off_strength", "backfield", "play_direction", "run_gap",
 								"def_front", "coverage", "blitz", "quarter", "drive_num"];
+const requiredSet = ["offense","defense"];
+const requiredHudlSet = ["odk","down"];
+
 
 var ourData;
 var hudl = document.getElementById("hudldata");
 var cstm = document.getElementById("cstmdata");
 
 hudl.oninput = function() {
-	if(hudl.checked = true){
+	if(hudl.checked == true){
 		currentMapping = {};
 		for(var i = 0; i< hudlset.length;i++){
-			currentMapping[hudlset[i]] = "";
+			currentMapping[hudlset[i]] = NO_MAPPING;
 		}
 		// createRecepticle(hudlset);
 		generateHoldingCell(hudlset);
-		createRecepticle(ourData[0]);
+		if(ourData){
+			createRecepticle(ourData[0]);
+		}
 	}
 }
 
 cstm.oninput = function() {
-	if(cstm.checked = true){
+	if(cstm.checked == true){
 		currentMapping = {};
 		for(var i = 0; i< standardset.length;i++){
-			currentMapping[standardset[i]] = "";
+			currentMapping[standardset[i]] = NO_MAPPING;
 		}
 		// createRecepticle(standardset);
 		generateHoldingCell(standardset);
-		createRecepticle(ourData[0])
+		if(ourData){
+			createRecepticle(ourData[0]);
+		}
 	}
 }
 
@@ -43,19 +50,19 @@ var uploadedfile;
 var currentMapping = {};
 const NO_MAPPING = 404;
 
-if(cstm.checked = true) {
+if(cstm.checked == true) {
 	currentMapping = {};
 	for(var i = 0; i< standardset.length;i++){
-		currentMapping[standardset[i]] = "";
+		currentMapping[standardset[i]] = NO_MAPPING;
 	}
 	// createRecepticle(standardset);
 	generateHoldingCell(standardset);
 }
 
-if(hudl.checked = true) {
+if(hudl.checked == true) {
 	currentMapping = {};
 	for(var i = 0; i< hudlset.length;i++){
-		currentMapping[hudlset[i]] = "";
+		currentMapping[hudlset[i]] = NO_MAPPING;
 	}
 	// createRecepticle(hudlset);
 	generateHoldingCell(hudlset);
@@ -192,8 +199,6 @@ function createRecepticle(set){
 					// unit.style.border = "thick dashed grey";
 					unit.children[0].style.borderLeft = "solid green 7px";
 					unit.children[0].style.backgroundColor = "grey";
-					var key = unit.children[0].children[0].children[0].textContent;
-					currentMapping[key] = NO_MAPPING;
 					unit.children[1].children[0].style.fill = "grey";
 					unit.children[2].style.backgroundColor = "grey";
 					removeChildren(unit.children[2]);
@@ -313,7 +318,8 @@ function undoSelect(target,targetD3,sourceD3,source){
 	 	 .attr("draggable","true")
 		 .style("cursor","grab");
 	 new_element.labelTitan = source.labelTitan;
-
+	 // console.log(source.children[0].children[0].textContent);
+	 currentMapping[source.children[0].children[0].textContent] = NO_MAPPING;
 	 new_element.addEventListener('dragstart', drag, false);
 }
 
@@ -335,8 +341,6 @@ function enableRelationship(event){
 	// unit.style.border = "thick dashed rgb(180,30,30)";
 	unit.children[0].style.borderLeft = "solid crimson 7px";
 	unit.children[0].style.backgroundColor = "white";
-	var key = unit.children[0].children[0].children[0].textContent;
-	currentMapping[key] = "";
 	unit.children[1].children[0].style.fill = "white";
 	unit.children[2].style.backgroundColor = "white";
 	var hitbox = unit.children[2].appendChild(document.createElement('div'));
@@ -378,8 +382,6 @@ function disableRelationship(event){
 	// unit.style.border = "thick dashed grey";
 	unit.children[0].style.borderLeft = "solid green 7px";
 	unit.children[0].style.backgroundColor = "grey";
-	var key = unit.children[0].children[0].children[0].textContent;
-	currentMapping[key] = NO_MAPPING;
 	unit.children[1].children[0].style.fill = "grey";
 	unit.children[2].style.backgroundColor = "grey";
 	removeChildren(unit.children[2]);
@@ -396,8 +398,18 @@ function disableRelationship(event){
 
 function verifyMapping(){
 	for (const [key, value] of Object.entries(currentMapping)) {
-  	if(value === ""){
-			return false;
+  	if(hudl.checked == true){
+			// console.log(key,requiredHudlSet)
+			if(requiredHudlSet.includes(key) && value === NO_MAPPING){
+				console.log(`required key ${key} is not found, please map it`)
+				return false;
+			}
+		}
+		else if(cstm.checked == true){
+			if(requiredSet.includes(key) && value === NO_MAPPING){
+				console.log(`required key ${key} is not found, please map it`)
+				return false;
+			}
 		}
 	}
 	return true;
@@ -415,8 +427,9 @@ function submitHandler(){
 	for(var i = 0; i < mapObjs.length;i++){
 		leftBox = mapObjs[i].children[0];
 		rightBox = mapObjs[i].children[2];
-		key = leftBox.children[0].children[0].textContent;
-		if(rightBox.children[0]===undefined){
+		value = leftBox.children[0].children[0].textContent;
+		// console.log(rightBox.children)
+		if(rightBox.children[0] != undefined && rightBox.children[0].tagName === "DIV"){
 			// console.log("missing mapping for " + key);
 
 			if(mapObjs[i].children[3]===undefined){
@@ -442,122 +455,15 @@ function submitHandler(){
 				}
 			}
 		}
-		else{
-			value = rightBox.children[0].children[0].textContent;
+		else if(rightBox.children[0] != undefined && rightBox.children[0].tagName === "svg"){
+			key = rightBox.children[0].children[0].textContent;
 			currentMapping[key] = value;
-			// console.log(currentMapping);
-
 
 		}
+
 	}
-
-	if(verifyMapping() && uploadedfile){
-		console.log("Succesful Map!")
-		console.log(currentMapping);
-		cognitoUser.getSession(function(err, session) {
-			if (err) {	alert(err.message || JSON.stringify(err)); return;}
-			let team = "team";
-			// NOTE: getSession must be called to authenticate user before calling getUserAttributes
-			cognitoUser.getUserAttributes(function(err, attributes) {
-				if (err) {alert(err);}
-				else {
-					// console.log(attributes)
-					if(JSON.parse(JSON.stringify(attributes[1])).Name === "custom:Team")
-		        team = JSON.parse(JSON.stringify(attributes[1])).Value;
-		      else {
-		        alert("No team name detected")
-		      }
-					// console.log("======================",team);
-
-					var loginUrl = 'cognito-idp.'+_config.cognito.region+'.amazonaws.com/'+_config.cognito.userPoolId
-					AWS.config.region = _config.cognito.region;
-					AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-						IdentityPoolId: _config.identity.identityPoolId,
-						Logins: {
-							[`${loginUrl}`]: session
-								.getIdToken()
-								.getJwtToken(),
-						}
-					});
-
-					AWS.config.credentials.refresh(error => {
-						if (error) {console.error(error);	}
-						else {
-							var titancommon = new AWS.S3({
-									apiVersion: "2006-03-01",
-									params: { Bucket: "titancommonstorage" }
-							});
-							var filename = encodeURIComponent(uploadedfile.name);
-							filename = filename.substring(0,filename.lastIndexOf('.'));
-							var directory = ""+ encodeURIComponent(team);
-							console.log(directory+"/"+filename)
-
-							var blob = new Blob([JSON.stringify(currentMapping)], {type: "text/json;charset=utf-8"});
-							// saveAs(blob, "./hello world.txt");
-							var jsonfile = new File([blob],filename+".json")
-							console.log(blob);
-							console.log(jsonfile);
-
-							var params = {
-								Bucket: "titancommonstorage",
-								Key: directory+"/datasets/"+filename+"/"+filename+".json",
-								Body: jsonfile
-							}
-
-
-							titancommon.putObject(params, function(err, data) {
-								if (err) {
-									console.log(err);
-								} else {
-									var titanraw = new AWS.S3({
-											apiVersion: "2006-03-01",
-											params: { Bucket: "titanrawdata" }
-									});
-									var params = {
-										Bucket: "titanrawdata",
-										Key: directory+"/"+filename+".csv",
-										Body: uploadedfile
-									}
-									titanraw.putObject(params, function(err, data) {
-										if (err) {
-											console.log(err);
-										} else {
-											console.log("doublysuccess")
-										}
-									});
-								}
-							});
-
-
-							// var params ={
-							// 	Delimiter: "/",
-							// 	Prefix:directory
-							// }
-							// s3.listObjectsV2(params, function(err, data) {
-							// 	if (err) console.log(err,err.stack);
-							// 	else {//console.log(data.Contents);
-							// 		var currDirectory = data.Contents;
-							// 		for(var i = 0; i < currDirectory.length;i++){
-							// 			// console.log(currDirectory[i].Key,directory+photoKey)
-							// 			if(currDirectory[i].Key === directory+filename){
-							// 				alert("please change file already exists in our system, please change filename");
-							// 				return;
-							// 			}
-							// 		}
-							//
-							//
-							// 	}
-							//
-							// });
-						}
-					});
-
-				}
-			});
-
-		});
-	}
-	else if(firstToScroll){
+	//TODO: "HANDLE CASE OF BOTH"
+  if(firstToScroll){
 		// console.log("hit")
 
 		// console.log()
@@ -566,6 +472,31 @@ function submitHandler(){
         scrollTop: $("#"+firstToScroll.id).offset().top
     }, 1000);
 	}
+	else if(!verifyMapping()){
+		alert("missing required fields");
+
+	}
+	else if(firstToScroll == null && verifyMapping() && uploadedfile){
+		console.log("Succesful Map!")
+		console.log(currentMapping);
+		authAndRun((team)=>{
+			var filename = encodeURIComponent(uploadedfile.name);
+			filename = filename.substring(0,filename.lastIndexOf('.'));
+			var directory = ""+ encodeURIComponent(team);
+
+			var blob = new Blob([JSON.stringify(currentMapping)], {type: "text/json;charset=utf-8"});
+			var jsonfile = new File([blob],filename+".json")
+
+			putObjAndRun("titancommonstorage",directory+"/datasets/"+filename+"/"+filename+".json",jsonfile,(response1)=>{
+				putObjAndRun("titanrawdata",directory+"/"+filename+".csv",uploadedfile,(response2)=>{
+					console.log(doublysuccess);
+				});
+			});
+		});
+
+		///END OF FUNCITON==============================
+	}
+
 
 }
 
