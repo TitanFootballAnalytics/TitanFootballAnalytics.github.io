@@ -722,7 +722,12 @@ function moveToBrowseReport(){
       var filebody = new File([blob],`report_${team}_${reportid}.json`)
       var key = team+"/reports/"+reportid+"/report_"+team+"_"+reportid+".json";
       putObjAndRun("titancommonstorage",key,filebody,(data)=>{
-        window.location.replace("reportbrowse.html?reportid="+returnreportid());
+        if(getUrlParam("reportid","empty") != "empty"){
+          window.location.replace("reportbrowse.html?reportid="+returnreportid()+"&updatereport=true");
+        }
+        else{
+          window.location.replace("reportbrowse.html?reportid="+returnreportid());
+        }
       });
     });
 

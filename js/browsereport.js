@@ -132,11 +132,30 @@ authAndRun((team)=>{
             listObjsAndRun(dir,"titancommonstorage",(data)=>{
               // console.log(data.Contents);
               if(data.Contents.some((obj)=>{return obj.Key === keyCheck})){
-                console.log("data detected");
-                //report already exists
-                reportlst.style.backgroundColor = "#1c1c1c";
-                editButton.disabled = false;
-                openButton.disabled = false;
+                if(getUrlParam("updatereport","empty") != "empty"){
+                  //If new data needed to be made
+                  alert("Please do not refresh the page, your report request is proccessing. When the report is ready it will appear black, if not it will stay orange");
+                  callLambdaAndRun(d,"generate_scorecards",(result)=>{
+                    console.log(result);
+                    if(result.FunctionError === "Unhandled"){
+                      reportlst.style.backgroundColor = "rgb(150,50,50)";
+                    }
+                    else{
+                      reportlst.style.backgroundColor = "#1c1c1c";
+                      editButton.disabled = false;
+                      openButton.disabled = false;
+                    }
+                  });
+
+
+                }
+                else{
+                  console.log("data detected");
+                  //report already exists
+                  reportlst.style.backgroundColor = "#1c1c1c";
+                  editButton.disabled = false;
+                  openButton.disabled = false;
+                }
               }
               else{
                 console.log("data not detected");
