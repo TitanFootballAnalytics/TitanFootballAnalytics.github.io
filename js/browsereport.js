@@ -8,6 +8,31 @@ function editreport(reportid) {
   window.open("customization.html?reportid="+reportid)
 }
 
+function deletereport(reportid) {
+  authAndReturnParams((data)=>{
+    console.log(data)
+    var teamname = data.team;
+    var tempprefix = teamname+"/reports/"+reportid+"/"
+    var config_target = tempprefix+"report_"+teamname+"_"+reportid+".json";
+    var data_target = tempprefix+"data_"+teamname+"_"+reportid+".json";
+
+    console.log(config_target)
+    console.log(data_target)
+    deleteObjectAndRun("titancommonstorage",config_target,(data)=>{
+      console.log("configyeeted")
+
+    });
+    deleteObjectAndRun("titancommonstorage",data_target,(data)=>{
+      console.log("datayeeted")
+    });
+
+
+  });
+  document.getElementById(reportid).remove()
+}
+
+
+
 
 // function populatepage(tempuserid) {
 //
@@ -68,6 +93,7 @@ authAndRun((team)=>{
             console.log(d.metadata.reportid);
             var card = mainholder.appendChild(document.createElement('div'));
             card.className = "report-card-holder col-md-2";
+            card.id = d.metadata.reportid;
             var reportlst = card.appendChild(document.createElement('div'));
             reportlst.className = "report-card"
             var h5 = reportlst.appendChild(document.createElement('h5'));
@@ -111,7 +137,16 @@ authAndRun((team)=>{
             editButton.type = "button";
             editButton.className = "btn btn-warning";
             editButton.addEventListener('click',(event)=>{editreport(d.metadata.reportid)},false);
+
+            var removeButton = document.createElement("button");
+            removeButton.innerHTML = "Remove"
+            removeButton.type = "button";
+            removeButton.className = "btn btn-danger";
+            removeButton.addEventListener('click',(event)=>{deletereport(d.metadata.reportid)},false);
+
             buttonDiv.appendChild(editButton);
+            buttonDiv.appendChild(document.createElement("br"))
+            buttonDiv.appendChild(removeButton);
 
 
             reportlst.style.backgroundColor = "rgb(100,50,50)";
@@ -183,9 +218,10 @@ authAndRun((team)=>{
           else{
 
             var card = mainholder.appendChild(document.createElement('div'));
+            card.id = d.metadata.reportid;
             card.className = "report-card-holder col-md-2";
             var reportlst = card.appendChild(document.createElement('div'));
-            reportlst.className = "report-card"
+            reportlst.className = "report-card";
             var h5 = reportlst.appendChild(document.createElement('h5'));
             h5.style.margin = "0px";
             var h6 = reportlst.appendChild(document.createElement('h6'));
@@ -212,6 +248,7 @@ authAndRun((team)=>{
             buttonDiv.className = "buttonholder";
             buttonDiv.align = "right";
             reportlst.appendChild(buttonDiv);
+
             var openButton = document.createElement("button");
             openButton.innerHTML = "Open"
             openButton.style.marginBottom = "5px";
@@ -227,7 +264,16 @@ authAndRun((team)=>{
             editButton.type = "button";
             editButton.className = "btn btn-warning";
             editButton.addEventListener('click',(event)=>{editreport(d.metadata.reportid)},false);
+
+            var removeButton = document.createElement("button");
+            removeButton.innerHTML = "Remove"
+            removeButton.type = "button";
+            removeButton.className = "btn btn-danger";
+            removeButton.addEventListener('click',(event)=>{deletereport(d.metadata.reportid)},false);
+
             buttonDiv.appendChild(editButton);
+            buttonDiv.appendChild(document.createElement("br"))
+            buttonDiv.appendChild(removeButton);
           }
 
 
