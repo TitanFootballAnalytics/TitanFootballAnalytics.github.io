@@ -215,6 +215,7 @@ function putObjAndRun(bucket,key,filebody,callback){
 
   s3.putObject(params, function(err, data) {
     if (err) {
+      console.log("error")
       console.log(err);
     } else {
       callback(data);
