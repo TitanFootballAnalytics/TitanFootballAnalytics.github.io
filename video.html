@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="eng">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/navbar.css" >
-    <link rel="stylesheet" href="css/general.css" >
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
-    <title>Titan Analytics</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/general.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+  <title>Titan Analytics</title>
 
 
 </head>
@@ -17,11 +18,17 @@
 <body>
 
   <style>
-  .mainbackground{width: 100%;background: url(../Images/mainback.jpg)repeat fixed 100%;
-  background-size: cover;height: 300%;background-position: bottom;min-height: 100vh;}
+    .mainbackground {
+      width: 100%;
+      background: url(../Images/mainback.jpg)repeat fixed 100%;
+      background-size: cover;
+      height: 300%;
+      background-position: bottom;
+      min-height: 100vh;
+    }
   </style>
 
-  <nav  style="margin:0px;" class="navbar navbar-inverse navbar-static-top example6">
+  <nav style="margin:0px;" class="navbar navbar-inverse navbar-static-top example6">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar6">
@@ -36,7 +43,8 @@
         <ul class="nav navbar-nav navbar-right">
           <li class=""><a href="index.html">Home</a></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data <span
+                class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li><a href="upload.html">Upload Data</a></li>
               <li><a href="#">Manage Data</a></li>
@@ -47,7 +55,8 @@
             </ul>
           </li>
           <li class="dropdown active">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports <span
+                class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li><a href="reportbrowse.html">Browse Reports</a></li>
 
@@ -67,29 +76,32 @@
   </nav>
 
 
-    <div class="container-fluid mainbackground">
-      <div class="row">
+  <div class="container-fluid mainbackground">
+    <div class="row">
 
-        <div id="videolist" class="col-md-2" style="background-color: white;border-radius: 10px;padding: 20px;margin: 10px;">
+      <div id="videolist" class="col-md-2"
+        style="background-color: white;border-radius: 10px;padding: 20px;margin: 10px;">
 
+      </div>
+
+      <div class="col-md-8" style="background-color: white;border-radius: 10px;padding: 20px;margin: 10px;">
+
+        <div id="videoDiv" class="" style="padding-left: 10%;">
+          <!-- <video width="90%" autoplay controls>
+            <source src="https://titan-stream.s3.amazonaws.com/cube.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video> -->
+          <!-- <iframe id="videoFrame" width="90%" height="300"
+            src="https://titan-stream.s3.amazonaws.com/video.mp4">
+          </iframe> -->
         </div>
 
-        <div class="col-md-8" style="background-color: white;border-radius: 10px;padding: 20px;margin: 10px;">
-
-          <div class="" style="padding-left: 10%;">
-            <video width="90%"  autoplay controls>
-              <source src="https://titan-stream.s3.amazonaws.com/video.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-
-          <div class="" style="position: absolute;bottom: 8%;left: 40%;">
-            <button type="button" class="btn btn-primary">Last Play</button>
-            <button type="button" class="btn btn-secondary">Pause</button>
-            <button type="button" class="btn btn-success">Next Play</button>
-          </div>
-
-
+        <div id="butt" class="" style="position: absolute;bottom: 8%;left: 40%;">
+          <button id="choose" onclick="chooseVideo(document.getElementById('videoSelect').value)" type="button" class="btn btn-primary">Choose</button>
+          <button id="last" onclick="prevVideo(document.getElementById('videoFrame'))" type="button" class="btn btn-primary">Last Play</button>
+          <button id="play" type="button" class="btn btn-secondary">Play</button>
+          <button id="pause" type="button" class="btn btn-secondary">Pause</button>
+          <button id="next" onclick="nextVideo(document.getElementById('videoFrame'))" type="button" class="btn btn-success">Next Play</button>
         </div>
 
 
@@ -99,23 +111,27 @@
     </div>
 
 
+  </div>
 
 
 
-    <!-- javascript -->
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="js/jquery.easing.min.js"></script>
-    <script src="js/generalfunctions.js"></script>
 
-    <!-- Login VVVVV -->
-    <script src="js/aws-cognito-sdk.min.js"></script>
-    <script src="js/amazon-cognito-identity.min.js"></script>
-    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.721.0.min.js"></script>
-    <script src="js/cognito-config.js"></script>
-    <script src="js/auth.js"></script>
-    <!-- Login ^^^^^ -->
-    <script src="js/video.js"></script>
+  <!-- javascript -->
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.min.js"></script>
+  <script src="js/generalfunctions.js"></script>
+
+  <!-- Login VVVVV -->
+  <script src="js/aws-cognito-sdk.min.js"></script>
+  <script src="js/amazon-cognito-identity.min.js"></script>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.721.0.min.js"></script>
+  <script src="js/cognito-config.js"></script>
+  <script src="js/auth.js"></script>
+  <!-- Login ^^^^^ -->
+  <script src="js/video.js"></script>
 </body>
+
 </html>
