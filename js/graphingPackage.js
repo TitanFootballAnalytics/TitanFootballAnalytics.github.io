@@ -1988,10 +1988,10 @@ async function generateScorecards(data,configjson, filter){
 
 
        for(var j = 0; j < Object.keys(configjson).length-1; j++){
-            data[j] = cleandata(data[j])
+            data[j] = cleandata(data[j]);
             var sortedData = tieredSort(data[j],filter);
             configselection = configjson[j];
-            for(let i = 0; i < sortedData.length; i++){
+            for(let i = sortedData.length-1; i >= 0; i--){
 
               //configselection = configjson[sortedData[i].scid]
 
