@@ -8,6 +8,31 @@ function editreport(reportid) {
   window.open("customization.html?reportid="+reportid)
 }
 
+function deletereport(reportid) {
+  authAndReturnParams((data)=>{
+    console.log(data)
+    var teamname = data.team;
+    var tempprefix = teamname+"/reports/"+reportid+"/"
+    var config_target = tempprefix+"report_"+teamname+"_"+reportid+".json";
+    var data_target = tempprefix+"data_"+teamname+"_"+reportid+".json";
+
+    console.log(config_target)
+    console.log(data_target)
+    deleteObjectAndRun("titancommonstorage",config_target,(data)=>{
+      console.log("configyeeted")
+
+    });
+    deleteObjectAndRun("titancommonstorage",data_target,(data)=>{
+      console.log("datayeeted")
+    });
+
+
+  });
+  document.getElementById(reportid).remove()
+}
+
+
+
 
 // function populatepage(tempuserid) {
 //
@@ -55,7 +80,9 @@ authAndRun((team)=>{
     console.log(data);
     var keylst = [];
     for(var i = 0; i < data.Contents.length;i++){
-       if(data.Contents[i].Key.split("/")[3].split("_")[0] == "report")
+       var tokenarr = data.Contents[i].Key.split("/");
+       if(tokenarr[tokenarr.length-1] != "" &&
+         tokenarr[3].split("_")[0] == "report")
         keylst.push(data.Contents[i].Key);
     }
     var mainholder = document.getElementById("holder");
@@ -66,6 +93,7 @@ authAndRun((team)=>{
             console.log(d.metadata.reportid);
             var card = mainholder.appendChild(document.createElement('div'));
             card.className = "report-card-holder col-md-2";
+            card.id = d.metadata.reportid;
             var reportlst = card.appendChild(document.createElement('div'));
             reportlst.className = "report-card"
             var h5 = reportlst.appendChild(document.createElement('h5'));
@@ -109,7 +137,16 @@ authAndRun((team)=>{
             editButton.type = "button";
             editButton.className = "btn btn-warning";
             editButton.addEventListener('click',(event)=>{editreport(d.metadata.reportid)},false);
+
+            var removeButton = document.createElement("button");
+            removeButton.innerHTML = "Remove"
+            removeButton.type = "button";
+            removeButton.className = "btn btn-danger";
+            removeButton.addEventListener('click',(event)=>{deletereport(d.metadata.reportid)},false);
+
             buttonDiv.appendChild(editButton);
+            buttonDiv.appendChild(document.createElement("br"))
+            buttonDiv.appendChild(removeButton);
 
 
             reportlst.style.backgroundColor = "rgb(100,50,50)";
@@ -130,11 +167,30 @@ authAndRun((team)=>{
             listObjsAndRun(dir,"titancommonstorage",(data)=>{
               // console.log(data.Contents);
               if(data.Contents.some((obj)=>{return obj.Key === keyCheck})){
-                console.log("data detected");
-                //report already exists
-                reportlst.style.backgroundColor = "#1c1c1c";
-                editButton.disabled = false;
-                openButton.disabled = false;
+                if(getUrlParam("updatereport","empty") != "empty"){
+                  //If new data needed to be made
+                  alert("Please do not refresh the page, your report request is proccessing. When the report is ready it will appear black, if not it will stay orange");
+                  callLambdaAndRun(d,"generate_scorecards",(result)=>{
+                    console.log(result);
+                    if(result.FunctionError === "Unhandled"){
+                      reportlst.style.backgroundColor = "rgb(150,50,50)";
+                    }
+                    else{
+                      reportlst.style.backgroundColor = "#1c1c1c";
+                      editButton.disabled = false;
+                      openButton.disabled = false;
+                    }
+                  });
+
+
+                }
+                else{
+                  console.log("data detected");
+                  //report already exists
+                  reportlst.style.backgroundColor = "#1c1c1c";
+                  editButton.disabled = false;
+                  openButton.disabled = false;
+                }
               }
               else{
                 console.log("data not detected");
@@ -162,9 +218,10 @@ authAndRun((team)=>{
           else{
 
             var card = mainholder.appendChild(document.createElement('div'));
+            card.id = d.metadata.reportid;
             card.className = "report-card-holder col-md-2";
             var reportlst = card.appendChild(document.createElement('div'));
-            reportlst.className = "report-card"
+            reportlst.className = "report-card";
             var h5 = reportlst.appendChild(document.createElement('h5'));
             h5.style.margin = "0px";
             var h6 = reportlst.appendChild(document.createElement('h6'));
@@ -191,6 +248,7 @@ authAndRun((team)=>{
             buttonDiv.className = "buttonholder";
             buttonDiv.align = "right";
             reportlst.appendChild(buttonDiv);
+
             var openButton = document.createElement("button");
             openButton.innerHTML = "Open"
             openButton.style.marginBottom = "5px";
@@ -206,7 +264,16 @@ authAndRun((team)=>{
             editButton.type = "button";
             editButton.className = "btn btn-warning";
             editButton.addEventListener('click',(event)=>{editreport(d.metadata.reportid)},false);
+
+            var removeButton = document.createElement("button");
+            removeButton.innerHTML = "Remove"
+            removeButton.type = "button";
+            removeButton.className = "btn btn-danger";
+            removeButton.addEventListener('click',(event)=>{deletereport(d.metadata.reportid)},false);
+
             buttonDiv.appendChild(editButton);
+            buttonDiv.appendChild(document.createElement("br"))
+            buttonDiv.appendChild(removeButton);
           }
 
 

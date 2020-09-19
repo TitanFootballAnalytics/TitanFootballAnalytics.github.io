@@ -1685,8 +1685,18 @@ function addHeader(svg, data,metadata) {
   var startsuby = 80;
   var deltay = 18;
   // console.log(metadata)
+
   if(metadata.tendacy.length > 0){
-    for (var i = 0; i < metadata.tendacy.length; i++) {
+    canvas.append("rect")
+      .attr("x",445)
+      .attr("y",63)
+      .attr("width",300)
+      .attr("height",(Math.min(metadata.tendacy.length,6)*deltay)+10)
+      .attr("fill","lightgrey")
+      .attr("stroke","#1c1c1c")
+      .attr("stroke-width","2px");
+
+    for (var i = 0; i < Math.min(metadata.tendacy.length,6); i++) {
 
 
 
@@ -1863,8 +1873,9 @@ function addJeanTable(data,canvas,x1,y1,x2,y2){
 
 function findmaxtend(data,targetcolumns){
     //TODO: if NumPlays is broken, switch below lower case
+    //TODO: What if sankeys are turned off
     var numofplays = data.NumPlays * -1;
-    // console.log(targetcolumns)
+    // console.log(data)
     var tempvalue; var tempvalstr;
     var maxtend = 0;var temptend;
     var maxstr;
@@ -1873,15 +1884,20 @@ function findmaxtend(data,targetcolumns){
     for (var i = 0; i < data.datasets.length; i++) {
         for (var k = 0; k < data.datasets[i].length; k++) {
 
-            if(i > 2){
+            listofkeys = Object.keys(data.datasets[i][k])
+            if(listofkeys.includes("count")){
+              //IF SANKEY
               tempvalue = data.datasets[i][k].count;
-              tempvalstr = targetcolumns[i-3]+" to "+targetcolumns[i-2]+" : "+data.datasets[i][k].in+" to "+data.datasets[i][k].out;
+              tempvalstr = targetcolumns[i-3]+"/"+targetcolumns[i-2]+" is "+data.datasets[i][k].in+"/"+data.datasets[i][k].out;
 
             }
-            else{
+            if(listofkeys.includes("val")){
+              //IF BAR CHART
               tempvalue = data.datasets[i][k].val;
               tempvalstr = targetcolumns[i]+" is "+data.datasets[i][k].category;
+
             }
+
             temptend = tempvalue / (numofplays*-1);
             if(temptend > maxtend){
               maxstr = tempvalstr;
@@ -1889,11 +1905,12 @@ function findmaxtend(data,targetcolumns){
             }
             if(temptend > .65){
 
-              maxdic.push({"category":tempvalstr,"tend":temptend})
+              maxdic.push({"category":tempvalstr,"tend":temptend,"count":tempvalue})
             }
 
         }
      }
+
     return maxdic
 
 
@@ -1971,10 +1988,10 @@ async function generateScorecards(data,configjson, filter){
 
 
        for(var j = 0; j < Object.keys(configjson).length-1; j++){
-            data[j] = cleandata(data[j])
+            data[j] = cleandata(data[j]);
             var sortedData = tieredSort(data[j],filter);
             configselection = configjson[j];
-            for(let i = 0; i < sortedData.length; i++){
+            for(let i = sortedData.length-1; i >= 0; i--){
 
               //configselection = configjson[sortedData[i].scid]
 

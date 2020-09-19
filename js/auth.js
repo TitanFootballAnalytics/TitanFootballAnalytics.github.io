@@ -51,7 +51,7 @@ function authAndReturnParams(callback){
 
 
 
-            console.log(usermetadata)
+            //console.log(usermetadata)
             callback(usermetadata);
 
           }
@@ -125,8 +125,6 @@ function getObjAndRun(bucket,key,callback){
       params: { Bucket: bucket }
   });
 
-
-
   //getting objects
   var params = {
     Bucket: bucket,
@@ -149,6 +147,30 @@ function getObjAndRun(bucket,key,callback){
    }
 
   });
+}
+
+function deleteObjectAndRun(bucket,key,callback){
+  var s3 = new AWS.S3({
+      apiVersion: "2006-03-01",
+      params: { Bucket: bucket }
+  });
+
+  //getting objects
+  var params = {
+    Bucket: bucket,
+    Key: key
+  }
+  s3.deleteObject(params,function(err,data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else {
+      console.log("Deleted: "+key)
+      callback();
+    }
+
+  });
+
+
+
 }
 
 
@@ -193,6 +215,7 @@ function putObjAndRun(bucket,key,filebody,callback){
 
   s3.putObject(params, function(err, data) {
     if (err) {
+      console.log("error")
       console.log(err);
     } else {
       callback(data);
