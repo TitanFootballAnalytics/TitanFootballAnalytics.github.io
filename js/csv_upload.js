@@ -489,7 +489,7 @@ function submitHandler(){
 
 			putObjAndRun("titancommonstorage",directory+"/datasets/"+filename+"/"+filename+".json",jsonfile,(response1)=>{
 				putObjAndRun("titanrawdata",directory+"/"+filename+".csv",uploadedfile,(response2)=>{
-					console.log(doublysuccess);
+					console.log("doublysuccess");
 				});
 			});
 		});
