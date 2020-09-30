@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/navbar.css" >
+    <link rel="stylesheet" href="css/general.css" >
+    <script src="https://kit.fontawesome.com/35e5480a9e.js" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <title>Titan Analytics</title>
+</head>
+
+<body>
+
+
+  <nav  style="margin:0px;" class="navbar navbar-inverse navbar-static-top example6">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar6">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand text-hide" href="index.html">Titan Analytics</a>
+      </div>
+      <div id="navbar6" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class=""><a href="index.html">Home</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="upload.html">Upload Data</a></li>
+              <li><a href="#">Manage Data</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Data Help</li>
+              <li><a href="#">Instruction Guide</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
+          </li>
+          <li class="dropdown active">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="reportbrowse.html">Browse Reports</a></li>
+
+              <li><a href="customization.html">Create Report</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Report Help</li>
+              <li><a href="#">Instruction Guide</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
+          </li>
+          <li><a href="account.html">Account</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a id="SIGNOUT" href="#">Sign Out</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class ="container-fluid mainbackground">
+    <div class="col-md-4" style="background-color: white;border-radius: 10px;padding: 20px;margin: 10px;">
+
+      <label> Bucket Name </label>
+      <select name="bucket_name" id="bucket_name">
+        <option value="titancommonstorage">titancommonstorage</option>
+      </select><br>
+
+      <label> Team Account </label>
+      <select name="teamaccount" id="teamaccount">
+      </select><br>
+
+      <label> Title Of PowerBI Report </label>
+      <input id="titleofreport" type="text"><br>
+
+      <label> Link To PowerBI Report </label>
+      <input id="linktoreport" type="text">
+
+      <button onclick="previewLink()" type="button" class="btn btn-primary" style="float:right;">Preview</button> <br>
+
+      <button onclick="submitPowerBIReport()" type="button" class="btn btn-success">Upload PowerBI Report</button>
+
+
+
+    </div>
+    <div class="col-md-7" style="margin: 10px;padding:20px;background-color: white;border-radius: 10px;height: 85vh;">
+
+      <iframe style="border: solid transparent 1px;" src="" title="PowerBI Preview" id="preview" height="100%" width="100%">
+      </iframe>
+
+    </div>
+
+
+
+  </div>
+
+    <!-- javascript -->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/generalfunctions.js"></script>
+
+    <!-- Login VVVVV -->
+    <script src="js/aws-cognito-sdk.min.js"></script>
+    <script src="js/amazon-cognito-identity.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.721.0.min.js"></script>
+    <script src="js/cognito-config.js"></script>
+    <script src="js/auth.js"></script>
+    <!-- Login ^^^^^ -->
+    <script src="js/ADMIN.js"></script>
+</body>
+</html>

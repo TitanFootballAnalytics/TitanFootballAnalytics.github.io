@@ -63,7 +63,7 @@ var Auth = window.auth || {};
         var onFailure = (err) => {alert(err);};
         event.preventDefault();
 
-        var teamcodemap = {1111:"Big_Red",2222:"Small_Blue",1010:"Giants_Dev",9999:"DemoUsers"};
+        var teamcodemap = {1111:"Big_Red",2222:"Small_Blue",1010:"Giants_Dev",9999:"DemoUsers",0000:"BigRed"};
         var team = teamcodemap[teamcode];
 
         if (password === password2) {

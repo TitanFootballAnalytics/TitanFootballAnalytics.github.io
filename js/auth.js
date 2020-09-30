@@ -276,6 +276,18 @@ var cognitoUser = userPool.getCurrentUser();
 if (cognitoUser != null) {
   document.getElementById('SIGNOUT').addEventListener("click",handleSignOut,false);
 
+
+  authAndRun((team_name)=>{
+    if(team_name != "BigRed"){
+      cognitoUser.signOut();
+      alert("THIS IS A TESTING BRANCH PLEASE SIGN IN WITH A BIGRED ACCOUNT, GO FINS");
+      window.location.href = '/index.html';
+    }
+
+
+  });
+
+
   function handleSignOut(){
     cognitoUser.signOut();
     window.location.href = '/index.html';
